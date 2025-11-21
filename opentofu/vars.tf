@@ -5,7 +5,7 @@ variable "OS_CLOUD" {
 
 variable "KEYPAIR_PATH" {
   type    = string
-  default = "~/.ssh/id_ed25519"
+  default = "~/.ssh/id_ed25519.pub"
 }
 
 variable "INSTANCE_FLAVOR_NAME" {
