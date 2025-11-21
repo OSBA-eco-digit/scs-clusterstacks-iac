@@ -4,7 +4,7 @@ opentofu/*.tfvars
 opentofu/*.tfvars.json
 opentofu/*_override.tf
 opentofu/*_override.tf.json
-opentofu/.terraform.lock.hcl
+opentofu/.terraform.lock.*
 opentofu/.terraform.tfstate.lock.info
 opentofu/.terraform/
 opentofu/.terraformrc
