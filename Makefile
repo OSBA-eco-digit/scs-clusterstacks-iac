@@ -1,6 +1,6 @@
 TF_IN_AUTOMATION := yes
 TOFU_CHDIR := $(CURDIR)/opentofu
-TOFU_CMD := 'tofu -chdir=$(TOFU_CHDIR)'
+TOFU_CMD := tofu -chdir=$(TOFU_CHDIR)
 TOFU_DEFAULT_ARGS := '-input=false -no-color'
 ######################################################################
 
