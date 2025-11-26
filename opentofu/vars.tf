@@ -1,3 +1,7 @@
+#
+# DEFAULTS
+#
+
 variable "OS_CLOUD" {
   type    = string
   default = "openstack"
@@ -17,6 +21,11 @@ variable "INSTANCE_IMAGE_NAME" {
   type    = string
   default = "Ubuntu 22.04"
 }
+######################################################################
+
+#
+# VARIABLES TO BE SET
+#
 
 variable "PUBLIC_NETWORK_ID" {
   type = string
@@ -24,5 +33,4 @@ variable "PUBLIC_NETWORK_ID" {
 
 variable "PUBLIC_NETWORK_NAME" {
   type    = string
-  default = "public-network"
 }
