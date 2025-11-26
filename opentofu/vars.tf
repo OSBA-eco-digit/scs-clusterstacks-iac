@@ -32,5 +32,5 @@ variable "PUBLIC_NETWORK_ID" {
 }
 
 variable "PUBLIC_NETWORK_NAME" {
-  type    = string
+  type = string
 }
