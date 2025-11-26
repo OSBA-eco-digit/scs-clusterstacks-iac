@@ -6,7 +6,7 @@ TOFU_DEFAULT_ARGS := '-input=false -no-color'
 
 plusserver:
 	$(TOFU_CMD) init -upgrade
-	 apply -auto-approve \
+	$(TOFU_CMD) apply -auto-approve \
 		-var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008 \
 		-var PUBLIC_NETWORK_NAME=ext01
 
