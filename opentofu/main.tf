@@ -85,11 +85,11 @@ resource "openstack_networking_floatingip_associate_v2" "my_instance_addr4" {
   fixed_ip    = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
   port_id     = openstack_networking_port_v2.my_instance_port4.id
-  depends_on = [
-    openstack_networking_floatingip_v2.my_floatingip4,
-    openstack_networking_router_interface_v2.my_router_interface4,
-    openstack_networking_router_v2.my_router
-  ]
+  # depends_on = [
+  #   openstack_networking_floatingip_v2.my_floatingip4,
+  #   openstack_networking_router_interface_v2.my_router_interface4,
+  #   openstack_networking_router_v2.my_router
+  # ]
 }
 ######################################################################
 
