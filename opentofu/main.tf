@@ -24,8 +24,8 @@ resource "openstack_compute_keypair_v2" "my_keypair" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/networking_network_v2
 data "openstack_networking_network_v2" "public_network" {
-  name       = var.PUBLIC_NETWORK_NAME
   network_id = var.PUBLIC_NETWORK_ID
+  external   = true
 }
 ######################################################################
 
@@ -98,7 +98,7 @@ resource "openstack_networking_floatingip_associate_v2" "my_instance_addr" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
 resource "openstack_networking_floatingip_v2" "my_floatingip" {
-  pool    = var.PUBLIC_NETWORK_NAME
+  pool    = data.openstack_networking_network_v2.public_network.name
   port_id = openstack_networking_port_v2.my_instance_port.id
   tags    = ["external", "public"]
 }
@@ -157,4 +157,3 @@ resource "openstack_compute_instance_v2" "my_instance" {
     ignore_changes = [admin_pass]
   }
 }
-

@@ -30,7 +30,3 @@ variable "INSTANCE_IMAGE_NAME" {
 variable "PUBLIC_NETWORK_ID" {
   type = string
 }
-
-variable "PUBLIC_NETWORK_NAME" {
-  type = string
-}
