@@ -34,13 +34,11 @@ data "openstack_networking_network_v2" "public_network" {
 data "openstack_networking_subnet_ids_v2" "public_network_subnet4" {
   network_id = var.PUBLIC_NETWORK_ID
   ip_version = 4
-  tags       = ["external", "public"]
 }
 
 # data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
 #   network_id = var.PUBLIC_NETWORK_ID
 #   ip_version = 6
-#   tags       = ["external", "public"]
 # }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_router_v2
@@ -77,6 +75,17 @@ resource "openstack_networking_port_v2" "my_instance_port6" {
   }
 }
 
+### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
+resource "openstack_networking_floatingip_v2" "my_floatingip4" {
+  pool       = data.openstack_networking_network_v2.public_network.name
+  subnet_ids = data.openstack_networking_subnet_ids_v2.public_network_subnet4.ids
+}
+
+# resource "openstack_networking_floatingip_v2" "my_floatingip6" {
+#   pool    = data.openstack_networking_network_v2.public_network.name
+#   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
+# }
+
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_associate_v2
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
   # fixed_ip  = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
@@ -87,19 +96,6 @@ resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associat
     openstack_networking_port_v2.my_instance_port4
   ]
 }
-
-### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
-resource "openstack_networking_floatingip_v2" "my_floatingip4" {
-  pool      = data.openstack_networking_network_v2.public_network.name
-  subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet4.id
-  tags      = ["external", "public"]
-}
-
-# resource "openstack_networking_floatingip_v2" "my_floatingip6" {
-#   pool    = data.openstack_networking_network_v2.public_network.name
-#   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
-#   tags      = ["external", "public"]
-# }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_network_v2
 resource "openstack_networking_network_v2" "my_network" {
@@ -128,7 +124,7 @@ resource "openstack_compute_instance_v2" "my_instance" {
   admin_pass      = random_password.random_passwd.result
   flavor_name     = var.INSTANCE_FLAVOR_NAME
   image_name      = var.INSTANCE_IMAGE_NAME
-  key_pair        = "my_keypair"
+  key_pair        = openstack_compute_keypair_v2.my_keypair.name
   name            = "my_instance"
   security_groups = ["default"]
 
