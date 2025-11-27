@@ -92,10 +92,6 @@ resource "openstack_networking_floatingip_v2" "my_floatingip4" {
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
   port_id     = openstack_networking_port_v2.my_instance_port4.id
-  depends_on = [
-    openstack_networking_floatingip_v2.my_floatingip4,
-    openstack_networking_port_v2.my_instance_port4
-  ]
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_network_v2
@@ -129,10 +125,6 @@ resource "openstack_compute_instance_v2" "my_instance" {
   name        = "my_instance"
 
   security_groups = ["default"]
-
-  depends_on = [
-    openstack_networking_floatingip_associate_v2.my_floatingip4_associate
-  ]
 
   network {
     name        = openstack_networking_network_v2.my_network.name
