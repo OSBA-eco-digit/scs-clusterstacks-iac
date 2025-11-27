@@ -34,12 +34,14 @@ data "openstack_networking_network_v2" "public_network" {
 data "openstack_networking_subnet_ids_v2" "public_network_subnet4" {
   network_id = var.PUBLIC_NETWORK_ID
   ip_version = 4
+  tags       = ["external", "public"]
 }
 
-# data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
-#   network_id = var.PUBLIC_NETWORK_ID
-#   ip_version = 6
-# }
+data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
+  network_id = var.PUBLIC_NETWORK_ID
+  ip_version = 6
+  tags       = ["external", "public"]
+}
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_router_v2
 resource "openstack_networking_router_v2" "my_router" {
@@ -88,7 +90,7 @@ resource "openstack_networking_floatingip_v2" "my_floatingip4" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_associate_v2
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
-  # fixed_ip  = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+  fixed_ip    = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
   port_id     = openstack_networking_port_v2.my_instance_port4.id
   depends_on = [
@@ -121,11 +123,12 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/compute_instance_v2
 resource "openstack_compute_instance_v2" "my_instance" {
-  admin_pass      = random_password.random_passwd.result
-  flavor_name     = var.INSTANCE_FLAVOR_NAME
-  image_name      = var.INSTANCE_IMAGE_NAME
-  key_pair        = openstack_compute_keypair_v2.my_keypair.name
-  name            = "my_instance"
+  admin_pass  = random_password.random_passwd.result
+  flavor_name = var.INSTANCE_FLAVOR_NAME
+  image_name  = var.INSTANCE_IMAGE_NAME
+  key_pair    = openstack_compute_keypair_v2.my_keypair.name
+  name        = "my_instance"
+
   security_groups = ["default"]
 
   depends_on = [
@@ -133,8 +136,17 @@ resource "openstack_compute_instance_v2" "my_instance" {
   ]
 
   network {
-    name = "my_instance_network4"
-    port = openstack_networking_port_v2.my_instance_port4.id
+    name        = openstack_networking_network_v2.my_network.name
+    uuid        = openstack_networking_network_v2.my_network.id
+    fixed_ip_v4 = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+  }
+
+  connection {
+    type     = "ssh"
+    user     = var.INSTANCE_USER_NAME
+    host     = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+    agent    = var.SSH_AGENT_ENABLE
+    password = random_password.random_passwd.result
   }
 
   lifecycle {

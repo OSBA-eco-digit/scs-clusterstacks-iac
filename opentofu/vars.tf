@@ -32,9 +32,19 @@ variable "INSTANCE_IMAGE_NAME" {
   default = "Ubuntu 22.04"
 }
 
+variable "INSTANCE_USER_NAME" {
+  type    = string
+  default = "ubuntu"
+}
+
 variable "RANDOM_PASSWD_LENGTH" {
   type    = number
   default = 32
+}
+
+variable "SSH_AGENT_ENABLE" {
+  type    = bool
+  default = true
 }
 ######################################################################
 
