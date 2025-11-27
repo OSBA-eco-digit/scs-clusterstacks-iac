@@ -4,10 +4,12 @@ terraform {
     random    = { source = "hashicorp/random" }
   }
 }
+######################################################################
 
 provider "openstack" {
   cloud = var.OS_CLOUD
 }
+######################################################################
 
 resource "random_password" "random_passwd" {
   length  = var.RANDOM_PASSWD_LENGTH
@@ -20,14 +22,12 @@ resource "openstack_compute_keypair_v2" "my_keypair" {
   name       = "my_keypair"
   public_key = file(var.KEYPAIR_PATH)
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/networking_network_v2
 data "openstack_networking_network_v2" "public_network" {
   network_id = var.PUBLIC_NETWORK_ID
   external   = true
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/networking_subnet_ids_v2
 data "openstack_networking_subnet_ids_v2" "public_network_subnet4" {
@@ -41,14 +41,12 @@ data "openstack_networking_subnet_ids_v2" "public_network_subnet4" {
 #   ip_version = 6
 #   tags       = ["external", "public"]
 # }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_router_v2
 resource "openstack_networking_router_v2" "my_router" {
   name                = "my_router"
   external_network_id = var.PUBLIC_NETWORK_ID
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_router_interface_v2
 resource "openstack_networking_router_interface_v2" "my_router_interface4" {
@@ -60,7 +58,6 @@ resource "openstack_networking_router_interface_v2" "my_router_interface4" {
 #   router_id = openstack_networking_router_v2.my_router.id
 #   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
 # }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_port_v2
 resource "openstack_networking_port_v2" "my_instance_port4" {
@@ -78,11 +75,10 @@ resource "openstack_networking_port_v2" "my_instance_port6" {
     subnet_id = openstack_networking_subnet_v2.my_network_subnet6.id
   }
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_associate_v2
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
-  fixed_ip    = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+  # fixed_ip  = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
   port_id     = openstack_networking_port_v2.my_instance_port4.id
   # depends_on = [
@@ -91,7 +87,6 @@ resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associat
   #   openstack_networking_router_v2.my_router
   # ]
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
 resource "openstack_networking_floatingip_v2" "my_floatingip4" {
@@ -106,15 +101,12 @@ resource "openstack_networking_floatingip_v2" "my_floatingip4" {
 #   tags      = ["external", "public"]
 # }
 
-######################################################################
-
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_network_v2
 resource "openstack_networking_network_v2" "my_network" {
   name                  = "my_network"
   admin_state_up        = true
   port_security_enabled = true
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_subnet_v2
 resource "openstack_networking_subnet_v2" "my_network_subnet4" {
@@ -130,7 +122,6 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
   cidr       = var.NETWORK_SUBNET6_CIDR
   ip_version = 6
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/compute_instance_v2
 resource "openstack_compute_instance_v2" "my_instance" {
