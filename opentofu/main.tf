@@ -4,18 +4,15 @@ terraform {
     random    = { source = "hashicorp/random" }
   }
 }
-######################################################################
 
 provider "openstack" {
   cloud = var.OS_CLOUD
 }
-######################################################################
 
 resource "random_password" "random_passwd" {
   length  = var.RANDOM_PASSWD_LENGTH
   special = true
 }
-######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/compute_keypair_v2
 resource "openstack_compute_keypair_v2" "my_keypair" {
@@ -133,7 +130,7 @@ resource "openstack_compute_instance_v2" "my_instance" {
   security_groups = ["default"]
 
   network {
-    name = "my_network"
+    name = "my_instance_network4"
     port = openstack_networking_port_v2.my_instance_port4.id
   }
 
