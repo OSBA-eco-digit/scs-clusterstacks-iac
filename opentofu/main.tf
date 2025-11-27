@@ -90,7 +90,6 @@ resource "openstack_networking_floatingip_v2" "my_floatingip4" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_associate_v2
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
-  fixed_ip    = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
   port_id     = openstack_networking_port_v2.my_instance_port4.id
   depends_on = [
