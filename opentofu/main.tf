@@ -10,8 +10,12 @@ provider "openstack" {
 }
 
 resource "random_password" "random_passwd" {
-  length  = var.RANDOM_PASSWD_LENGTH
-  special = true
+  length      = var.RANDOM_PASSWD_LENGTH
+  min_lower   = 1
+  min_numeric = 1
+  min_special = 1
+  min_upper   = 1
+  special     = true
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/compute_keypair_v2
@@ -51,10 +55,10 @@ resource "openstack_networking_router_interface_v2" "my_router_interface4" {
   subnet_id = openstack_networking_subnet_v2.my_network_subnet4.id
 }
 
-# resource "openstack_networking_router_interface_v2" "my_router_interface6" {
-#   router_id = openstack_networking_router_v2.my_router.id
-#   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
-# }
+resource "openstack_networking_router_interface_v2" "my_router_interface6" {
+  router_id = openstack_networking_router_v2.my_router.id
+  subnet_id = openstack_networking_subnet_v2.my_network_subnet6.id
+}
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_port_v2
 resource "openstack_networking_port_v2" "my_instance_port4" {
