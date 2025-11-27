@@ -30,13 +30,13 @@ data "openstack_networking_network_v2" "public_network" {
 ######################################################################
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/networking_subnet_ids_v2
-data "openstack_networking_subnet_ids_v2" "public_subnet4" {
+data "openstack_networking_subnet_ids_v2" "public_network_subnet4" {
   network_id = var.PUBLIC_NETWORK_ID
   ip_version = 4
   tags       = ["external", "public"]
 }
 
-# data "openstack_networking_subnet_ids_v2" "public_subnet6" {
+# data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
 #   network_id = var.PUBLIC_NETWORK_ID
 #   ip_version = 6
 #   tags       = ["external", "public"]
@@ -58,7 +58,7 @@ resource "openstack_networking_router_interface_v2" "my_router_interface4" {
 
 # resource "openstack_networking_router_interface_v2" "my_router_interface6" {
 #   router_id = openstack_networking_router_v2.my_router.id
-#   subnet_id = data.openstack_networking_subnet_ids_v2.public_subnet6.id
+#   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
 # }
 ######################################################################
 
@@ -96,13 +96,13 @@ resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associat
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
 resource "openstack_networking_floatingip_v2" "my_floatingip4" {
   pool      = data.openstack_networking_network_v2.public_network.name
-  subnet_id = data.openstack_networking_subnet_ids_v2.public_subnet4.id
+  subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet4.id
   tags      = ["external", "public"]
 }
 
 # resource "openstack_networking_floatingip_v2" "my_floatingip6" {
 #   pool    = data.openstack_networking_network_v2.public_network.name
-#   subnet_id = data.openstack_networking_subnet_ids_v2.public_subnet6.id
+#   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
 #   tags      = ["external", "public"]
 # }
 
