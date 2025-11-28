@@ -141,8 +141,8 @@ resource "openstack_compute_instance_v2" "my_instance" {
   ]
 
   network {
-    name        = openstack_networking_network_v2.my_network.name
-    uuid        = openstack_networking_network_v2.my_network.id
+    name = openstack_networking_network_v2.my_network.name
+    uuid = openstack_networking_network_v2.my_network.id
     # fixed_ip_v4 = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
     # fixed_ip_v6 = openstack_networking_floatingip_v2.my_floatingip6.fixed_ip
   }

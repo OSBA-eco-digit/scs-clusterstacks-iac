@@ -13,7 +13,7 @@ check-env-var-%:
 
 .PHONY: all check init validate
 all: check init validate
-	$(TOFU_CMD) fmt
+	$(TOFU_CMD) fmt -check
 	$(TOFU_CMD) validate -compact-warnings
 	$(TOFU_CMD) init -upgrade
 ######################################################################
