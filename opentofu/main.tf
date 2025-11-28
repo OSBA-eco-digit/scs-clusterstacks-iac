@@ -92,6 +92,11 @@ resource "openstack_networking_floatingip_v2" "my_floatingip4" {
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
   port_id     = openstack_networking_port_v2.my_instance_port4.id
+  depends_on = [
+    openstack_networking_floatingip_v2.my_floatingip4,
+    openstack_networking_network_v2.my_network,
+    openstack_networking_port_v2.my_instance_port4
+  ]
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_network_v2
@@ -118,6 +123,8 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/compute_instance_v2
 resource "openstack_compute_instance_v2" "my_instance" {
+  # access_ip_v4
+  # access_ip_v6
   admin_pass  = random_password.random_passwd.result
   flavor_name = var.INSTANCE_FLAVOR_NAME
   image_name  = var.INSTANCE_IMAGE_NAME
@@ -126,10 +133,18 @@ resource "openstack_compute_instance_v2" "my_instance" {
 
   security_groups = ["default"]
 
+  depends_on = [
+    openstack_networking_floatingip_associate_v2.my_floatingip4_associate,
+    openstack_networking_network_v2.my_network,
+    openstack_networking_port_v2.my_instance_port4,
+    openstack_networking_port_v2.my_instance_port6
+  ]
+
   network {
     name        = openstack_networking_network_v2.my_network.name
     uuid        = openstack_networking_network_v2.my_network.id
-    fixed_ip_v4 = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+    # fixed_ip_v4 = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+    # fixed_ip_v6 = openstack_networking_floatingip_v2.my_floatingip6.fixed_ip
   }
 
   connection {
