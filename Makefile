@@ -46,5 +46,5 @@ scaleup-destroy:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) \
 		-var OS_CLOUD=$(OS_CLOUD) \
 		-var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e \
-		-state=$(TOFU_CHDIR)/tofu-scaleup.tfstate
+		-state=$(TOFU_CHDIR)/tofu-scaleup.tfstate \
 		-destroy
