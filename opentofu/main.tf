@@ -58,6 +58,17 @@ resource "openstack_networking_network_v2" "my_network" {
   port_security_enabled = true
 }
 
+### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
+resource "openstack_networking_floatingip_v2" "my_floatingip4" {
+  pool       = data.openstack_networking_network_v2.public_network.name
+  subnet_ids = data.openstack_networking_subnet_ids_v2.public_network_subnet4.ids
+}
+
+# resource "openstack_networking_floatingip_v2" "my_floatingip6" {
+#   pool    = data.openstack_networking_network_v2.public_network.name
+#   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
+# }
+
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_subnet_v2
 resource "openstack_networking_subnet_v2" "my_network_subnet4" {
   name       = "my_network_subnet4"
@@ -89,28 +100,19 @@ resource "openstack_networking_port_v2" "my_network_port4" {
   name       = "my_network_port4"
   network_id = openstack_networking_network_v2.my_network.id
   fixed_ip {
-    subnet_id = openstack_networking_subnet_v2.my_network_subnet4.id
+    ip_address = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+    subnet_id  = openstack_networking_subnet_v2.my_network_subnet4.id
   }
 }
 
 resource "openstack_networking_port_v2" "my_network_port6" {
   name       = "my_network_port6"
   network_id = openstack_networking_network_v2.my_network.id
-  fixed_ip {
-    subnet_id = openstack_networking_subnet_v2.my_network_subnet6.id
-  }
+  # fixed_ip {
+  #   ip_address = openstack_networking_floatingip_v2.my_floatingip6.fixed_ip
+  #   subnet_id = openstack_networking_subnet_v2.my_network_subnet6.id
+  # }
 }
-
-### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
-resource "openstack_networking_floatingip_v2" "my_floatingip4" {
-  pool       = data.openstack_networking_network_v2.public_network.name
-  subnet_ids = data.openstack_networking_subnet_ids_v2.public_network_subnet4.ids
-}
-
-# resource "openstack_networking_floatingip_v2" "my_floatingip6" {
-#   pool    = data.openstack_networking_network_v2.public_network.name
-#   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
-# }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_associate_v2
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
