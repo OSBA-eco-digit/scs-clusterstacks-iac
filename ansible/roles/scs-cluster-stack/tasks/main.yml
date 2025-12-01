@@ -1,0 +1,22 @@
+---
+- name: Include distribution-specific variables for Debian
+  include_vars:
+    dir: vars
+    files_matching: "debian*"
+    extensions: [ yml ]
+  when: ansible_distribution == 'Debian'
+
+- name: Include distribution-specific variables for Ubuntu
+  include_vars:
+    dir: vars
+    files_matching: "ubuntu*"
+    extensions: [ yml ]
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Include tasks
+  include_tasks: "{{ t }}"
+  loop:
+    - 00-install-dependencies.yml
+    - 01-setup-account.yml
+  loop_control:
+    loop_var: t

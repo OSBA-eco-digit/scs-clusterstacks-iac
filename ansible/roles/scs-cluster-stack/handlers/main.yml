@@ -1,0 +1,24 @@
+---
+- name: Enable and Start scs_cluster_stack
+  systemd:
+    name: "{{ scs_cluster_stack_service }}"
+    enabled: true
+    state: started
+    daemon_reload: true
+  listen: Enable scs_cluster_stack
+
+- name: Restart scs_cluster_stack
+  systemd:
+    name: "{{ scs_cluster_stack_service }}"
+    enabled: true
+    state: restarted
+    daemon_reload: true
+  listen: Restart scs_cluster_stack
+######################################################################
+
+- name: Restart Logrotate
+  systemd:
+    name: logrotate.service
+    enabled: true
+    state: restarted
+  listen: Restart Logrotate

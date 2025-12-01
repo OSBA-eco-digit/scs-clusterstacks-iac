@@ -1,0 +1,9 @@
+---
+scs_cluster_stack_dependencies:
+  - ca-certificates 
+  - curl
+  - git
+  - golang 
+  - jq
+  - python3-openstackclient
+  - yq

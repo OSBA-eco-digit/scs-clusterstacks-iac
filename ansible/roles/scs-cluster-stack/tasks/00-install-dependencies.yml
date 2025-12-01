@@ -1,0 +1,13 @@
+---
+- name: Update apt Cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install dependencies
+  apt:
+    name: "{{ d }}"
+    state: present
+  loop: "{{ scs_cluster_stack_dependencies }}"
+  loop_control:
+    loop_var: d

@@ -1,0 +1,23 @@
+---
+- name: Ensure "{{ scs_cluster_stack_user }}" user is present
+  user:
+    home: "{{ scs_cluster_stack_home }}"
+    create_home: true
+    comment: "{{ scs_cluster_stack_user }}"
+    name: "{{ scs_cluster_stack_user }}"
+    shell: "/bin/false"
+    groups: "{{ scs_cluster_stack_user }}"
+    password: "{{ lookup('community.general.random_string', base64=true) | password_hash }}"
+    password_lock: true
+    update_password: on_create
+    system: true
+    state: present
+  register: scs_cluster_stack_user_created
+
+- name: Enforce permissions on "{{ scs_cluster_stack_home }}"
+  file:
+    dest: "{{ scs_cluster_stack_home }}"
+    owner: "{{ scs_cluster_stack_user }}"
+    group: "{{ scs_cluster_stack_group }}"
+    mode: 'u=rwx,g=rx,o='
+  when: scs_cluster_stack_user_created.changed
