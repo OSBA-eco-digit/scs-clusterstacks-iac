@@ -1,9 +1,12 @@
+ansible/*.ini
+
 opentofu/*.tfstate
 opentofu/*.tfstate.*
 opentofu/*.tfvars
 opentofu/*.tfvars.json
 opentofu/*_override.tf
 opentofu/*_override.tf.json
+opentofu/.terraform.lock
 opentofu/.terraform.lock.*
 opentofu/.terraform.tfstate.lock.info
 opentofu/.terraform/
@@ -13,3 +16,4 @@ opentofu/crash.log
 opentofu/override.tf
 opentofu/override.tf.json
 opentofu/terraform.rc
+opentofu/*.log
