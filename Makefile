@@ -1,4 +1,5 @@
 .SILENT:
+######################################################################
 
 ANSIBLE_CONFIG := $(CURDIR)/ansible/.ansible.cfg
 ANSIBLE_ROLES_PATH := $(CURDIR)/ansible/roles
@@ -18,34 +19,23 @@ check-env-var-%:
 	fi
 ######################################################################
 
-.PHONY: all check init validate
-all: check init validate
+all check init validate:
 	$(TOFU_CMD) fmt -check
 	$(TOFU_CMD) validate -compact-warnings
 	$(TOFU_CMD) init -upgrade
 ######################################################################
 
-.PHONY: plusserver
 plusserver:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
-		-var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 
-.PHONY: plusserver-destroy
 plusserver-destroy:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
-		-var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008 \
-		-destroy
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008 -destroy
 	rm $(CURDIR)/ansible/inventory_plusserver.ini 2>/dev/null
 ######################################################################
 
-.PHONY: scaleup
 scaleup:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
-		-var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
 
-.PHONY: scaleup-destroy
 scaleup-destroy:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
-		-var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e \
-		-destroy
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e -destroy
 	rm $(CURDIR)/ansible/inventory_scaleup.ini 2>/dev/null
