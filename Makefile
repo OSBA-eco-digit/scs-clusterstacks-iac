@@ -1,7 +1,14 @@
+.SILENT:
+
+ANSIBLE_CONFIG := $(CURDIR)/ansible/.ansible.cfg
+ANSIBLE_ROLES_PATH := $(CURDIR)/ansible/roles
 TF_IN_AUTOMATION := yes
+TF_LOG := INFO
+TF_LOG_PATH := $(TOFU_CHDIR)/tofu-$(OS_CLOUD).log
 TOFU_CHDIR := $(CURDIR)/opentofu
 TOFU_CMD := tofu -chdir=$(TOFU_CHDIR)
-TOFU_DEFAULT_ARGS := -input=false -auto-approve -concise -backup="-"
+TOFU_DEFAULT_ARGS := -input=false -auto-approve -concise -backup="-" -state=$(TOFU_CHDIR)/tofu-$(OS_CLOUD).tfstate
+TOFU_DEFAULT_VARS := -var ARP=$(ANSIBLE_ROLES_PATH) -var OS_CLOUD=$(OS_CLOUD)
 ######################################################################
 
 check-env-var-%:
@@ -20,31 +27,25 @@ all: check init validate
 
 .PHONY: plusserver
 plusserver:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) \
-		-var OS_CLOUD=$(OS_CLOUD) \
-		-var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008 \
-		-state=$(TOFU_CHDIR)/tofu-plusserver.tfstate
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
+		-var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 
 .PHONY: plusserver-destroy
 plusserver-destroy:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) \
-		-var OS_CLOUD=$(OS_CLOUD) \
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
 		-var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008 \
-		-state=$(TOFU_CHDIR)/tofu-plusserver.tfstate \
 		-destroy
+	rm $(CURDIR)/ansible/inventory_plusserver.ini 2>/dev/null
 ######################################################################
 
 .PHONY: scaleup
 scaleup:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) \
-		-var OS_CLOUD=$(OS_CLOUD) \
-		-var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e \
-		-state=$(TOFU_CHDIR)/tofu-scaleup.tfstate
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
+		-var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
 
 .PHONY: scaleup-destroy
 scaleup-destroy:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) \
-		-var OS_CLOUD=$(OS_CLOUD) \
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) \
 		-var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e \
-		-state=$(TOFU_CHDIR)/tofu-scaleup.tfstate \
 		-destroy
+	rm $(CURDIR)/ansible/inventory_scaleup.ini 2>/dev/null

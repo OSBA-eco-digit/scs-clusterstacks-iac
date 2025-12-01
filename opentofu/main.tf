@@ -2,6 +2,8 @@ terraform {
   required_providers {
     openstack = { source = "terraform-provider-openstack/openstack" }
     random    = { source = "hashicorp/random" }
+    local     = { source = "hashicorp/local" }
+    null      = { source = "hashicorp/null" }
   }
 }
 
@@ -126,8 +128,6 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/compute_instance_v2
 resource "openstack_compute_instance_v2" "my_instance" {
-  # access_ip_v4
-  # access_ip_v6
   admin_pass  = random_password.random_passwd.result
   flavor_name = var.INSTANCE_FLAVOR_NAME
   image_name  = var.INSTANCE_IMAGE_NAME
@@ -146,7 +146,7 @@ resource "openstack_compute_instance_v2" "my_instance" {
   connection {
     type     = "ssh"
     user     = var.INSTANCE_USER_NAME
-    host     = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
+    host     = openstack_networking_floatingip_v2.my_floatingip4.address
     agent    = var.SSH_AGENT_ENABLE
     password = random_password.random_passwd.result
   }
@@ -155,3 +155,25 @@ resource "openstack_compute_instance_v2" "my_instance" {
     ignore_changes = [admin_pass]
   }
 }
+################################################################################
+
+resource "local_file" "my_ansible_inventory" {
+  content              = "my_instance ansible_host=${openstack_networking_floatingip_v2.my_floatingip4.address} ansible_user=${var.INSTANCE_USER_NAME}"
+  directory_permission = "0755"
+  filename             = "../ansible/inventory_${var.OS_CLOUD}.ini"
+  file_permission      = "0644"
+}
+
+resource "null_resource" "my_provisioner" {
+  triggers = { my_instance_public_addr4 = openstack_networking_floatingip_v2.my_floatingip4.address }
+  provisioner "local-exec" {
+    command = "sleep 13; ANSIBLE_ROLES_PATH=${var.ARP} ansible-playbook -i ../ansible/inventory_${var.OS_CLOUD}.ini ../ansible/playbooks/scs-cluster-stack.yml"
+  }
+
+  depends_on = [
+    openstack_compute_instance_v2.my_instance,
+    openstack_networking_floatingip_associate_v2.my_floatingip4_associate
+  ]
+}
+
+output "my_instance_public_addr4" { value = openstack_networking_floatingip_v2.my_floatingip4.address }
