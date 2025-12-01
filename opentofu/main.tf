@@ -73,7 +73,6 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
   ip_version = 6
 }
 
-
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_router_interface_v2
 resource "openstack_networking_router_interface_v2" "my_router_interface4" {
   router_id = openstack_networking_router_v2.my_router.id
@@ -86,16 +85,16 @@ resource "openstack_networking_router_interface_v2" "my_router_interface6" {
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_port_v2
-resource "openstack_networking_port_v2" "my_instance_port4" {
-  name       = "my_instance_port4"
+resource "openstack_networking_port_v2" "my_network_port4" {
+  name       = "my_network_port4"
   network_id = openstack_networking_network_v2.my_network.id
   fixed_ip {
     subnet_id = openstack_networking_subnet_v2.my_network_subnet4.id
   }
 }
 
-resource "openstack_networking_port_v2" "my_instance_port6" {
-  name       = "my_instance_port6"
+resource "openstack_networking_port_v2" "my_network_port6" {
+  name       = "my_network_port6"
   network_id = openstack_networking_network_v2.my_network.id
   fixed_ip {
     subnet_id = openstack_networking_subnet_v2.my_network_subnet6.id
@@ -116,8 +115,12 @@ resource "openstack_networking_floatingip_v2" "my_floatingip4" {
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_associate_v2
 resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associate" {
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
-  fixed_ip    = openstack_compute_instance_v2.my_instance.access_ip_v4
-  port_id     = openstack_networking_port_v2.my_instance_port4.id
+  port_id     = openstack_networking_port_v2.my_network_port4.id
+
+  depends_on = [
+    openstack_networking_port_v2.my_network_port4,
+    openstack_networking_router_interface_v2.my_router_interface4
+  ]
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/compute_instance_v2
@@ -133,8 +136,6 @@ resource "openstack_compute_instance_v2" "my_instance" {
   network {
     name = openstack_networking_network_v2.my_network.name
     uuid = openstack_networking_network_v2.my_network.id
-    # fixed_ip_v4 = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
-    # fixed_ip_v6 = openstack_networking_floatingip_v2.my_floatingip6.fixed_ip
   }
 
   connection {
