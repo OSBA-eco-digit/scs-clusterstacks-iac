@@ -30,7 +30,7 @@ plusserver:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 
 plusserver-destroy:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008 -destroy
+	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
 	rm $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini 2>/dev/null
 ######################################################################
@@ -39,6 +39,6 @@ scaleup:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
 
 scaleup-destroy:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e -destroy
+	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
 	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
 	rm $(CURDIR)/ansible/inventory_scaleup.ini 2>/dev/null
