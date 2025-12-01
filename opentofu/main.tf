@@ -93,9 +93,12 @@ resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associat
   floating_ip = openstack_networking_floatingip_v2.my_floatingip4.address
   port_id     = openstack_networking_port_v2.my_instance_port4.id
   depends_on = [
+    openstack_compute_instance_v2.my_instance,
     openstack_networking_floatingip_v2.my_floatingip4,
     openstack_networking_network_v2.my_network,
-    openstack_networking_port_v2.my_instance_port4
+    openstack_networking_port_v2.my_instance_port4,
+    openstack_networking_router_interface_v2.my_router_interface4,
+    openstack_networking_subnet_v2.my_network_subnet4
   ]
 }
 
@@ -132,13 +135,6 @@ resource "openstack_compute_instance_v2" "my_instance" {
   name        = "my_instance"
 
   security_groups = ["default"]
-
-  depends_on = [
-    openstack_networking_floatingip_associate_v2.my_floatingip4_associate,
-    openstack_networking_network_v2.my_network,
-    openstack_networking_port_v2.my_instance_port4,
-    openstack_networking_port_v2.my_instance_port6
-  ]
 
   network {
     name = openstack_networking_network_v2.my_network.name
