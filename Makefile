@@ -30,7 +30,7 @@ plusserver-destroy:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) \
 		-var OS_CLOUD=$(OS_CLOUD) \
 		-var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008 \
-		-state=$(TOFU_CHDIR)/tofu-plusserver.tfstate
+		-state=$(TOFU_CHDIR)/tofu-plusserver.tfstate \
 		-destroy
 ######################################################################
 
