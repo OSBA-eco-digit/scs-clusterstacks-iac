@@ -36,13 +36,11 @@ data "openstack_networking_network_v2" "public_network" {
 data "openstack_networking_subnet_ids_v2" "public_network_subnet4" {
   network_id = var.PUBLIC_NETWORK_ID
   ip_version = 4
-  tags       = ["external", "public"]
 }
 
 data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
   network_id = var.PUBLIC_NETWORK_ID
   ip_version = 6
-  tags       = ["external", "public"]
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
@@ -86,6 +84,8 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_port_v2
 resource "openstack_networking_port_v2" "my_network_port4" {
+  admin_state_up = true
+  # device_id      = openstack_compute_instance_v2.my_instance.id
   name       = "my_network_port4"
   network_id = openstack_networking_network_v2.my_network.id
   fixed_ip {
@@ -98,6 +98,8 @@ resource "openstack_networking_port_v2" "my_network_port4" {
 }
 
 # resource "openstack_networking_port_v2" "my_network_port6" {
+#   admin_state_up = true
+#   # device_id = openstack_compute_instance_v2.my_instance.id
 #   name       = "my_network_port6"
 #   network_id = openstack_networking_network_v2.my_network.id
 #   fixed_ip {
@@ -153,8 +155,9 @@ resource "openstack_compute_instance_v2" "my_instance" {
   security_groups = ["default"]
 
   network {
-    name = openstack_networking_network_v2.my_network.name
-    uuid = openstack_networking_network_v2.my_network.id
+    name        = openstack_networking_network_v2.my_network.name
+    uuid        = openstack_networking_network_v2.my_network.id
+    port        = openstack_networking_port_v2.my_network_port4.id
   }
 
   connection {
