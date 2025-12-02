@@ -49,11 +49,17 @@ data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
 resource "openstack_networking_floatingip_v2" "my_floatingip4" {
   pool       = data.openstack_networking_network_v2.public_network.name
   subnet_ids = data.openstack_networking_subnet_ids_v2.public_network_subnet4.ids
+  depends_on = [
+    openstack_networking_router_interface_v2.my_router_interface4
+  ]
 }
 
 # resource "openstack_networking_floatingip_v2" "my_floatingip6" {
 #   pool    = data.openstack_networking_network_v2.public_network.name
 #   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
+#   depends_on = [
+#     openstack_networking_router_interface_v2.my_router_interface6
+#   ]
 # }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_network_v2
@@ -107,6 +113,10 @@ resource "openstack_networking_port_v2" "my_network_port4" {
 resource "openstack_networking_router_v2" "my_router" {
   name                = "my_router"
   external_network_id = var.PUBLIC_NETWORK_ID
+  depends_on = [
+    openstack_networking_subnet_v2.my_network_subnet4,
+    openstack_networking_subnet_v2.my_network_subnet6
+  ]
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_router_interface_v2
@@ -126,8 +136,8 @@ resource "openstack_networking_floatingip_associate_v2" "my_floatingip4_associat
   port_id     = openstack_networking_port_v2.my_network_port4.id
 
   depends_on = [
-    openstack_networking_port_v2.my_network_port4,
     openstack_networking_router_interface_v2.my_router_interface4,
+    openstack_networking_router_v2.my_router,
     openstack_networking_subnet_v2.my_network_subnet4
   ]
 }
@@ -162,10 +172,9 @@ resource "openstack_compute_instance_v2" "my_instance" {
 ################################################################################
 
 resource "local_file" "my_ansible_inventory" {
-  content              = "my_instance ansible_host=${openstack_networking_floatingip_v2.my_floatingip4.address} ansible_user=${var.INSTANCE_USER_NAME}"
-  directory_permission = "0755"
-  filename             = "../ansible/inventory_${var.OS_CLOUD}.ini"
-  file_permission      = "0644"
+  content         = "my_instance ansible_host=${openstack_networking_floatingip_v2.my_floatingip4.address} ansible_user=${var.INSTANCE_USER_NAME}"
+  filename        = "../ansible/inventory_${var.OS_CLOUD}.ini"
+  file_permission = "0640"
 }
 
 resource "null_resource" "my_provisioner" {
@@ -174,6 +183,9 @@ resource "null_resource" "my_provisioner" {
     # command = "sleep 13; ANSIBLE_ROLES_PATH=${var.ARP} ansible-playbook -i ../ansible/inventory_${var.OS_CLOUD}.ini ../ansible/playbooks/scs-cluster-stack.yml"
     command = "date >/tmp/date.txt"
   }
+  depends_on = [
+    openstack_networking_floatingip_associate_v2.my_floatingip4_associate
+  ]
 }
 
 output "my_instance_public_addr4" { value = openstack_networking_floatingip_v2.my_floatingip4.address }
