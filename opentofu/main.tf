@@ -186,8 +186,7 @@ resource "local_file" "my_ansible_inventory" {
 resource "null_resource" "my_provisioner" {
   triggers = { my_instance_public_addr4 = openstack_networking_floatingip_v2.my_floatingip4.address }
   provisioner "local-exec" {
-    # command = "sleep 13; ANSIBLE_ROLES_PATH=${var.ARP} ansible-playbook -i ../ansible/inventory_${var.OS_CLOUD}.ini ../ansible/playbooks/scs-cluster-stack.yml"
-    command = "date >/tmp/date.txt"
+    command = "sleep 13; ANSIBLE_ROLES_PATH=${var.ARP} ansible-playbook -i ../ansible/inventory_${var.OS_CLOUD}.ini ../ansible/playbooks/scs-cluster-stack.yml"
   }
   depends_on = [
     openstack_networking_floatingip_associate_v2.my_floatingip4_associate
