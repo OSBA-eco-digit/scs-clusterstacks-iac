@@ -87,12 +87,64 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
   ip_version = 6
 }
 
+### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_secgroup_v2
+resource "openstack_networking_secgroup_v2" "my_network_secgroup" {
+  name                 = "my_network_secgroup"
+  delete_default_rules = true
+}
+
+### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_secgroup_rule_v2
+resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules4i" {
+  description       = "Allow SSH ingress via IPv4"
+  direction         = "ingress"
+  ethertype         = "IPv4"
+  port_range_max    = 22
+  port_range_min    = 22
+  protocol          = "tcp"
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.my_network_secgroup.id
+}
+
+resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules4e" {
+  description       = "Allow SSH egress via IPv4"
+  direction         = "egress"
+  ethertype         = "IPv4"
+  port_range_max    = 65535
+  port_range_min    = 22
+  protocol          = "tcp"
+  remote_ip_prefix  = "0.0.0.0/0"
+  security_group_id = openstack_networking_secgroup_v2.my_network_secgroup.id
+}
+
+resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules6i" {
+  description       = "Allow SSH ingress via IPv6"
+  direction         = "ingress"
+  ethertype         = "IPv6"
+  port_range_max    = 22
+  port_range_min    = 22
+  protocol          = "tcp"
+  remote_ip_prefix  = "::/0"
+  security_group_id = openstack_networking_secgroup_v2.my_network_secgroup.id
+}
+
+resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules6e" {
+  description       = "Allow SSH egress via IPv6"
+  direction         = "egress"
+  ethertype         = "IPv6"
+  port_range_max    = 65535
+  port_range_min    = 22
+  protocol          = "tcp"
+  remote_ip_prefix  = "::/0"
+  security_group_id = openstack_networking_secgroup_v2.my_network_secgroup.id
+}
+
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_port_v2
 resource "openstack_networking_port_v2" "my_network_port4" {
-  admin_state_up     = true
-  name               = "my_network_port4"
-  network_id         = openstack_networking_network_v2.my_network.id
-  security_group_ids = [data.openstack_networking_secgroup_v2.default_network_secgroup.id]
+  admin_state_up = true
+  name           = "my_network_port4"
+  network_id     = openstack_networking_network_v2.my_network.id
+  # security_group_ids = [data.openstack_networking_secgroup_v2.default_network_secgroup.id]
+  security_group_ids = [openstack_networking_secgroup_v2.my_network_secgroup.id]
   depends_on         = [openstack_networking_subnet_v2.my_network_subnet4]
   fixed_ip {
     ip_address = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
@@ -101,10 +153,11 @@ resource "openstack_networking_port_v2" "my_network_port4" {
 }
 
 resource "openstack_networking_port_v2" "my_network_port6" {
-  admin_state_up     = true
-  name               = "my_network_port6"
-  network_id         = openstack_networking_network_v2.my_network.id
-  security_group_ids = [data.openstack_networking_secgroup_v2.default_network_secgroup.id]
+  admin_state_up = true
+  name           = "my_network_port6"
+  network_id     = openstack_networking_network_v2.my_network.id
+  # security_group_ids = [data.openstack_networking_secgroup_v2.default_network_secgroup.id]
+  security_group_ids = [openstack_networking_secgroup_v2.my_network_secgroup.id]
   depends_on         = [openstack_networking_subnet_v2.my_network_subnet6]
   fixed_ip {
     # ip_address = openstack_networking_floatingip_v2.my_floatingip6.fixed_ip
