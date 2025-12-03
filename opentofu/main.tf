@@ -179,7 +179,7 @@ resource "openstack_compute_instance_v2" "my_instance" {
 ################################################################################
 
 resource "local_file" "my_ansible_inventory" {
-  content         = "my_instance ansible_host=${openstack_networking_floatingip_v2.my_floatingip4.address} ansible_user=${var.INSTANCE_USER_NAME}"
+  content         = "my_instance ansible_host=${openstack_networking_floatingip_v2.my_floatingip4.address} ansible_user=${var.INSTANCE_USER_NAME}\n"
   filename        = "../ansible/inventory_${var.OS_CLOUD}.ini"
   file_permission = "0640"
 }

@@ -10,7 +10,7 @@ TF_LOG_PATH := $(TOFU_CHDIR)/tofu-$(OS_CLOUD).log
 TOFU_CHDIR := $(CURDIR)/opentofu
 TOFU_CMD := tofu -chdir=$(TOFU_CHDIR)
 TOFU_DEFAULT_ARGS := -input=false -auto-approve -concise -backup="-" -state=$(TOFU_CHDIR)/tofu-$(OS_CLOUD).tfstate
-TOFU_DEFAULT_VARS := -var AC=$(ANSIBLE_CONFIG) -var ARP=$(ANSIBLE_ROLES_PATH) -var OS_CLOUD=$(OS_CLOUD)
+TOFU_DEFAULT_VARS := -var OS_CLOUD=$(OS_CLOUD)
 ######################################################################
 
 check-env-var-%:
