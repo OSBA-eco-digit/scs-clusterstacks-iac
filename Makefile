@@ -18,26 +18,24 @@ check-env-var-%:
 	  echo "Environment variable $* not set"; \
 	  exit 1; \
 	fi
-######################################################################
 
 all check init validate:
 	$(TOFU_CMD) fmt -check
 	$(TOFU_CMD) validate -compact-warnings
 	$(TOFU_CMD) init -upgrade
+
+setup:
+	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
+		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CURDIR)/ansible/playbooks/scs-cluster-stack.yml
 ######################################################################
 
 plusserver:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 
-plusserver-setup:
-	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
-		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CURDIR)/ansible/playbooks/scs-cluster-stack.yml
-
 plusserver-destroy:
 	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
 	rm -f $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini 2>/dev/null
-######################################################################
 
 scaleup:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
