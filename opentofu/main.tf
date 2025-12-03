@@ -183,15 +183,3 @@ resource "local_file" "my_ansible_inventory" {
   filename        = "../ansible/inventory_${var.OS_CLOUD}.ini"
   file_permission = "0640"
 }
-
-resource "null_resource" "my_provisioner" {
-  triggers = { my_instance_public_addr4 = openstack_networking_floatingip_v2.my_floatingip4.address }
-  provisioner "local-exec" {
-    command = "sleep 33; ANSIBLE_CONFIG=${var.AC} ANSIBLE_ROLES_PATH=${var.ARP} ansible-playbook -i ../ansible/inventory_${var.OS_CLOUD}.ini ../ansible/playbooks/scs-cluster-stack.yml"
-  }
-  depends_on = [
-    openstack_networking_floatingip_associate_v2.my_floatingip4_associate
-  ]
-}
-
-output "my_instance_public_addr4" { value = openstack_networking_floatingip_v2.my_floatingip4.address }

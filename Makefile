@@ -29,6 +29,10 @@ all check init validate:
 plusserver:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 
+plusserver-setup:
+	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
+		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CUDIR)/ansible/playbooks/scs-cluster-stack.yml
+
 plusserver-destroy:
 	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
