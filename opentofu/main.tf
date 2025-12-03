@@ -43,6 +43,11 @@ data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
   ip_version = 6
 }
 
+### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/networking_secgroup_v2
+data "openstack_networking_secgroup_v2" "default_network_secgroup" {
+    name = "default"
+  }
+
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
 resource "openstack_networking_floatingip_v2" "my_floatingip4" {
   pool       = data.openstack_networking_network_v2.public_network.name
@@ -87,7 +92,7 @@ resource "openstack_networking_port_v2" "my_network_port4" {
   admin_state_up     = true
   name               = "my_network_port4"
   network_id         = openstack_networking_network_v2.my_network.id
-  security_group_ids = ["default"]
+  security_group_ids = [data.openstack_networking_secgroup_v2.default_network_secgroup.id]
   depends_on         = [openstack_networking_subnet_v2.my_network_subnet4]
   fixed_ip {
     ip_address = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
@@ -99,7 +104,7 @@ resource "openstack_networking_port_v2" "my_network_port6" {
   admin_state_up     = true
   name               = "my_network_port6"
   network_id         = openstack_networking_network_v2.my_network.id
-  security_group_ids = ["default"]
+  security_group_ids = [data.openstack_networking_secgroup_v2.default_network_secgroup.id]
   depends_on         = [openstack_networking_subnet_v2.my_network_subnet6]
   fixed_ip {
     # ip_address = openstack_networking_floatingip_v2.my_floatingip6.fixed_ip
