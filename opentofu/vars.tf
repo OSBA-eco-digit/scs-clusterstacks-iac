@@ -52,6 +52,10 @@ variable "SSH_AGENT_ENABLE" {
 # VARIABLES TO BE SET
 #
 
+variable "AC" {
+  type = string
+}
+
 variable "ARP" {
   type = string
 }

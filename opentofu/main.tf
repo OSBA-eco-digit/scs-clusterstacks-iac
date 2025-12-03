@@ -45,8 +45,8 @@ data "openstack_networking_subnet_ids_v2" "public_network_subnet6" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/data-sources/networking_secgroup_v2
 data "openstack_networking_secgroup_v2" "default_network_secgroup" {
-    name = "default"
-  }
+  name = "default"
+}
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_floatingip_v2
 resource "openstack_networking_floatingip_v2" "my_floatingip4" {
@@ -187,7 +187,7 @@ resource "local_file" "my_ansible_inventory" {
 resource "null_resource" "my_provisioner" {
   triggers = { my_instance_public_addr4 = openstack_networking_floatingip_v2.my_floatingip4.address }
   provisioner "local-exec" {
-    command = "sleep 13; ANSIBLE_ROLES_PATH=${var.ARP} ansible-playbook -i ../ansible/inventory_${var.OS_CLOUD}.ini ../ansible/playbooks/scs-cluster-stack.yml"
+    command = "sleep 13; ANSIBLE_CONFIG=${var.AC} ANSIBLE_ROLES_PATH=${var.ARP} ansible-playbook -i ../ansible/inventory_${var.OS_CLOUD}.ini ../ansible/playbooks/scs-cluster-stack.yml"
   }
   depends_on = [
     openstack_networking_floatingip_associate_v2.my_floatingip4_associate
