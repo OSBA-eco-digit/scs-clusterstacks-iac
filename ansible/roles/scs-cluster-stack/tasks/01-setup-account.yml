@@ -1,5 +1,10 @@
 ---
 - name: Ensure "{{ scs_cluster_stack_user }}" user is present
+  group:
+    name: "{{ scs_cluster_stack_group }}"
+    state: present
+
+- name: Ensure "{{ scs_cluster_stack_user }}" user is present
   user:
     home: "{{ scs_cluster_stack_home }}"
     create_home: true

@@ -6,4 +6,3 @@ scs_cluster_stack_dependencies:
   - golang 
   - jq
   - python3-openstackclient
-  - yq

@@ -1,5 +1,5 @@
 ---
-scs_cluster_stack_cmd: "{{ scs_cluster_stack_bin }} --conf={{ scs_cluster_stack_conf }}"
+scs_cluster_stack_cmd: "{{ scs_cluster_stack_bin }} --conf: {{ scs_cluster_stack_conf }}"
 scs_cluster_stack_conf: "{{ scs_cluster_stack_conf_dir }}/scs_cluster_stack.yaml"
 scs_cluster_stack_conf_dir: "/etc/scs_cluster_stack"
 scs_cluster_stack_group: "{{ scs_cluster_stack_user }}"
@@ -14,3 +14,14 @@ scs_cluster_stack_service: "scs_cluster_stack"
 scs_cluster_stack_service_unit: "/etc/systemd/system/{{ scs_cluster_stack_service }}.service"
 scs_cluster_stack_src_dir: "{{ scs_cluster_stack_home }}/src"
 scs_cluster_stack_user: "scs_cluster_stack"
+#
+# cluster stack components
+#
+capi_release: "1.11.3"         # clusterctl
+helm_release: "4.0.0"          # helm
+kind_release: "0.30.0"         # kind
+kubernetes_release: "1.33.4"   # kubectl
+
+clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v${capi_release}/clusterctl-linux-amd64"
+kind_bin_url: "https://github.com/kubernetes-sigs/kind/releases/download/v${kind_release}/kind-linux-amd64"
+kubectl_bin_url_: "https://dl.k8s.io/release/v${kubernetes_release}/bin/linux/amd64/kubectl"
