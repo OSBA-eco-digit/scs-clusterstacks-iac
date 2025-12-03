@@ -14,7 +14,7 @@ variable "KEYPAIR_PATH" {
 
 variable "INSTANCE_FLAVOR_NAME" {
   type    = string
-  default = "SCS-4V-8-20"
+  default = "SCS-2V-4-20s"
 }
 
 variable "NETWORK_SUBNET4_CIDR" {
