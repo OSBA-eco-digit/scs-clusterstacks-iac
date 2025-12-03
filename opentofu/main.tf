@@ -106,12 +106,9 @@ resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules4i" {
 }
 
 resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules4e" {
-  description       = "Allow SSH egress via IPv4"
+  description       = "Allow egress via IPv4"
   direction         = "egress"
   ethertype         = "IPv4"
-  port_range_max    = 65535
-  port_range_min    = 22
-  protocol          = "tcp"
   remote_ip_prefix  = "0.0.0.0/0"
   security_group_id = openstack_networking_secgroup_v2.my_network_secgroup.id
 }
@@ -128,12 +125,9 @@ resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules6i" {
 }
 
 resource "openstack_networking_secgroup_rule_v2" "my_network_secgroup_rules6e" {
-  description       = "Allow SSH egress via IPv6"
+  description       = "Allow egress via IPv6"
   direction         = "egress"
   ethertype         = "IPv6"
-  port_range_max    = 65535
-  port_range_min    = 22
-  protocol          = "tcp"
   remote_ip_prefix  = "::/0"
   security_group_id = openstack_networking_secgroup_v2.my_network_secgroup.id
 }
