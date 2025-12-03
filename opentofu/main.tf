@@ -84,29 +84,27 @@ resource "openstack_networking_subnet_v2" "my_network_subnet6" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_port_v2
 resource "openstack_networking_port_v2" "my_network_port4" {
-  admin_state_up = true
-  name           = "my_network_port4"
-  network_id     = openstack_networking_network_v2.my_network.id
+  admin_state_up     = true
+  name               = "my_network_port4"
+  network_id         = openstack_networking_network_v2.my_network.id
+  security_group_ids = ["default"]
+  depends_on         = [openstack_networking_subnet_v2.my_network_subnet4]
   fixed_ip {
     ip_address = openstack_networking_floatingip_v2.my_floatingip4.fixed_ip
     subnet_id  = openstack_networking_subnet_v2.my_network_subnet4.id
   }
-  depends_on = [
-    openstack_networking_subnet_v2.my_network_subnet4
-  ]
 }
 
 resource "openstack_networking_port_v2" "my_network_port6" {
-  admin_state_up = true
-  name           = "my_network_port6"
-  network_id     = openstack_networking_network_v2.my_network.id
+  admin_state_up     = true
+  name               = "my_network_port6"
+  network_id         = openstack_networking_network_v2.my_network.id
+  security_group_ids = ["default"]
+  depends_on         = [openstack_networking_subnet_v2.my_network_subnet6]
   fixed_ip {
     # ip_address = openstack_networking_floatingip_v2.my_floatingip6.fixed_ip
     subnet_id = openstack_networking_subnet_v2.my_network_subnet6.id
   }
-  depends_on = [
-    openstack_networking_subnet_v2.my_network_subnet6
-  ]
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_router_v2
@@ -149,8 +147,6 @@ resource "openstack_compute_instance_v2" "my_instance" {
   image_name  = var.INSTANCE_IMAGE_NAME
   key_pair    = openstack_compute_keypair_v2.my_keypair.name
   name        = "my_instance"
-
-  security_groups = ["default"]
 
   network {
     name = openstack_networking_network_v2.my_network.name
