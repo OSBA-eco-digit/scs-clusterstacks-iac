@@ -1,20 +1,21 @@
 ---
 - name: Template the Cluster Stack YAML
   template:
-    src: scs-cso.yaml
+    src: scs-cso.yaml.j2
     dest: "{{scs_cluster_stack_home}}/scs-cso.yaml"
     mode: 0444
 
 - name: Helm the Operator itself
   command:
     argv:
-      - helm upgrade
-      -   --create-namespace
-      -   --set octavia_ovn=true
-      -   --values {{scs_cluster_stack_home}}/scs-cso.yaml
-      -   -i cso
-      -   -n cso-system
-      -   oci://registry.scs.community/cluster-stacks/cso
+      - helm
+      - upgrade
+      - --create-namespace
+      - --set octavia_ovn=true
+      - --values {{scs_cluster_stack_home}}/scs-cso.yaml
+      - -i cso
+      - -n cso-system
+      - oci://registry.scs.community/cluster-stacks/cso
 
 - name: Rollout Cluster Stack Operator
   command:

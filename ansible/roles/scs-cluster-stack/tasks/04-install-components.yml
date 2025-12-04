@@ -9,8 +9,13 @@
 - name: Get "helm"
   get_url:
     url: "{{ helm_bin_url }}"
-    dest: "{{ helm_bin }}"
+    dest: "{{ helm_bin }}.tar.gz"
     checksum: "sha256:{{helm_bin_sha256}}"
+
+- name: Decompress "helm"
+  unarchive:
+    src: "{{ helm_bin }}.tar.gz"
+    dest: "{{ helm_bin }}"
     mode: 0755
 
 - name: Get "kind"
