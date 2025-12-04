@@ -49,3 +49,28 @@ clusterctl_bin_sha256: "d65ec7a42c36e863847103d48216c3dad248b82c447a27b3b2325a61
 helm_bin_sha256: "c77e9e7c1cc96e066bd240d190d1beed9a6b08060b2043ef0862c4f865eca08f"
 kind_bin_sha256: "517ab7fc89ddeed5fa65abf71530d90648d9638ef0c4cde22c2c11f8097b8889"
 kubectl_bin_sha256: "c2ba72c115d524b72aaee9aab8df8b876e1596889d2f3f27d68405262ce86ca1"
+
+#
+# settings
+#
+
+CLOUDS_YAML: "{{ansible.env.HOME}}/.config/openstack/clouds.yaml"
+
+CL_APPCRED_LIFETIME: 
+CL_CTRLNODES: 1
+CL_NAME: "mycluster"
+CL_PATCHVER: "{{kubernetes_release}}"
+CL_PODCIDR: 172.16.0.0/18
+CL_SVCCIDR: 10.96.0.0/14
+CL_VARIABLES: "apiServerLoadBalancer: octavia-ovn"
+CL_WRKRNODES: 1
+
+CS_MAINVER: 1.33
+CS_NAMESPACE: "mynamespace"
+CS_SERIES: "scs2"
+CS_VERSION: [v1]
+
+OS_CLOUD: "openstack"
+
+CS_NAMESPACE: ${CS_NAMESPACE:-$OS_CLOUD}
+CS_MAINVER: ${CS_MAINVER:-${CL_PATCHVER%.*}}

@@ -21,5 +21,6 @@
     - 02-install-docker.yml
     - 03-install-envsubst.yml
     - 04-install-components.yml
+    - 05-setup-kind.yml
   loop_control:
     loop_var: t

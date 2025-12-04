@@ -12,3 +12,4 @@
     remote_src: true
     src: /tmp/envsubst
     dest: /usr/local/bin/envsubst
+    mode: 0755

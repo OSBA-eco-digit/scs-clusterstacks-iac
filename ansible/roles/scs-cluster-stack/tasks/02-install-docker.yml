@@ -18,7 +18,7 @@
     repo: "deb [arch=amd64 signed-by={{docker_apt_sign_key}}] {{docker_apt_repo}} {{ansible_lsb.codename}} stable"
     filename: "{{ docker_apt_repo_filename }}"
 
-- name: Install packages to setup Docker and "docker-compose"
+- name: Install Docker packages
   apt:
     name:
       - containerd.io
@@ -27,3 +27,11 @@
       - docker-ce-cli
       - docker-compose-plugin
     state: present
+
+- name: Ensure we set "net.ipv4.tcp_mtu_probing=1" as sysctl
+  sysctl:
+    name: "net.ipv4.tcp_mtu_probing"
+    value: "1"
+    sysctl_set: true
+    state: present
+    reload: true

@@ -1,0 +1,6 @@
+---
+- name: Create 'kind' cluster
+  command:
+    cmd: "kind create cluster"
+  ignore_errors: true
+  no_log: true
