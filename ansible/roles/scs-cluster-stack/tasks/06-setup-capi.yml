@@ -10,10 +10,7 @@
 
 - name: Rollout CAPI/CAPO
   command:
-    cmd:
-     - clusterctl init --infrastructure openstack || true
-     - kubectl -n capi-system rollout status deployment || true
-     - kubectl -n capo-system rollout status deployment || true
+    cmd: clusterctl init --infrastructure openstack
   environment:
     CLUSTER_TOPOLOGY=true
     EXP_CLUSTER_RESOURCE_SET=true

@@ -6,6 +6,8 @@
   environment:
     GOPATH: "{{ ansible_env.HOME }}/go"
     GOBIN: "/tmp"
+  args:
+    creates: "/tmp/envsubst"
 
 - name: Copy "envsubst" binary over to '/usr/local/bin/envsubst'
   copy:
