@@ -1,0 +1,14 @@
+---
+- name: Install "envsubst" via Go
+  command:
+    cmd: >
+      go install github.com/drone/envsubst/v2/cmd/envsubst@latest
+  environment:
+    GOPATH: "{{ ansible_env.HOME }}/go"
+    GOBIN: "/tmp"
+
+- name: Copy "envsubst" binary over to '/usr/local/bin/envsubst'
+  copy:
+    remote_src: true
+    src: /tmp/envsubst
+    dest: /usr/local/bin/envsubst

@@ -58,7 +58,7 @@ resource "openstack_networking_floatingip_v2" "my_floatingip4" {
 }
 
 # resource "openstack_networking_floatingip_v2" "my_floatingip6" {
-#   pool    = data.openstack_networking_network_v2.public_network.name
+#   pool = data.openstack_networking_network_v2.public_network.name
 #   subnet_id = data.openstack_networking_subnet_ids_v2.public_network_subnet6.id
 #   depends_on = [
 #     openstack_networking_router_interface_v2.my_router_interface6
@@ -74,17 +74,19 @@ resource "openstack_networking_network_v2" "my_network" {
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_subnet_v2
 resource "openstack_networking_subnet_v2" "my_network_subnet4" {
-  name       = "my_network_subnet4"
-  network_id = openstack_networking_network_v2.my_network.id
-  cidr       = var.NETWORK_SUBNET4_CIDR
-  ip_version = 4
+  name            = "my_network_subnet4"
+  network_id      = openstack_networking_network_v2.my_network.id
+  cidr            = var.NETWORK_SUBNET4_CIDR
+  ip_version      = 4
+  dns_nameservers = var.NETWORK_SUBNET4_NAMESERVERS
 }
 
 resource "openstack_networking_subnet_v2" "my_network_subnet6" {
-  name       = "my_network_subnet6"
-  network_id = openstack_networking_network_v2.my_network.id
-  cidr       = var.NETWORK_SUBNET6_CIDR
-  ip_version = 6
+  name            = "my_network_subnet6"
+  network_id      = openstack_networking_network_v2.my_network.id
+  cidr            = var.NETWORK_SUBNET6_CIDR
+  ip_version      = 6
+  dns_nameservers = var.NETWORK_SUBNET6_NAMESERVERS
 }
 
 ### https://registry.terraform.io/providers/terraform-provider-openstack/openstack/latest/docs/resources/networking_secgroup_v2
@@ -221,6 +223,10 @@ resource "openstack_compute_instance_v2" "my_instance" {
 
   lifecycle {
     ignore_changes = [admin_pass]
+  }
+
+  provisioner "local-exec" {
+    command = "ssh-keygen -R \"${openstack_networking_floatingip_v2.my_floatingip4.address}\" || true"
   }
 }
 ################################################################################

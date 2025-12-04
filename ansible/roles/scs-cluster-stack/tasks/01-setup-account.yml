@@ -1,5 +1,5 @@
 ---
-- name: Ensure "{{ scs_cluster_stack_user }}" user is present
+- name: Ensure "{{ scs_cluster_stack_user }}" group is present
   group:
     name: "{{ scs_cluster_stack_group }}"
     state: present

@@ -22,10 +22,21 @@ variable "NETWORK_SUBNET4_CIDR" {
   default = "192.168.96.0/24"
 }
 
+variable "NETWORK_SUBNET4_NAMESERVERS" {
+  type    = list(any)
+  default = ["174.138.21.128", "188.166.206.224"]
+}
+
 variable "NETWORK_SUBNET6_CIDR" {
   type    = string
   default = "fd00:192:168:96::/64"
 }
+
+variable "NETWORK_SUBNET6_NAMESERVERS" {
+  type    = list(any)
+  default = ["2620:fe::fe"]
+}
+
 
 variable "INSTANCE_IMAGE_NAME" {
   type    = string

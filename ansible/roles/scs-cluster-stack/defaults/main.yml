@@ -35,6 +35,17 @@ helm_release: "4.0.0"          # helm
 kind_release: "0.30.0"         # kind
 kubernetes_release: "1.33.4"   # kubectl
 
-clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v${capi_release}/clusterctl-linux-amd64"
-kind_bin_url: "https://github.com/kubernetes-sigs/kind/releases/download/v${kind_release}/kind-linux-amd64"
-kubectl_bin_url_: "https://dl.k8s.io/release/v${kubernetes_release}/bin/linux/amd64/kubectl"
+clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{capi_release}}/clusterctl-linux-amd64"
+helm_bin_url: "https://get.helm.sh/helm-v{{helm_release}}-linux-amd64.tar.gz"
+kind_bin_url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{kind_release}}/kind-linux-amd64"
+kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/amd64/kubectl"
+
+clusterctl_bin: "/usr/local/bin/clusterctl"
+helm_bin: "/usr/local/bin/helm"
+kind_bin: "/usr/local/bin/kind"
+kubectl_bin: "/usr/local/bin/kubectl"
+
+clusterctl_bin_sha256: "d65ec7a42c36e863847103d48216c3dad248b82c447a27b3b2325a61e26ead9a"
+helm_bin_sha256: "c77e9e7c1cc96e066bd240d190d1beed9a6b08060b2043ef0862c4f865eca08f"
+kind_bin_sha256: "517ab7fc89ddeed5fa65abf71530d90648d9638ef0c4cde22c2c11f8097b8889"
+kubectl_bin_sha256: "c2ba72c115d524b72aaee9aab8df8b876e1596889d2f3f27d68405262ce86ca1"

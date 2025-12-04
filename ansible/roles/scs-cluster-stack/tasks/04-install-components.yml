@@ -1,0 +1,24 @@
+---
+- name: Get "clusterctl"
+  get_url:
+    url: "{{ clusterctl_bin_url }}"
+    dest: "{{ clusterctl_bin }}"
+    checksum: "sha256:{{clusterctl_bin_sha256}}"
+
+- name: Get "helm"
+  get_url:
+    url: "{{ helm_bin_url }}"
+    dest: "{{ helm_bin }}"
+    checksum: "sha256:{{helm_bin_sha256}}"
+
+- name: Get "kind"
+  get_url:
+    url: "{{ kind_bin_url }}"
+    dest: "{{ kind_bin }}"
+    checksum: "sha256:{{kind_bin_sha256}}"
+
+- name: Get "kubectl"
+  get_url:
+    url: "{{ kubectl_bin_url }}"
+    dest: "{{ kubectl_bin }}"
+    checksum: "sha256:{{kubectl_bin_sha256}}"
