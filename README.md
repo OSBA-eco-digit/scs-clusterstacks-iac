@@ -31,6 +31,15 @@ $ export OS_CLOUD=foo
 $ make setup
 ```
 
+The current components that are setting up the Cluster Stack are:
+
+  - clusterctl
+  - docker
+  - helm
+  - kind
+  - kubernetes
+  - orc
+
 ### Destroying the Infrastructure
 
 ```sh
