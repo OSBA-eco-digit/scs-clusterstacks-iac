@@ -22,5 +22,6 @@
     - 03-install-envsubst.yml
     - 04-install-components.yml
     - 05-setup-kind.yml
+    - 06-setup-capi.yml
   loop_control:
     loop_var: t

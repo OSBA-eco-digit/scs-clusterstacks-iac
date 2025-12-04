@@ -35,6 +35,8 @@ helm_release: "4.0.0"          # helm
 kind_release: "0.30.0"         # kind
 kubernetes_release: "1.33.4"   # kubectl
 
+korc_yaml_url: "https://github.com/k-orc/openstack-resource-controller/releases/latest/download/install.yaml"
+
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{capi_release}}/clusterctl-linux-amd64"
 helm_bin_url: "https://get.helm.sh/helm-v{{helm_release}}-linux-amd64.tar.gz"
 kind_bin_url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{kind_release}}/kind-linux-amd64"
