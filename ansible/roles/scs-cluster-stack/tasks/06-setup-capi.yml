@@ -8,11 +8,14 @@
     EXP_CLUSTER_RESOURCE_SET=true
     EXP_RUNTIME_SDK=true
 
-- name: Rollout CAPI
+- name: Rollout CAPI/CAPO
   command:
-    cmd: >
-     clusterctl init --infrastructure openstack
+    cmd:
+     - clusterctl init --infrastructure openstack || true
+     - kubectl -n capi-system rollout status deployment || true
+     - kubectl -n capo-system rollout status deployment || true
   environment:
     CLUSTER_TOPOLOGY=true
     EXP_CLUSTER_RESOURCE_SET=true
     EXP_RUNTIME_SDK=true
+  ignore_errors: true
