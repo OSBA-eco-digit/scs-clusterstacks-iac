@@ -16,6 +16,8 @@
       - -i cso
       - -n cso-system
       - oci://registry.scs.community/cluster-stacks/cso
+  ignore_errors: true
+  no_log: true
 
 - name: Rollout Cluster Stack Operator
   command:
