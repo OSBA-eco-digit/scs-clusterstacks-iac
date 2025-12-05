@@ -9,6 +9,7 @@
   command:
     cmd: helm status -n {{ cluster_namespace }} cso
   register: helm_status_cso
+  ignore_errors: true
 
 - name: Install the Cluster Stack Operator via Helm
   command:
