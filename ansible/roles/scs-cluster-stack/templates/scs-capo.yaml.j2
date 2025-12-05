@@ -1,11 +1,15 @@
+---
 apiVersion: v1
-data:
-  clouds.yaml: $CL_YAML_B64$CAINSERT
-  cloudName: $CL_NAME_B64
 kind: Secret
+type: Opaque
+
+data:
+  clouds.yaml: {{ clouds_yaml_base64 }}
+  cloudName: {{ cloud_name_base64 }}
+
 metadata:
-  name: openstack
-  namespace: $CS_NAMESPACE
+  name: {{ os_cloud }}
+  namespace: {{ cluster_namespace }}
   labels:
     clusterctl.cluster.x-k8s.io/move: "true"
-type: Opaque
+

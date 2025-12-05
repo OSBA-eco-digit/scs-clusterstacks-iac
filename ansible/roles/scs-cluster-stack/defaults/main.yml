@@ -33,7 +33,9 @@ docker_gpg_keyserver: "https://keys.openpgp.org"
 capi_release: "1.11.3"         # clusterctl
 helm_release: "4.0.0"          # helm
 kind_release: "0.30.0"         # kind
-kubernetes_release: "1.33.4"   # kubectl
+kubernetes_release_version: "1.33"
+kubernetes_release_version_patch: "4"
+kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"   # kubectl
 
 korc_yaml_url: "https://github.com/k-orc/openstack-resource-controller/releases/latest/download/install.yaml"
 
@@ -56,23 +58,18 @@ kubectl_bin_sha256: "c2ba72c115d524b72aaee9aab8df8b876e1596889d2f3f27d68405262ce
 # settings
 #
 
-CLOUDS_YAML: "{{ansible.env.HOME}}/.config/openstack/clouds.yaml"
-
-CL_APPCRED_LIFETIME: 
-CL_CTRLNODES: 1
-CL_NAME: "mycluster"
-CL_PATCHVER: "{{kubernetes_release}}"
-CL_PODCIDR: 172.16.0.0/18
-CL_SVCCIDR: 10.96.0.0/14
-CL_VARIABLES: "apiServerLoadBalancer: octavia-ovn"
-CL_WRKRNODES: 1
-
-CS_MAINVER: 1.33
-CS_NAMESPACE: "mynamespace"
-CS_SERIES: "scs2"
-CS_VERSION: [v1]
-
-OS_CLOUD: "openstack"
-
-CS_NAMESPACE: ${CS_NAMESPACE:-$OS_CLOUD}
-CS_MAINVER: ${CS_MAINVER:-${CL_PATCHVER%.*}}
+cluster_appcred_lifetime: 
+cluster_cidr_pods: "172.16.0.0/18"
+cluster_cidr_services: "10.96.0.0/14"
+cluster_clouds_yaml: "{{scs_cluster_stack_home}}/.config/openstack/clouds.yaml"
+cluster_ctrlnodes: 1
+cluster_name: "mycluster"
+cluster_namespace: "mynamespace"
+cluster_oci_repo: "registry.scs.community/kaas/cluster-stacks"
+cluster_os_cloud: "openstack"
+cluster_release_version: "{{kubernetes_release_version}}"
+cluster_release_version_patch: "{{kubernetes_release}}"
+cluster_series: "scs2"
+cluster_variables: "apiserverloadbalancer: octavia-ovn"
+cluster_version: [v1]
+cluster_wrkrnodes: 1
