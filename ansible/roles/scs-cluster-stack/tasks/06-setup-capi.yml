@@ -1,5 +1,5 @@
 ---
-- name: Apply k-ORC as dependency
+- name: Apply k-ORC as dependency used by "clusterctl" to rollout CAPI/CAPO
   command:
     cmd: >
       kubectl apply -f "{{korc_yaml_url}}"
@@ -10,7 +10,7 @@
 
 - name: Rollout CAPI/CAPO
   command:
-    cmd: clusterctl init --infrastructure openstack
+    cmd: "clusterctl init -n {{ cluster_namespace }} --infrastructure=openstack"
   environment:
     CLUSTER_TOPOLOGY=true
     EXP_CLUSTER_RESOURCE_SET=true

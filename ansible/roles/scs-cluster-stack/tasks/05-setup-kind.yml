@@ -1,6 +1,10 @@
 ---
+- name: Check if we have any 'kind' clusters already
+  command:
+    cmd: "kind get clusters"
+  register: kind_get_clusters
+
 - name: Create 'kind' cluster
   command:
     cmd: "kind create cluster"
-  ignore_errors: true
-  no_log: true
+  when: kind_get_clusters.stdout == ""
