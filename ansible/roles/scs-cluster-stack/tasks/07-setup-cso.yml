@@ -5,6 +5,11 @@
     dest: "{{scs_cluster_stack_home}}/scs-cso.yaml"
     mode: 0444
 
+- name: Check if we have the Cluster Stack Operator deployed already
+  command:
+    cmd: helm status -n {{ cluster_namespace }} cso
+  register: helm_status_cso
+
 - name: Install the Cluster Stack Operator via Helm
   command:
     argv:
@@ -16,6 +21,9 @@
       - -i cso
       - -n {{ cluster_namespace }}
       - oci://{{ cluster_oci_repo_cso }}
+  ignore_errors: true
+  no_log: true
+  when: helm_status_cso is failed
 
 - name: Rollout Cluster Stack Operator
   command:
