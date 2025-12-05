@@ -15,9 +15,7 @@
       - --values {{scs_cluster_stack_home}}/scs-cso.yaml
       - -i cso
       - -n {{ cluster_namespace }}
-      - oci://{{ cluster_oci_repo }}
-  ignore_errors: true
-  no_log: true
+      - oci://{{ cluster_oci_repo_cso }}
 
 - name: Rollout Cluster Stack Operator
   command:
