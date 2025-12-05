@@ -3,6 +3,7 @@
   command:
     cmd: "kind get clusters"
   register: kind_get_clusters
+  ignore_errors: true
 
 - name: Create 'kind' cluster
   command:
