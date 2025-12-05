@@ -5,7 +5,7 @@
     dest: "{{scs_cluster_stack_home}}/scs-cso.yaml"
     mode: 0444
 
-- name: Helm the Operator itself
+- name: Install the Cluster Stack Operator via Helm
   command:
     argv:
       - helm
@@ -14,11 +14,11 @@
       - --set octavia_ovn=true
       - --values {{scs_cluster_stack_home}}/scs-cso.yaml
       - -i cso
-      - -n cso-system
-      - oci://registry.scs.community/cluster-stacks/cso
+      - -n {{ cluster_namespace }}
+      - oci://{{ cluster_oci_repo }}
   ignore_errors: true
   no_log: true
 
 - name: Rollout Cluster Stack Operator
   command:
-    cmd: kubectl -n cso-system rollout status deployment
+    cmd: kubectl -n {{ cluster_namespace }} rollout status deployment
