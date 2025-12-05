@@ -1,0 +1,16 @@
+---
+apiVersion: clusterstack.x-k8s.io/v1alpha1
+kind: ClusterStack
+
+metadata:
+  name: openstack-{{ cluster_release_version }}
+  namespace: {{ cluster_namespace }}
+
+spec:
+  provider: openstack
+  name: "$CS_SERIES"
+  kubernetesVersion: "$CS_MAINVER"
+  channel: custom
+  autoSubscribe: false
+  noProvider: true
+  versions: $CS_VERSION
