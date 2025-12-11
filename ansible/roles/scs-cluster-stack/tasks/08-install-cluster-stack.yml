@@ -1,0 +1,10 @@
+---
+- name: Template the Cluster Stack YAML
+  template:
+    src: scs-cluster-stack.yml.j2
+    dest: "{{scs_cluster_stack_home}}/scs-cluster-stack.yml"
+    mode: 0444
+
+- name: Deploy Cluster Stack
+  command:
+    cmd: "kubectl apply -f {{scs_cluster_stack_home}}/scs-cluster-stack.yml"
