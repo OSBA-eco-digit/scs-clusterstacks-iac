@@ -1,5 +1,5 @@
 ---
-- name: Template the Cluster Stack YAML
+- name: Template the Cluster Stack YAML to Deploy the CSO
   template:
     src: scs-cso.yaml.j2
     dest: "{{scs_cluster_stack_home}}/scs-cso.yaml"

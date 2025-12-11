@@ -24,5 +24,6 @@
     - 05-setup-kind.yml
     - 06-setup-capi.yml
     - 07-setup-cso.yml
+    - 08-install-cluster-stack.yml
   loop_control:
     loop_var: t
