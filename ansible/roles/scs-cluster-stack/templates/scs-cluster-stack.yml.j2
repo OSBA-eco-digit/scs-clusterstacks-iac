@@ -8,9 +8,9 @@ metadata:
 
 spec:
   provider: openstack
-  name: "$CS_SERIES"
-  kubernetesVersion: "$CS_MAINVER"
+  name: {{ cluster_series }}
+  kubernetesVersion: {{ kubernetes_relase }}
   channel: custom
   autoSubscribe: false
   noProvider: true
-  versions: $CS_VERSION
+  versions: {{ cluster_release_version }}
