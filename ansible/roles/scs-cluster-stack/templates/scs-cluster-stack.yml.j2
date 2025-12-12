@@ -1,5 +1,5 @@
 ---
-apiVersion: clusterstack.x-k8s.io/v1alpha1
+apiVersion: {{ cluster_api_version }}
 kind: ClusterStack
 
 metadata:
@@ -7,10 +7,10 @@ metadata:
   namespace: {{ cluster_namespace }}
 
 spec:
-  provider: openstack
-  name: {{ cluster_series }}
-  kubernetesVersion: {{ kubernetes_release }}
-  channel: custom
   autoSubscribe: false
+  channel: stable
+  kubernetesVersion: {{ kubernetes_release }}
+  name: {{ cluster_series }}
   noProvider: true
+  provider: openstack
   versions: {{ cluster_release_version }}
