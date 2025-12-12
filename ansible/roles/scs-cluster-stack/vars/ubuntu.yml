@@ -5,4 +5,5 @@ scs_cluster_stack_dependencies:
   - git
   - golang 
   - jq
+  - procps
   - python3-openstackclient
