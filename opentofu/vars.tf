@@ -40,7 +40,7 @@ variable "NETWORK_SUBNET6_NAMESERVERS" {
 
 variable "INSTANCE_IMAGE_NAME" {
   type    = string
-  default = "Ubuntu 22.04"
+  default = "Ubuntu 24.04"
 }
 
 variable "INSTANCE_USER_NAME" {
