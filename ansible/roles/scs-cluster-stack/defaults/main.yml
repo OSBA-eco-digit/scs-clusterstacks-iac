@@ -59,7 +59,7 @@ kubectl_bin_sha256: "c2ba72c115d524b72aaee9aab8df8b876e1596889d2f3f27d68405262ce
 #
 
 cluster_api_version: "clusterstack.x-k8s.io/v1alpha1"
-cluster_api_version_addons: "addons.cluster.x-k8s.io/v1beta2"
+cluster_api_version_addons: "addons.cluster.x-k8s.io/v1beta1"
 
 cluster_cidr_pods: "172.16.0.0/18"
 cluster_cidr_services: "10.96.0.0/14"
