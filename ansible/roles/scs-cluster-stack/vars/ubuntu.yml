@@ -6,4 +6,7 @@ scs_cluster_stack_dependencies:
   - golang 
   - jq
   - procps
+  - python3-jsonpatch
   - python3-openstackclient
+  - python3-pretty-yaml
+  - snapd

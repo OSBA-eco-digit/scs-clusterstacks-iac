@@ -12,8 +12,15 @@
   loop_control:
     loop_var: d
 
+# https://docs.ansible.com/ansible/latest/collections/community/general/snap_module.html
+- name: Install snap core
+  snap:
+    name: core
+    state: present
+  when: ansible_facts.distribution == 'Ubuntu'
+
 # https://github.com/geerlingguy/ansible-role-kubernetes/blob/master/tasks/sysctl-setup.yml
-- name: Ensure module br_netfilter is loaded
+- name: Ensure module "br_netfilter" is loaded
   modprobe:
     name: br_netfilter
     state: present
@@ -21,7 +28,7 @@
   when: not ansible_virtualization_type == "docker"
 
 # https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
-- name: Let iptables see bridged traffic.
+- name: Let iptables see bridged traffic
   sysctl:
     name: "{{ item }}"
     value: '1'
