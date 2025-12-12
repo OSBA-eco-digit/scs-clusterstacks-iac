@@ -10,6 +10,7 @@
     update: false
   environment:
     GIT_TERMINAL_PROMPT: 0
+  when: ansible_facts.distribution == 'Ubuntu'
 
 - name: Apply k-ORC as dependency used by "clusterctl" to rollout CAPI/CAPO
   command:
