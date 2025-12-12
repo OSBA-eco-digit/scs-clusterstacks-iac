@@ -14,8 +14,8 @@ scs_cluster_stack_service: "scs_cluster_stack"
 scs_cluster_stack_service_unit: "/etc/systemd/system/{{ scs_cluster_stack_service }}.service"
 scs_cluster_stack_src_dir: "{{ scs_cluster_stack_home }}/src"
 scs_cluster_stack_user: "scs_cluster_stack"
-scs_cluster_stach_capi_k8s_repo: "https://github.com/canonical/cluster-api-k8s"
-scs_cluster_stach_capi_k8s_tag: "v0.4.2"  # v0.5.0 is not marked as 'verified'
+scs_cluster_stack_capi_k8s_repo: "https://github.com/canonical/cluster-api-k8s"
+scs_cluster_stack_capi_k8s_tag: "v0.4.2"  # v0.5.0 is not marked as 'verified'
 
 #
 # docker
