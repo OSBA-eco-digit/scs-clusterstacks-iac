@@ -13,4 +13,4 @@ spec:
   name: {{ cluster_series }}
   noProvider: true
   provider: openstack
-  versions: {{ cluster_release_version }}
+  versions: {{ cluster_release_version | replace(".", "-") }}
