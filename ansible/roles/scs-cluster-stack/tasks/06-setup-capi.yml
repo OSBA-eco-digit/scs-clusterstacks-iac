@@ -1,4 +1,16 @@
 ---
+# https://documentation.ubuntu.com/canonical-kubernetes/latest/capi/howto/provision/
+- name: Clone "{{ scs_cluster_stack_capi_k8s_repo }}" git repository
+  git:
+    repo: "{{ scs_cluster_stack_capi_k8s_repo }}"
+    dest: "{{ scs_cluster_stack_home }}/capi-k8s"
+    single_branch: true
+    version: "{{ scs_cluster_stack_capi_k8s_tag }}"
+    clone: true
+    update: false
+  environment:
+    GIT_TERMINAL_PROMPT: 0
+
 - name: Apply k-ORC as dependency used by "clusterctl" to rollout CAPI/CAPO
   command:
     cmd: "kubectl apply -f {{ korc_yaml_url }}"
