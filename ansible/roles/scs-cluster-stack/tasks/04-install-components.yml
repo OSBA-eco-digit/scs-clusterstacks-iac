@@ -34,7 +34,7 @@
 
 - name: Strip binaries from installed components
   command:
-    cmd: strip /usr/local/bin/{{ bin }}
+    cmd: "strip /usr/local/bin/{{ bin }}"
   loop:
     - clusterctl
     - kind

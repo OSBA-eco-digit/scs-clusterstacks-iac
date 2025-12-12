@@ -1,8 +1,7 @@
 ---
 - name: Apply k-ORC as dependency used by "clusterctl" to rollout CAPI/CAPO
   command:
-    cmd: >
-      kubectl apply -f "{{korc_yaml_url}}"
+    cmd: "kubectl apply -f {{ korc_yaml_url }}"
   environment:
     CLUSTER_TOPOLOGY=true
     EXP_CLUSTER_RESOURCE_SET=true
