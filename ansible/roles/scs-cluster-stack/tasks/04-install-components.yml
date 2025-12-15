@@ -5,7 +5,6 @@
     dest: "{{ clusterctl_bin }}"
     checksum: "sha256:{{clusterctl_bin_sha256}}"
     mode: 0755
-  args:
     creates: "{{ clusterctl_bin }}"
 
 - name: Get and Decompress "helm"
@@ -26,7 +25,6 @@
     dest: "{{ kind_bin }}"
     checksum: "sha256:{{kind_bin_sha256}}"
     mode: 0755
-  args:
     creates: "{{ kind_bin }}"
 
 - name: Get "kubectl"
@@ -35,7 +33,6 @@
     dest: "{{ kubectl_bin }}"
     checksum: "sha256:{{kubectl_bin_sha256}}"
     mode: 0755
-  args:
     creates: "{{ kubectl_bin }}"
 
 - name: Strip binaries from installed components
