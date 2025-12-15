@@ -1,18 +1,12 @@
-# ---
-# - name: Install K3s if not already installed
-#   shell: |
-#     curl -sfL https://get.k3s.io | sh -
-#   args:
-#     creates: /usr/local/bin/k3s
-#   
-# - name: Check K3s service status
-#   systemd:
-#     name: k3s
-#     state: started
-#     enabled: true
-
 ---
-- name: Apply the 'k3s' role
-  hosts: all
-  roles:
-    - k3s
+- name: Install K3s if not already installed
+  shell: |
+    curl -sfL https://get.k3s.io | sh -
+  args:
+    creates: /usr/local/bin/k3s
+  
+- name: Check K3s service status
+  systemd:
+    name: k3s
+    state: started
+    enabled: true
