@@ -1,0 +1,27 @@
+# https://raw.githubusercontent.com/canonical/cluster-api-k8s/refs/tags/v0.4.2/templates/openstack/template-variables.rc
+######################################################################
+
+# * https://docs.openstack.org/python-openstackclient/2024.2/configuration/index.html#clouds-yaml
+# * https://github.com/kubernetes-sigs/cluster-api-provider-openstack/blob/cb7f90559b99fd8c64d742cdf07c3f7bd4582ce7/test/e2e/data/e2e_conf.yaml#L152-L193
+# * https://github.com/kubernetes-sigs/cluster-api-provider-openstack/blob/main/docs/book/src/clusteropenstack/configuration.md
+# * https://github.com/kubernetes-sigs/cluster-api-provider-openstack/tree/main/templates
+# * https://github.com/kubernetes/cloud-provider-openstack/blob/master/docs/openstack-cloud-controller-manager/using-openstack-cloud-controller-manager.md
+
+export CONTROL_PLANE_MACHINE_COUNT=1
+export KUBERNETES_VERSION="v{{ kubernetes_release }}"
+export WORKER_MACHINE_COUNT=1
+
+export OPENSTACK_BASTION_ENABLED="true"
+export OPENSTACK_BASTION_MACHINE_FLAVOR="{{ openstack_bastion_machine_flavor }}"
+export OPENSTACK_CLOUD="{{ openstack_cloud_name }}"
+export OPENSTACK_CLOUD_CACERT_B64="Cg=="
+export OPENSTACK_CLOUD_CONFIG_B64=
+export OPENSTACK_CLOUD_YAML_B64=
+export OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR="{{ openstack_controlplane_machine_flavor }}"
+export OPENSTACK_DNS_NAMESERVERS="{{ openstack_dns_nameservers }}"
+export OPENSTACK_ENABLE_APISERVER_LOADBALANCER="false"
+export OPENSTACK_EXTERNAL_NETWORK_ID="{{ openstack_external_network_id }}"
+export OPENSTACK_FAILURE_DOMAIN=
+export OPENSTACK_IMAGE_NAME="{{ openstack_image_name }}"
+export OPENSTACK_NODE_MACHINE_FLAVOR="{{ openstack_node_machine_flavor }}"
+export OPENSTACK_SSH_KEY_NAME="{{ openstack_ssh_key_name }}"
