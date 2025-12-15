@@ -19,7 +19,7 @@
     - 00-install-dependencies.yml
     - 01-setup-account.yml
     - 02-install-docker.yml
-    # - 03-install-k3s.yml
+    - 03-install-k3s.yml
     - 04-install-components.yml
     # - 05-setup-kind.yml
     # - 06-setup-capi.yml
