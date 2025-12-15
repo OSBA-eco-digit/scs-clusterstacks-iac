@@ -27,6 +27,8 @@ endif
 ifeq ($(OS_CLOUD),scaleup)
   OS_EXTERNAL_NETWORK_ID := 15227829-b53d-48af-b136-85733999252e
 endif
+
+export OS_EXTERNAL_NETWORK_ID
 ######################################################################
 
 all check init validate:
