@@ -21,16 +21,6 @@
 - name: Apply k-ORC as dependency used by "clusterctl"
   command:
     cmd: "kubectl apply -f {{ korc_yaml_url }}"
-  environment:
-    CLUSTER_TOPOLOGY=true
-    EXP_CLUSTER_RESOURCE_SET=true
-    EXP_RUNTIME_SDK=true
-
-# - name: Create the "{{ cluster_namespace }}" namespace
-#   command:
-#     cmd: "kubectl create namespace {{ cluster_namespace }} || true"
-#   no_log: true
-#   ignore_errors: true
 
 - name: Initialize the cluster
   command:
