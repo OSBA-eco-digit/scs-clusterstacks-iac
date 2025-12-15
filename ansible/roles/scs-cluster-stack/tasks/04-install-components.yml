@@ -1,13 +1,18 @@
 ---
+- name: Check if "clusterctl" exists
+  stat:
+    path: "{{ clusterctl_bin }}"
+  register: check_clusterctl
+
 - name: Get "clusterctl"
   get_url:
     url: "{{ clusterctl_bin_url }}"
     dest: "{{ clusterctl_bin }}"
     checksum: "sha256:{{clusterctl_bin_sha256}}"
     mode: 0755
-    creates: "{{ clusterctl_bin }}"
+  when: not check_clusterctl.stat.exists
 
-- name: Get and Decompress "helm"
+- name: Get "helm" if it does not exist
   unarchive:
     dest: "/usr/local/bin/"
     include:
@@ -19,13 +24,23 @@
   args:
     creates: "{{ helm_bin }}"
 
+- name: Check if "kind" exists
+  stat:
+    path: "{{ kind_bin }}"
+  register: check_kind
+
 - name: Get "kind"
   get_url:
     url: "{{ kind_bin_url }}"
     dest: "{{ kind_bin }}"
     checksum: "sha256:{{kind_bin_sha256}}"
     mode: 0755
-    creates: "{{ kind_bin }}"
+  when: not check_kind.stat.exists
+
+- name: Check if "kubectl" exists
+  stat:
+    path: "{{ kubectl_bin }}"
+  register: check_kubectl
 
 - name: Get "kubectl"
   get_url:
@@ -33,7 +48,7 @@
     dest: "{{ kubectl_bin }}"
     checksum: "sha256:{{kubectl_bin_sha256}}"
     mode: 0755
-    creates: "{{ kubectl_bin }}"
+  when: not check_kubectl.stat.exists
 
 - name: Strip binaries from installed components
   command:
