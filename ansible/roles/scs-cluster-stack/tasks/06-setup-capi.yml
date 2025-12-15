@@ -31,3 +31,5 @@
     EXP_RUNTIME_SDK=true
   ignore_errors: true
   no_log: true
+
+# clusterctl generate cluster mycluster --from templates/openstack/cluster-template.yaml >mycluster.yaml
