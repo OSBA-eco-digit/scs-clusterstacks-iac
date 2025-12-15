@@ -12,6 +12,12 @@
     GIT_TERMINAL_PROMPT: 0
   when: ansible_facts.distribution == 'Ubuntu'
 
+- name: Template the Variables RC file to configure the cluster
+  template:
+    src: capi-k8s-vars.rc.j2
+    dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
+    mode: 0444
+
 - name: Apply k-ORC as dependency used by "clusterctl" to rollout CAPI/CAPO
   command:
     cmd: "kubectl apply -f {{ korc_yaml_url }}"
