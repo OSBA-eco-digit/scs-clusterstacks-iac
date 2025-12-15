@@ -24,7 +24,7 @@
 
 - name: Initialize the cluster
   command:
-    cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack -n {{ cluster_namespace }}"
+    cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack"
   environment:
     CLUSTER_TOPOLOGY=true
     EXP_CLUSTER_RESOURCE_SET=true
