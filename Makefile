@@ -40,7 +40,6 @@ setup:
 ######################################################################
 
 plusserver:
-	OS_EXTERNAL_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
 
 plusserver-destroy:
