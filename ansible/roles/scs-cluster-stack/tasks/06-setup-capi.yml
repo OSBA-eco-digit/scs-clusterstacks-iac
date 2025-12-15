@@ -12,13 +12,13 @@
     GIT_TERMINAL_PROMPT: 0
   when: ansible_facts.distribution == 'Ubuntu'
 
-- name: Template the Variables RC file to configure the cluster
+- name: Template the "capi-k8s-vars.rc" env. variables files
   template:
     src: capi-k8s-vars.rc.j2
     dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
     mode: 0444
 
-- name: Apply k-ORC as dependency used by "clusterctl" to rollout CAPI/CAPO
+- name: Apply k-ORC as dependency used by "clusterctl"
   command:
     cmd: "kubectl apply -f {{ korc_yaml_url }}"
   environment:
@@ -26,17 +26,18 @@
     EXP_CLUSTER_RESOURCE_SET=true
     EXP_RUNTIME_SDK=true
 
-- name: Create the "{{ cluster_namespace }}" namespace
-  command:
-    cmd: "kubectl create namespace {{ cluster_namespace }} || true"
-  no_log: true
-  ignore_errors: true
+# - name: Create the "{{ cluster_namespace }}" namespace
+#   command:
+#     cmd: "kubectl create namespace {{ cluster_namespace }} || true"
+#   no_log: true
+#   ignore_errors: true
 
-- name: Rollout CAPI/CAPO
+- name: Initialize the cluster
   command:
-    cmd: "clusterctl init -n {{ cluster_namespace }} --infrastructure=openstack"
+    cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack -n {{ cluster_namespace }}"
   environment:
     CLUSTER_TOPOLOGY=true
     EXP_CLUSTER_RESOURCE_SET=true
     EXP_RUNTIME_SDK=true
   ignore_errors: true
+  no_log: true
