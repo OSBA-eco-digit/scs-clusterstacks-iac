@@ -3,6 +3,7 @@
 
 ANSIBLE_CONFIG := $(CURDIR)/ansible/.ansible.cfg
 ANSIBLE_ROLES_PATH := $(CURDIR)/ansible/roles
+OS_EXTERNAL_NETWORK_ID := $(OS_EXTERNAL_NETWORK_ID)
 OS_CLOUD := $(OS_CLOUD)
 TF_IN_AUTOMATION := yes
 TF_LOG := INFO
@@ -18,6 +19,15 @@ check-env-var-%:
 	  echo "Environment variable $* not set"; \
 	  exit 1; \
 	fi
+######################################################################
+
+ifeq ($(MODE),plusserver)
+	OS_EXTERNAL_NETWORK_ID = d051c0bd-510c-4da3-bcf3-d8b7082dd008
+endif
+ifeq ($(MODE),scaleup)
+	OS_EXTERNAL_NETWORK_ID = 15227829-b53d-48af-b136-85733999252e
+endif
+######################################################################
 
 all check init validate:
 	$(TOFU_CMD) fmt -check
@@ -30,17 +40,18 @@ setup:
 ######################################################################
 
 plusserver:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
+	OS_EXTERNAL_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
 
 plusserver-destroy:
-	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=d051c0bd-510c-4da3-bcf3-d8b7082dd008
+	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
 	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
 	rm -f $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini 2>/dev/null
 
 scaleup:
-	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
+	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
 
 scaleup-destroy:
-	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=15227829-b53d-48af-b136-85733999252e
+	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
 	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
 	rm -f $(CURDIR)/ansible/inventory_scaleup.ini 2>/dev/null
