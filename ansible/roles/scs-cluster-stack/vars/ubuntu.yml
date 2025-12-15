@@ -9,5 +9,6 @@ scs_cluster_stack_dependencies:
   - procps
   - python3-jsonpatch
   - python3-openstackclient
+  - python3-pip
   - python3-pretty-yaml
   - snapd
