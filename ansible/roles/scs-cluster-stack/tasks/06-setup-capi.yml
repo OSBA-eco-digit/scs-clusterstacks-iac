@@ -15,10 +15,12 @@
 
 - name: Initialize cluster
   become: true
-  command:
-    cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack"
+  shell:
+    cmd: "source {{scs_cluster_stack_home}}/capi-k8s-vars.rc && clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack"
   environment:
     CLUSTER_TOPOLOGY=true
+  args:
+    executable: /bin/bash
 
 - name: Generate cluster configuration from template
   become: true
