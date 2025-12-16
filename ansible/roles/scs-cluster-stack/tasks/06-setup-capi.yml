@@ -12,11 +12,11 @@
 #     GIT_TERMINAL_PROMPT: 0
 #   when: ansible_facts.distribution == 'Ubuntu'
 
-- name: Template "{{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml"
+- name: Template "{{scs_cluster_stack_home}}/capi-k8s-specs.yaml"
   become: true
   template:
-    src: capi-k8s-cluster-template.yaml.j2
-    dest: "{{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml"
+    src: capi-k8s-specs.yaml.j2
+    dest: "{{scs_cluster_stack_home}}/capi-k8s-specs.yaml"
     mode: 0444
 
 - name: Template "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
@@ -35,7 +35,7 @@
   command:
     cmd: |
       source "{{scs_cluster_stack_home}}/capi-k8s-vars.rc" \
-      && clusterctl generate cluster {{ cluster_name }} -f {{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml >{{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
+      && clusterctl generate cluster {{ cluster_name }} -f {{scs_cluster_stack_home}}/capi-k8s-specs.yaml >{{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
   environment:
     CLUSTER_TOPOLOGY=true
 
