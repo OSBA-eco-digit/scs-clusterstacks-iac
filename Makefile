@@ -38,7 +38,7 @@ all check init validate:
 
 setup:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
-		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CURDIR)/ansible/playbooks/scs-cluster-stack.yml
+		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CURDIR)/ansible/playbook.yml
 ######################################################################
 
 plusserver:
