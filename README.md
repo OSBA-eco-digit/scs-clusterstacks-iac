@@ -31,6 +31,8 @@ $ export OS_CLOUD=foo
 $ make setup
 ```
 
+> One-liner? `make <provider> OS_CLOUD=foo && sleep 150 && make setup OS_CLOUD=foo`
+
 The current components that are setting up the Cluster Stack are:
 
   - clusterctl
@@ -46,3 +48,5 @@ The current components that are setting up the Cluster Stack are:
 $ export OS_CLOUD=foo
 $ make <provider>-destroy
 ```
+
+> One-liner? `make <provider>-destroy OS_CLOUD=foo`
