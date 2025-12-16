@@ -1,35 +1,41 @@
 ---
-# https://documentation.ubuntu.com/canonical-kubernetes/latest/capi/howto/provision/
-- name: Clone "{{ scs_cluster_stack_capi_k8s_repo }}" git repository
-  git:
-    repo: "{{ scs_cluster_stack_capi_k8s_repo }}"
-    dest: "{{ scs_cluster_stack_home }}/capi-k8s"
-    single_branch: true
-    version: "{{ scs_cluster_stack_capi_k8s_tag }}"
-    clone: true
-    update: false
-  environment:
-    GIT_TERMINAL_PROMPT: 0
-  when: ansible_facts.distribution == 'Ubuntu'
+# # https://documentation.ubuntu.com/canonical-kubernetes/latest/capi/howto/provision/
+# - name: Clone "{{ scs_cluster_stack_capi_k8s_repo }}" git repository
+#   git:
+#     repo: "{{ scs_cluster_stack_capi_k8s_repo }}"
+#     dest: "{{ scs_cluster_stack_home }}/capi-k8s"
+#     single_branch: true
+#     version: "{{ scs_cluster_stack_capi_k8s_tag }}"
+#     clone: true
+#     update: false
+#   environment:
+#     GIT_TERMINAL_PROMPT: 0
+#   when: ansible_facts.distribution == 'Ubuntu'
 
-- name: Template the "capi-k8s-vars.rc" env. variables files
+- name: Template "{{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml"
+  template:
+    src: capi-k8s-cluster-template.yaml.j2
+    dest: "{{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml"
+    mode: 0444
+
+- name: Template "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
   template:
     src: capi-k8s-vars.rc.j2
     dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
     mode: 0444
 
-- name: Apply k-ORC as dependency used by "clusterctl"
-  command:
-    cmd: "kubectl apply -f {{ korc_yaml_url }}"
+# - name: Apply k-ORC as dependency used by "clusterctl"
+#   command:
+#     cmd: "kubectl apply -f {{ korc_yaml_url }}"
 
-- name: Initialize the cluster
+- name: Generate cluster configuration from template
+  command:
+    cmd: "clusterctl generate cluster {{ cluster_name }} -f {{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml >{{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml"
+
+- name: Initialize cluster
   command:
     cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack"
   environment:
     CLUSTER_TOPOLOGY=true
     EXP_CLUSTER_RESOURCE_SET=true
     EXP_RUNTIME_SDK=true
-  ignore_errors: true
-  no_log: true
-
-# clusterctl generate cluster mycluster --from templates/openstack/cluster-template.yaml >mycluster.yaml
