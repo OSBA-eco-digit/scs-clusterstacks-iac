@@ -12,6 +12,7 @@
     checksum: "sha256:{{clusterctl_bin_sha256}}"
     mode: 0755
   when: not check_clusterctl.stat.exists
+  register: get_clusterctl
 
 - name: Get "helm" if it does not exist
   become: true
@@ -25,6 +26,7 @@
     src: "{{ helm_bin_url }}"
   args:
     creates: "{{ helm_bin }}"
+  register: get_helm
 
 - name: Check if "kind" exists
   stat:
@@ -39,6 +41,7 @@
     checksum: "sha256:{{kind_bin_sha256}}"
     mode: 0755
   when: not check_kind.stat.exists
+  register: get_kind
 
 - name: Check if "kubectl" exists
   stat:
@@ -53,6 +56,7 @@
     checksum: "sha256:{{kubectl_bin_sha256}}"
     mode: 0755
   when: not check_kubectl.stat.exists
+  register: get_kubectl
 
 - name: Strip binaries from installed components
   become: true
@@ -64,3 +68,4 @@
     - kubectl
   loop_control:
     loop_var: bin
+  when: ( get_clusterctl.changed OR get_kind.changed OR get_kubectl.changed )
