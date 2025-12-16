@@ -13,11 +13,3 @@
   loop: "{{ scs_cluster_stack_dependencies }}"
   loop_control:
     loop_var: d
-
-# https://docs.ansible.com/ansible/latest/collections/community/general/snap_module.html
-- name: Install snap core
-  become: true
-  snap:
-    name: core
-    state: present
-  when: ansible_facts.distribution == 'Ubuntu'
