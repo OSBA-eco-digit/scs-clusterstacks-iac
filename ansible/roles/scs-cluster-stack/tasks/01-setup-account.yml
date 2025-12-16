@@ -27,7 +27,7 @@
     dest: "{{ scs_cluster_stack_home }}"
     owner: "{{ scs_cluster_stack_user }}"
     group: "{{ scs_cluster_stack_group }}"
-    mode: 'u=rwx,g=rx,o='
+    mode: 0750
   when: scs_cluster_stack_user_created.changed
 
 - name: Generate random token key
@@ -42,7 +42,7 @@
   copy:
     content: "{{ random_token_key.stdout }}"
     dest:  "{{ scs_cluster_stack_home }}/token"
-    mode: 'u=r,g=r,o='
+    mode: 0440
     owner: "{{ scs_cluster_stack_user }}"
     group: "{{ scs_cluster_stack_group }}"
   when: random_token_key.changed
