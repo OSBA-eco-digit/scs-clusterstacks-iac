@@ -31,10 +31,12 @@
 #     cmd: "kubectl apply -f {{ korc_yaml_url }}"
 
 - name: Generate cluster configuration from template
+  become: true
   command:
     cmd: "clusterctl generate cluster {{ cluster_name }} -f {{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml >{{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml"
 
 - name: Initialize cluster
+  become: true
   command:
     cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack"
   environment:
