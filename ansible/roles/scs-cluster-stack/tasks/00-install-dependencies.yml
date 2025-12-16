@@ -1,5 +1,5 @@
 ---
-- name: Update apt Cache
+- name: Update apt cache
   apt:
     update_cache: yes
     cache_valid_time: 3600
@@ -18,25 +18,3 @@
     name: core
     state: present
   when: ansible_facts.distribution == 'Ubuntu'
-
-# https://github.com/geerlingguy/ansible-role-kubernetes/blob/master/tasks/sysctl-setup.yml
-- name: Ensure module "br_netfilter" is loaded
-  modprobe:
-    name: br_netfilter
-    state: present
-    persistent: present
-  when: not ansible_virtualization_type == "docker"
-
-# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
-- name: Let iptables see bridged traffic
-  sysctl:
-    name: "{{ item }}"
-    value: '1'
-    state: present
-  loop:
-    - net.bridge.bridge-nf-call-iptables
-    - net.bridge.bridge-nf-call-ip6tables
-  when: >
-    ( ansible_facts.distribution != 'Debian'
-      or ansible_facts.distribution_major_version | int < 10
-    ) and not ansible_virtualization_type == "docker"

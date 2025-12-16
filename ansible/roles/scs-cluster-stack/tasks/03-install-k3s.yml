@@ -15,3 +15,5 @@
 - name: Apply 'k3s' role
   include_role:
     name: k3s
+  vars:
+    k3s_become: true

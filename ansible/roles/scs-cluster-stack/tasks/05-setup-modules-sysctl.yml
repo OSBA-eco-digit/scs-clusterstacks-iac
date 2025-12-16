@@ -1,0 +1,31 @@
+---
+# https://github.com/SovereignCloudStack/scs-training-kaas-scripts/blob/main/01-kind-cluster.sh
+- name: Ensure sysctl "net.ipv4.tcp_mtu_probing" is set
+  sysctl:
+    name: "net.ipv4.tcp_mtu_probing"
+    value: "1"
+    sysctl_set: true
+    state: present
+    reload: true
+
+# https://github.com/geerlingguy/ansible-role-kubernetes/blob/master/tasks/sysctl-setup.yml
+- name: Ensure module "br_netfilter" is loaded
+  modprobe:
+    name: br_netfilter
+    state: present
+    persistent: present
+  when: not ansible_virtualization_type == "docker"
+
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
+- name: Ensure iptables is allowed to see bridged traffic
+  sysctl:
+    name: "{{ item }}"
+    value: '1'
+    state: present
+  loop:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-ip6tables
+  when: >
+    ( ansible_facts.distribution != 'Debian'
+      or ansible_facts.distribution_major_version | int < 10
+    ) and not ansible_virtualization_type == "docker"
