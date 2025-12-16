@@ -1,10 +1,12 @@
 ---
 - name: Ensure "{{ scs_cluster_stack_user }}" group is present
+  become: true
   group:
     name: "{{ scs_cluster_stack_group }}"
     state: present
 
 - name: Ensure "{{ scs_cluster_stack_user }}" user is present
+  become: true
   user:
     home: "{{ scs_cluster_stack_home }}"
     create_home: true
@@ -20,6 +22,7 @@
   register: scs_cluster_stack_user_created
 
 - name: Enforce permissions on "{{ scs_cluster_stack_home }}"
+  become: true
   file:
     dest: "{{ scs_cluster_stack_home }}"
     owner: "{{ scs_cluster_stack_user }}"

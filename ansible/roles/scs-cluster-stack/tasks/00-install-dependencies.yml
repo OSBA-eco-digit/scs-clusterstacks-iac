@@ -1,10 +1,12 @@
 ---
 - name: Update apt cache
+  become: true
   apt:
     update_cache: yes
     cache_valid_time: 3600
 
 - name: Install dependencies
+  become: true
   apt:
     name: "{{ d }}"
     state: present
@@ -14,6 +16,7 @@
 
 # https://docs.ansible.com/ansible/latest/collections/community/general/snap_module.html
 - name: Install snap core
+  become: true
   snap:
     name: core
     state: present

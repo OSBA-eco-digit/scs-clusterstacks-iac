@@ -1,0 +1,5 @@
+---
+# Apply the 'scs-cluster-stack' role, which applies 'k3s' as dependency already
+- hosts: all
+  roles:
+    - scs-cluster-stack
