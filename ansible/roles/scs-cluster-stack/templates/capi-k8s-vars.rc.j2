@@ -1,20 +1,14 @@
 # https://raw.githubusercontent.com/canonical/cluster-api-k8s/refs/tags/v0.4.2/templates/openstack/template-variables.rc
 ######################################################################
 
-# * https://docs.openstack.org/python-openstackclient/2024.2/configuration/index.html#clouds-yaml
-# * https://github.com/kubernetes-sigs/cluster-api-provider-openstack/blob/cb7f90559b99fd8c64d742cdf07c3f7bd4582ce7/test/e2e/data/e2e_conf.yaml#L152-L193
-# * https://github.com/kubernetes-sigs/cluster-api-provider-openstack/blob/main/docs/book/src/clusteropenstack/configuration.md
-# * https://github.com/kubernetes-sigs/cluster-api-provider-openstack/tree/main/templates
-# * https://github.com/kubernetes/cloud-provider-openstack/blob/master/docs/openstack-cloud-controller-manager/using-openstack-cloud-controller-manager.md
-
 export CLUSTER_NAME="{{ cluster_name }}"
 export CLUSTER_TOPOLOGY=true
 export CONTROL_PLANE_MACHINE_COUNT=1
 export WORKER_MACHINE_COUNT=1
 
-export KUBERNETES_HOST="{{ kubernetes_api_host }}"
-export KUBERNETES_MASTER="https://{{ kubernetes_api_host }}:{{ kubernetes_api_port }}"
-export KUBERNETES_PORT="{{ kubernetes_api_port }}"
+export KUBERNETES_MASTER="https://{{ kubernetes_service_host }}:{{ kubernetes_service_port }}"
+export KUBERNETES_SERVICE_HOST="{{ kubernetes_service_host }}"
+export KUBERNETES_SERVICE_PORT="{{ kubernetes_service_port }}"
 export KUBERNETES_VERSION="v{{ kubernetes_release }}"
 
 export OPENSTACK_BASTION_ENABLED="true"
