@@ -38,9 +38,9 @@ The current components that are setting up the Cluster Stack are:
   - clusterctl
   - docker
   - helm
-  - kind
-  - kubernetes
-  - orc
+  - kubectl
+
+> We are using **k3s** to setup the management cluster.
 
 ### Destroying the Infrastructure
 
