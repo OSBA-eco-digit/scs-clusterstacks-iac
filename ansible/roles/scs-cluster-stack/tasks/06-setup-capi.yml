@@ -13,18 +13,18 @@
     dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
     mode: 0440
 
-- name: Generate cluster configuration from template
-  become: true
-  command:
-    cmd: |
-      source "{{scs_cluster_stack_home}}/capi-k8s-vars.rc" \
-      && clusterctl generate cluster {{ cluster_name }} -f {{scs_cluster_stack_home}}/capi-k8s-specs.yaml >{{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
-  environment:
-    CLUSTER_TOPOLOGY=true
-
 - name: Initialize cluster
   become: true
   command:
     cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack"
+  environment:
+    CLUSTER_TOPOLOGY=true
+
+- name: Generate cluster configuration from template
+  become: true
+  command:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && clusterctl generate cluster {{ cluster_name }} --kubernetes-version v{{kubernetes_release}} -f {{scs_cluster_stack_home}}/capi-k8s-specs.yaml >{{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
   environment:
     CLUSTER_TOPOLOGY=true
