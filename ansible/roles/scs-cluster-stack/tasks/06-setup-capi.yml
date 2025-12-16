@@ -13,12 +13,14 @@
 #   when: ansible_facts.distribution == 'Ubuntu'
 
 - name: Template "{{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml"
+  become: true
   template:
     src: capi-k8s-cluster-template.yaml.j2
     dest: "{{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml"
     mode: 0444
 
 - name: Template "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
+  become: true
   template:
     src: capi-k8s-vars.rc.j2
     dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
