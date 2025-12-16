@@ -48,9 +48,11 @@ docker_gpg_keyserver: "https://keys.openpgp.org"
 clusterctl_release: "1.12.0"   # clusterctl
 helm_release: "4.0.0"          # helm
 kind_release: "0.30.0"         # kind
+kubernetes_api_host: "127.0.0.1"
+kubernetes_api_port: 6443
+kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"   # kubectl
 kubernetes_release_version: "1.33"
 kubernetes_release_version_patch: "4"
-kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"   # kubectl
 
 korc_yaml_url: "https://github.com/k-orc/openstack-resource-controller/releases/latest/download/install.yaml"
 

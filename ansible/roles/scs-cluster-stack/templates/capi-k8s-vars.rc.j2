@@ -9,6 +9,9 @@
 
 export CLUSTER_NAME="{{ cluster_name }}"
 export CONTROL_PLANE_MACHINE_COUNT=1
+export KUBERNETES_HOST="{{kubernetes_api_host}}"
+export KUBERNETES_MASTER="https://{{kubernetes_api_host}}:{{kubernetes_api_port}}"
+export KUBERNETES_PORT="{{kubernetes_api_port}}"
 export KUBERNETES_VERSION="v{{ kubernetes_release }}"
 export WORKER_MACHINE_COUNT=1
 
