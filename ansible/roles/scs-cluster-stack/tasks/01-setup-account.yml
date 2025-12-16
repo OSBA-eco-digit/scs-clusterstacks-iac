@@ -38,7 +38,11 @@
     creates: "{{ scs_cluster_stack_home }}/token"
 
 - name: Copy token to a file
+  become: true
   copy:
     content: "{{ random_token_key.stdout }}"
     dest:  "{{ scs_cluster_stack_home }}/token"
+    mode: 'u=r,g=r,o='
+    owner: "{{ scs_cluster_stack_user }}"
+    group: "{{ scs_cluster_stack_group }}"
   when: random_token_key.changed

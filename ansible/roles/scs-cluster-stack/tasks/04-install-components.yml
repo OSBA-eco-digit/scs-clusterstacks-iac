@@ -68,4 +68,7 @@
     - kubectl
   loop_control:
     loop_var: bin
-  when: ( get_clusterctl.changed OR get_kind.changed OR get_kubectl.changed )
+  when:
+    - get_clusterctl.changed
+    - get_kind.changed
+    - get_kubectl.changed
