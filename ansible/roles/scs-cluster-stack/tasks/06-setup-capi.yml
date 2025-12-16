@@ -34,6 +34,11 @@
   become: true
   command:
     cmd: "clusterctl generate cluster {{ cluster_name }} -f {{scs_cluster_stack_home}}/capi-k8s-cluster-template.yaml >{{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml"
+  environment:
+    CLUSTER_NAME="{{cluster_name}}"
+    CLUSTER_TOPOLOGY=true
+    EXP_CLUSTER_RESOURCE_SET=true
+    EXP_RUNTIME_SDK=true
 
 - name: Initialize cluster
   become: true
