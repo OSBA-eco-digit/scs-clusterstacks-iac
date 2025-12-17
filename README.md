@@ -11,6 +11,14 @@ Here's the current list of supported providers:
 
 Our goal is to install and setup the necessary virtual infrastructure and the companents to run a Kubernetes Cluster Stack.
 
+* **Submodules**
+
+This repository relies on submodules, please check those remotes before proceeding. Here's how:
+
+```sh
+$ git submodule update --init
+```
+
 ### Bootstrapping (Initializing OpenTofu Providers)
 
 ```sh
@@ -40,7 +48,7 @@ The current components that are setting up the Cluster Stack are:
   - helm
   - kubectl
 
-> We are using **k3s** to setup the management cluster.
+> We are using **k3s** as submodule (mentioned above) to setup the management cluster.
 
 ### Destroying the Infrastructure
 
