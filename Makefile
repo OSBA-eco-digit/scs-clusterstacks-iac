@@ -32,9 +32,9 @@ export OS_EXTERNAL_NETWORK_ID
 ######################################################################
 
 all check init validate:
+	$(TOFU_CMD) init -upgrade
 	$(TOFU_CMD) fmt -check
 	$(TOFU_CMD) validate -compact-warnings
-	$(TOFU_CMD) init -upgrade
 
 setup:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
