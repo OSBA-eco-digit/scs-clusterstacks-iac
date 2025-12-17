@@ -47,7 +47,6 @@ docker_gpg_keyserver: "https://keys.openpgp.org"
 
 clusterctl_release: "1.12.0"   # clusterctl
 helm_release: "4.0.0"          # helm
-kind_release: "0.30.0"         # kind
 kubernetes_service_host: "127.0.0.1"
 kubernetes_service_port: 6443
 kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"   # kubectl
@@ -58,17 +57,14 @@ korc_yaml_url: "https://github.com/k-orc/openstack-resource-controller/releases/
 
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
 helm_bin_url: "https://get.helm.sh/helm-v{{helm_release}}-linux-amd64.tar.gz"
-kind_bin_url: "https://github.com/kubernetes-sigs/kind/releases/download/v{{kind_release}}/kind-linux-amd64"
 kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/amd64/kubectl"
 
 clusterctl_bin: "/usr/local/bin/clusterctl"
 helm_bin: "/usr/local/bin/helm"
-kind_bin: "/usr/local/bin/kind"
 kubectl_bin: "/usr/local/bin/kubectl"
 
 clusterctl_bin_sha256: "9b432d6ce52c8186cc002b15e906c09e74afa445d0766ee67bd25753fba33ce6"
 helm_bin_sha256: "c77e9e7c1cc96e066bd240d190d1beed9a6b08060b2043ef0862c4f865eca08f"
-kind_bin_sha256: "517ab7fc89ddeed5fa65abf71530d90648d9638ef0c4cde22c2c11f8097b8889"
 kubectl_bin_sha256: "9591f3d75e1581f3f7392e6ad119aab2f28ae7d6c6e083dc5d22469667f27253"
 
 #

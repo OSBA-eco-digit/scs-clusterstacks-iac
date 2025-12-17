@@ -14,6 +14,12 @@
   when: not check_clusterctl.stat.exists
   register: get_clusterctl
 
+- name: Strip "clusterctl"
+  become: true
+  command:
+    cmd: "strip {{ clusterctl_bin }}"
+  when: get_clusterctl.changed
+
 - name: Get "helm" if it does not exist
   become: true
   unarchive:
@@ -27,21 +33,6 @@
   args:
     creates: "{{ helm_bin }}"
   register: get_helm
-
-- name: Check if "kind" exists
-  stat:
-    path: "{{ kind_bin }}"
-  register: check_kind
-
-- name: Get "kind"
-  become: true
-  get_url:
-    url: "{{ kind_bin_url }}"
-    dest: "{{ kind_bin }}"
-    checksum: "sha256:{{kind_bin_sha256}}"
-    mode: 0755
-  when: not check_kind.stat.exists
-  register: get_kind
 
 - name: Check if "kubectl" exists
   stat:
@@ -58,17 +49,8 @@
   when: not check_kubectl.stat.exists
   register: get_kubectl
 
-- name: Strip binaries from installed components
+- name: Strip "kubectl"
   become: true
   command:
-    cmd: "strip /usr/local/bin/{{ bin }}"
-  loop:
-    - clusterctl
-    - kind
-    - kubectl
-  loop_control:
-    loop_var: bin
-  when:
-    - get_clusterctl.changed
-    - get_kind.changed
-    - get_kubectl.changed
+    cmd: "strip {{ kubectl_bin }}"
+  when: get_kubectl.changed
