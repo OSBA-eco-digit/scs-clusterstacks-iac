@@ -20,8 +20,8 @@ spec:
     controlPlane:
       cloudProvider: external
     extraKubeletArgs:{% raw %}
-      --provider-id: openstack:///'{{ instance_id }}'{% endraw %}
-  machineTemplate:
+      --provider-id: openstack:///'{{ instance_id }}'
+{% endraw %}  machineTemplate:
     infrastructureTemplate:
       apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
       kind: OpenStackMachineTemplate
@@ -65,7 +65,8 @@ spec:
       controlPlane:
         cloudProvider: external
       extraKubeletArgs:{% raw %}
-        --provider-id: openstack:///'{{ instance_id }}'{% endraw %}
+        --provider-id: openstack:///'{{ instance_id }}'
+{% endraw %}
 
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
