@@ -1,5 +1,5 @@
 [submodule "ansible/roles/k3s"]
-    branch = main
+    branch = v3.6.2
     path = ansible/roles/k3s
     shallow = true
     url = https://github.com/PyratLabs/ansible-role-k3s
