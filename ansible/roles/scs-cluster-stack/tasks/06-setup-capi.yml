@@ -13,6 +13,18 @@
     dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
     mode: 0440
 
+- name: Install OpenStack Resource Controller (ORC) via "kubectl"
+  become: true
+  shell:
+    cmd: |
+      CLUSTER_TOPOLOGY=true KUBECONFIG=/etc/rancher/k3s/k3s.yaml \
+      kubectl apply -f {{ openstack_orc_yaml }}
+  environment:
+    CLUSTER_TOPOLOGY=true
+    KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  args:
+    executable: /bin/bash
+
 - name: Initialize cluster
   become: true
   shell:
@@ -37,3 +49,5 @@
   environment:
     CLUSTER_TOPOLOGY=true
     KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  args:
+    executable: /bin/bash
