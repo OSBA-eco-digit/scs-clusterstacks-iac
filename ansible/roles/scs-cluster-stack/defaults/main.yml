@@ -49,6 +49,8 @@ docker_gpg_keyserver: "https://keys.openpgp.org"
 canonical_capi_repo: "https://github.com/canonical/cluster-api-k8s"
 canonical_capi_version: "v0.4.2"  # v0.5.0 is not marked as 'verified'
 
+kubeconfig_path: "/etc/rancher/k3s/k3s.yaml"
+
 clusterctl_release: "1.12.0"   # clusterctl
 helm_release: "4.0.0"          # helm
 kubernetes_service_host: "127.0.0.1"

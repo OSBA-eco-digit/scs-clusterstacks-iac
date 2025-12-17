@@ -6,6 +6,8 @@ export CLUSTER_TOPOLOGY=true
 export CONTROL_PLANE_MACHINE_COUNT=1
 export WORKER_MACHINE_COUNT=1
 
+export KUBECONFIG="{{ kubeconfig_path }}"
+
 export KUBERNETES_MASTER="https://{{ kubernetes_service_host }}:{{ kubernetes_service_port }}"
 export KUBERNETES_SERVICE_HOST="{{ kubernetes_service_host }}"
 export KUBERNETES_SERVICE_PORT="{{ kubernetes_service_port }}"
