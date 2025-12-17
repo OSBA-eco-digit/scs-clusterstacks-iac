@@ -18,7 +18,8 @@
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack
+      && CLUSTER_TOPOLOGY=true KUBECONFIG=/etc/rancher/k3s/k3s.yaml \
+         clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack
   environment:
     CLUSTER_TOPOLOGY=true
     KUBECONFIG=/etc/rancher/k3s/k3s.yaml
