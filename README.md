@@ -41,7 +41,7 @@ $ export OS_CLOUD=foo
 $ make setup
 ```
 
-> One-liner? `make <provider> OS_CLOUD=foo && sleep 150 && make setup OS_CLOUD=foo`
+> One-liner? `make && make <provider> OS_CLOUD=foo && sleep 150 && make setup OS_CLOUD=foo`
 
 The current components that are setting up the Cluster Stack are:
 
