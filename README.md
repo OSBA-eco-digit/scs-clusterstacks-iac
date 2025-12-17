@@ -25,6 +25,8 @@ $ git submodule update --init
 $ make
 ```
 
+> That will not just initialize the providers but also check and validate what is served by the code under the `opentofu/` directory.
+
 ### Applying and Deploying the Infrastructure
 
 ```sh
