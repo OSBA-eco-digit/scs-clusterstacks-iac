@@ -30,7 +30,7 @@ openstack_image_name: "Ubuntu 24.04"
 openstack_node_machine_flavor: "{{ openstack_bastion_machine_flavor }}"
 openstack_orc_release: "v2.3.0"
 openstack_orc_repo: "https://github.com/k-orc/openstack-resource-controller"
-openstack_orc_yaml: "{{openstack_orc_repo}}/releases/{{openstack_orc_release}}/download/install.yaml"
+openstack_orc_yaml: "{{openstack_orc_repo}}/releases/download/{{openstack_orc_release}}/install.yaml"
 openstack_ssh_key_name: "mysshkey"
 
 #
