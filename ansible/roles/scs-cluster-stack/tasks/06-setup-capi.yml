@@ -44,7 +44,7 @@
   environment:
     GIT_TERMINAL_PROMPT: 0
 
-- name: Generate cluster configuration from template
+- name: Generate cluster specs from template
   become: true
   shell:
     chdir: "{{scs_cluster_stack_home}}/cluster-api-k8s"
