@@ -6,6 +6,7 @@ scs_cluster_stack_dependencies:
   - jq
   - procps
   - python3-jsonpatch
+  - python3-magnumclient
   - python3-openstackclient
   - python3-pip
   - python3-pretty-yaml
