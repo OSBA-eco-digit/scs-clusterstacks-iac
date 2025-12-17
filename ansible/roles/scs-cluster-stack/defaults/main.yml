@@ -14,8 +14,6 @@ scs_cluster_stack_service: "scs_cluster_stack"
 scs_cluster_stack_service_unit: "/etc/systemd/system/{{ scs_cluster_stack_service }}.service"
 scs_cluster_stack_src_dir: "{{ scs_cluster_stack_home }}/src"
 scs_cluster_stack_user: "scs_cluster_stack"
-scs_cluster_stack_capi_k8s_repo: "https://github.com/canonical/cluster-api-k8s"
-scs_cluster_stack_capi_k8s_tag: "v0.4.2"  # v0.5.0 is not marked as 'verified'
 
 #
 # openstack
@@ -47,6 +45,9 @@ docker_gpg_keyserver: "https://keys.openpgp.org"
 #
 # cluster stack components
 #
+
+canonical_capi_repo: "https://github.com/canonical/cluster-api-k8s"
+canonical_capi_version: "v0.4.2"  # v0.5.0 is not marked as 'verified'
 
 clusterctl_release: "1.12.0"   # clusterctl
 helm_release: "4.0.0"          # helm
