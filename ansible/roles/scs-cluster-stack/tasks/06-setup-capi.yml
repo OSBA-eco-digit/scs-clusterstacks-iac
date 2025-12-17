@@ -51,7 +51,7 @@
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
       && CLUSTER_TOPOLOGY=true KUBECONFIG=/etc/rancher/k3s/k3s.yaml \
-         clusterctl generate cluster {{ cluster_name }} --kubernetes-version v{{kubernetes_release}} -f {{scs_cluster_stack_home}}/capi-k8s-specs \
+         clusterctl generate cluster {{ cluster_name }} --kubernetes-version v{{kubernetes_release}} --from {{scs_cluster_stack_home}}/capi-k8s-specs.yaml \
          > {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
   args:
     executable: /bin/bash
