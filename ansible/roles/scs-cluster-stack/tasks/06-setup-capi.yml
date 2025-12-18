@@ -22,26 +22,6 @@
   args:
     executable: /bin/bash
 
-- name: Generate generic secret via "k3s"
-  become: true
-  shell:
-    cmd: |
-      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      {{ k3s_bin }} kubectl create secret generic {{cluster_name}} --dry-run=client -o yaml \
-      | {{ k3s_bin }} kubectl apply -f - --validate=false
-  args:
-    executable: /bin/bash
-
-- name: Generate TLS secret via "k3s"
-  become: true
-  shell:
-    cmd: |
-      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      {{ k3s_bin }} kubectl create secret tls {{cluster_name}} --dry-run=client -o yaml --cert={{snakeoil_cert}} --key={{snakeoil_key}} \
-      | {{ k3s_bin }} kubectl apply -f - --validate=false --insecure-skip-tls-verify
-  args:
-    executable: /bin/bash
-
 - name: Initialize cluster
   become: true
   shell:
@@ -71,5 +51,35 @@
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
       && clusterctl generate cluster {{ cluster_name }} --kubernetes-version v{{kubernetes_release}} --from {{scs_cluster_stack_home}}/capi-k8s-specs.yaml \
          > {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
+  args:
+    executable: /bin/bash
+
+- name: Apply cluster specs
+  become: true
+  shell:
+    chdir: "{{scs_cluster_stack_home}}/cluster-api-k8s"
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && {{ k3s_bin }} kubectl apply - {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
+  args:
+    executable: /bin/bash
+
+- name: Generate generic secret via "k3s"
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      {{ k3s_bin }} kubectl create secret generic {{cluster_name}} --dry-run=client -o yaml \
+      | {{ k3s_bin }} kubectl apply -f - --validate=false
+  args:
+    executable: /bin/bash
+
+- name: Generate TLS secret via "k3s"
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      {{ k3s_bin }} kubectl create secret tls {{cluster_name}} --dry-run=client -o yaml --cert={{snakeoil_cert}} --key={{snakeoil_key}} \
+      | {{ k3s_bin }} kubectl apply -f - --validate=false --insecure-skip-tls-verify
   args:
     executable: /bin/bash
