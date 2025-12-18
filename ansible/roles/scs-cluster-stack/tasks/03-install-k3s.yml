@@ -17,3 +17,4 @@
     name: k3s
   vars:
     k3s_become: true
+    k3s_use_experimental: true
