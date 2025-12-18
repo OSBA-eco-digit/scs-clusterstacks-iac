@@ -41,6 +41,8 @@ openstack_ssh_key_name: "mysshkey"
 # kubernetes
 #
 
+k3s_bin: "/usr/local/bin/k3s"
+
 kubeconfig_path: "/etc/rancher/k3s/k3s.yaml"
 
 kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"

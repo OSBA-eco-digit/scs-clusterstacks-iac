@@ -13,12 +13,12 @@
     dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
     mode: 0440
 
-- name: Install OpenStack Resource Controller (ORC) via "kubectl"
+- name: Install OpenStack Resource Controller (ORC) via "k3s"
   become: true
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      k3s kubectl apply -f {{ openstack_orc_yaml }}
+      {{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}
   args:
     executable: /bin/bash
 
