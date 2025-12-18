@@ -27,7 +27,8 @@
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      {{ k3s_bin }} kubectl create secret generic {{cluster_name}}
+      {{ k3s_bin }} kubectl create secret generic {{cluster_name}} --dry-run=client -o yaml \
+      | {{ k3s_bin }} kubectl apply -f - --validate=false
   args:
     executable: /bin/bash
 
@@ -36,7 +37,8 @@
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      {{ k3s_bin }} kubectl create secret tls {{cluster_name}} --cert={{snakeoil_cert}} --key={{snakeoil_key}}
+      {{ k3s_bin }} kubectl create secret tls {{cluster_name}} --dry-run=client -o yaml --cert={{snakeoil_cert}} --key={{snakeoil_key}} \
+      | {{ k3s_bin }} kubectl apply -f - --validate=false --insecure-skip-tls-verify
   args:
     executable: /bin/bash
 
