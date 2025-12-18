@@ -22,6 +22,24 @@
   args:
     executable: /bin/bash
 
+- name: Generate generic secret via "k3s"
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      {{ k3s_bin }} kubectl create secret generic {{cluster_name}}
+  args:
+    executable: /bin/bash
+
+- name: Generate TLS secret via "k3s"
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      {{ k3s_bin }} kubectl create secret tls {{cluster_name}} --cert={{snakeoil_cert}} --key={{snakeoil_key}}
+  args:
+    executable: /bin/bash
+
 - name: Initialize cluster
   become: true
   shell:
