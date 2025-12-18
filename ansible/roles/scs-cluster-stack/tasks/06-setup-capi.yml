@@ -18,7 +18,7 @@
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      kubectl apply -f {{ openstack_orc_yaml }}
+      k3s kubectl apply -f {{ openstack_orc_yaml }}
   args:
     executable: /bin/bash
 
