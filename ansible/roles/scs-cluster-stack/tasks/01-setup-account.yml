@@ -46,3 +46,10 @@
     owner: "{{ scs_cluster_stack_user }}"
     group: "{{ scs_cluster_stack_group }}"
   when: random_token_key.changed
+
+- name: Ensure "{{scs_cluster_stack_user}}" is a member of "ssl-cert"
+  become: true
+  user:
+    name: "{{ scs_cluster_stack_user }}"
+    groups: "ssl-cert"
+    append: true
