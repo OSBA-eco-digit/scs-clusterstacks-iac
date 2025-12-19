@@ -1,5 +1,6 @@
 ---
-- name: Template the Cluster Stack YAML to Deploy the CSO
+- name: Template the Cluster Stack Operator manifest
+  become: true
   template:
     src: scs-cso.yaml.j2
     dest: "{{scs_cluster_stack_home}}/scs-cso.yaml"
@@ -14,7 +15,11 @@
       - --set octavia_ovn=true
       - --values {{scs_cluster_stack_home}}/scs-cso.yaml
       - -i cso
-      - -n {{ cluster_namespace }}
+      - -n cso-system
       - oci://{{ cluster_oci_repo_cso }}
   ignore_errors: true
   no_log: true
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
