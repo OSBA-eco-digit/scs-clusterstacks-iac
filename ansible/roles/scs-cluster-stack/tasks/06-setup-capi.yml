@@ -63,6 +63,8 @@
       && {{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
   args:
     executable: /bin/bash
+  ignore_errors: true
+  no_log: true
 
 - name: Generate generic secret via "k3s"
   become: true
