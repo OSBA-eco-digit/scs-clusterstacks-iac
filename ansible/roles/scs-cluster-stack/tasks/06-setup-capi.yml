@@ -16,18 +16,21 @@
 - name: Initialize cluster
   become: true
   shell:
-    cmd: "clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack --kubeconfig {{ kubeconfig_path }}"
-  environment:
-    - CLUSTER_TOPOLOGY=true
-    - EXP_CLUSTER_RESOURCE_SET=true
-    - EXP_RUNTIME_SDK=true
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack --kubeconfig {{ kubeconfig_path }}
+  args:
+    executable: /bin/bash
+
+# kubectl -n capi-system rollout status deployment
+# kubectl -n capo-system rollout status deployment
 
 - name: Install OpenStack Resource Controller (ORC) via "k3s"
   become: true
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      {{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}
+      && {{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}
   args:
     executable: /bin/bash
 
@@ -54,18 +57,13 @@
   args:
     executable: /bin/bash
 
-- name: DEBUG
-  debug:
-    msg: |
-      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && {{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
-
 - name: Apply cluster specs
   become: true
   shell:
     chdir: "{{scs_cluster_stack_home}}/cluster-api-k8s"
     cmd: |
-      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      sleep 13 \
+      && source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
       && {{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
   args:
     executable: /bin/bash
