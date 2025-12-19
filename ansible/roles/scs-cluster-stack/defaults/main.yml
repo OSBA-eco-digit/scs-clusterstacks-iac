@@ -52,9 +52,9 @@ kubernetes_service_host: "127.0.0.1"
 kubernetes_service_port: 6443
 
 clusterctl_bin: "/usr/local/bin/clusterctl"
-clusterctl_bin_sha256: "9b432d6ce52c8186cc002b15e906c09e74afa445d0766ee67bd25753fba33ce6"
+clusterctl_bin_sha256: "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
-clusterctl_release: "1.12.0"
+clusterctl_release: "1.12.1"
 
 helm_bin: "/usr/local/bin/helm"
 helm_bin_sha256: "c77e9e7c1cc96e066bd240d190d1beed9a6b08060b2043ef0862c4f865eca08f"
