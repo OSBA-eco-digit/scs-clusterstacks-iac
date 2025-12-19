@@ -23,5 +23,6 @@
     - 04-install-components.yml
     - 05-setup-modules-sysctl.yml
     - 06-setup-capi.yml
+    - 07-setup-cso.yml
   loop_control:
     loop_var: t
