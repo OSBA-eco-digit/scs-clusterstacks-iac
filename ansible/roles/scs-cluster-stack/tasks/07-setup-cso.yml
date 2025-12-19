@@ -17,8 +17,6 @@
       - -i cso
       - -n cso-system
       - oci://{{ cluster_oci_repo_cso }}
-  ignore_errors: true
-  no_log: true
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
