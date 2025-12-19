@@ -21,6 +21,10 @@
       && clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack --kubeconfig {{ kubeconfig_path }}
   args:
     executable: /bin/bash
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
 
 # kubectl -n capi-system rollout status deployment
 # kubectl -n capo-system rollout status deployment
@@ -56,6 +60,10 @@
          > {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
   args:
     executable: /bin/bash
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
 
 - name: Apply cluster specs
   become: true
