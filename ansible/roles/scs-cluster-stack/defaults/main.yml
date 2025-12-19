@@ -52,7 +52,7 @@ kubernetes_service_host: "127.0.0.1"
 kubernetes_service_port: 6443
 
 clusterctl_bin: "/usr/local/bin/clusterctl"
-clusterctl_bin_sha256: "0019dfc4b32d63c1392aa264aed2253c1e0c2fb09216f8e2cc269bbfb8bb49b5"
+clusterctl_bin_sha256: "cedcb3ec1694dcae19f57368b69c4b9edce48648b2795fe5867edff27bfee65e"
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
 clusterctl_release: "1.12.1"
 
