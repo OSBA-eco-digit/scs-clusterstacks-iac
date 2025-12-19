@@ -26,9 +26,6 @@
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
 
-# kubectl -n capi-system rollout status deployment
-# kubectl -n capo-system rollout status deployment
-
 - name: Install OpenStack Resource Controller (ORC) via "k3s"
   become: true
   shell:
