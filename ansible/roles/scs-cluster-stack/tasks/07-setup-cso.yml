@@ -7,16 +7,17 @@
     mode: 0444
 
 - name: Install the Cluster Stack Operator via Helm
-  command:
-    argv:
-      - helm
-      - upgrade
-      - --create-namespace
-      - --set octavia_ovn=true
-      - --values {{scs_cluster_stack_home}}/scs-cso.yaml
-      - -i cso
-      - -n cso-system
-      - oci://{{ cluster_oci_repo_cso }}
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && helm upgrade --create-namespace \
+         --set "octavia_ovn=true" \
+         --values "{{scs_cluster_stack_home}}/scs-cso.yaml" \
+         -i cso -n cso-system \
+         oci://{{ cluster_oci_repo_cso }}
+  args:
+    executable:  /bin/bash
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
