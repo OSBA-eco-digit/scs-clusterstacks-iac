@@ -1,0 +1,14 @@
+---
+apiVersion: clusterstack.x-k8s.io/v1alpha1
+kind: ClusterStack
+metadata:
+  name: openstack-1-34
+  namespace: mynamespace
+spec:
+  provider: openstack
+  name: scs1
+  kubernetesVersion: '1.34'
+  channel: custom
+  autoSubscribe: false
+  noProvider: true
+  versions: [v1]
