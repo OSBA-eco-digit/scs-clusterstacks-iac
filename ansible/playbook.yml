@@ -3,3 +3,6 @@
 - hosts: all
   roles:
     - scs-cluster-stack
+  vars:
+    k3s_become: true
+    k3s_use_experimental: true
