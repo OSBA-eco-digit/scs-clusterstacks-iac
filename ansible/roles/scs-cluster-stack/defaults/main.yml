@@ -56,6 +56,9 @@ clusterctl_bin_sha256: "cedcb3ec1694dcae19f57368b69c4b9edce48648b2795fe5867edff2
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
 clusterctl_release: "1.12.1"
 
+envsubst_bin: "/usr/local/bin/envsubst"
+envsubst_release: "1.0.3"
+
 helm_bin: "/usr/local/bin/helm"
 helm_bin_sha256: "c77e9e7c1cc96e066bd240d190d1beed9a6b08060b2043ef0862c4f865eca08f"
 helm_bin_url: "https://get.helm.sh/helm-v{{helm_release}}-linux-amd64.tar.gz"

@@ -54,3 +54,22 @@
   command:
     cmd: "strip {{ kubectl_bin }}"
   when: get_kubectl.changed
+
+- name: Check if "envsubst" exists
+  stat:
+    path: "{{ envsubst_bin }}"
+  register: check_envsubst
+
+- name: Get "envsubst" via Go
+  become: true
+  command:
+    cmd: GOBIN=/usr/local/bin go install "github.com/drone/envsubst/v2/cmd/envsubst@v{{envsubst_release}}"
+    dest: "{{ envsubst_bin }}"
+  when: not check_envsubst.stat.exists
+  register: get_envsubst
+
+- name: Strip "envsubst"
+  become: true
+  command:
+    cmd: "strip {{ envsubst_bin }}"
+  when: get_envsubst.changed
