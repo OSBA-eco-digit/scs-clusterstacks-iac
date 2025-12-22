@@ -4,6 +4,7 @@ scs_cluster_stack_dependencies:
   - ca-certificates 
   - curl
   - git
+  - golang
   - jq
   - procps
   - python3-jsonpatch
