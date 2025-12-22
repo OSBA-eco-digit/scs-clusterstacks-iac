@@ -61,7 +61,7 @@ clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/dow
 clusterctl_release: "1.12.1"
 
 envsubst_bin: "/usr/local/bin/envsubst"
-envsubst_release: "1.0.3"
+envsubst_release: "latest"
 
 helm_bin: "/usr/local/bin/helm"
 helm_bin_sha256: "c77e9e7c1cc96e066bd240d190d1beed9a6b08060b2043ef0862c4f865eca08f"

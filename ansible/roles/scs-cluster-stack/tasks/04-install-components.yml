@@ -63,7 +63,7 @@
 - name: Get "envsubst" via Go
   become: true
   command:
-    cmd: "go install github.com/drone/envsubst/v2/cmd/envsubst@v{{envsubst_release}}"
+    cmd: "go install github.com/drone/envsubst/v2/cmd/envsubst@{{envsubst_release}}"
   when: not check_envsubst.stat.exists
   register: get_envsubst
   environment:
