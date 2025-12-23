@@ -35,6 +35,8 @@
       cat {{ scs_cluster_stack_operator_specs_yaml }} | {{envsubst_bin}} \
       > {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
   when: get_scs_cluster_stack_operator_specs_yaml.changed
+  environment:
+    MODULE_STRICT_UTF8_RESPONSE: 0
 
 - name: Apply operator specs for SCS
   become: true
