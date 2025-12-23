@@ -12,10 +12,24 @@ scs_cluster_stack_provider_specs_path: "{{scs_cluster_stack_home}}/scs-provider-
 scs_cluster_stack_user: "scs"
 
 #
-#
+# git/github
 #
 
 github_personal_token: "github_personal_token"
+#  git-access-token: ${GIT_ACCESS_TOKEN_B64:=""}
+#  git-org-name: ${GIT_ORG_NAME_B64:=""}
+#  git-provider: ${GIT_PROVIDER_B64:=""}
+#  git-repo-name: ${GIT_REPOSITORY_NAME_B64:=""}
+
+#
+# oci
+#
+
+#  oci-access-token: ${OCI_ACCESS_TOKEN_B64:=""}
+#  oci-password: ${OCI_PASSWORD_B64:=""}
+#  oci-registry: ${OCI_REGISTRY_B64:=""}
+#  oci-repository: ${OCI_REPOSITORY_B64:=""}
+#  oci-username: ${OCI_USERNAME_B64:=""}
 
 #
 # canonical
