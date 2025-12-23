@@ -13,12 +13,34 @@
     dest: "{{scs_cluster_stack_home}}/scs-operator.yaml"
     mode: 0444
 
+- name: Check if "{{scs_cluster_stack_operator_specs_yaml}}" exists
+  stat:
+    path: "{{ scs_cluster_stack_operator_specs_yaml }}"
+  register: check_scs_cluster_stack_operator_specs_yaml
+
+- name: Get "{{scs_cluster_stack_operator_specs_yaml}}"
+  become: true
+  get_url:
+    url: "{{ scs_cluster_stack_operator_specs }}"
+    dest: "{{ scs_cluster_stack_operator_specs_yaml }}"
+    mode: 0640
+  when: not check_scs_cluster_stack_operator_specs_yaml.stat.exists
+  register: get_scs_cluster_stack_operator_specs_yaml
+
+- name: envsubst "{{scs_cluster_stack_operator_specs_yaml}}"
+  become: true
+  command:
+    cmd: |
+      {{envsubst_bin}} {{ scs_cluster_stack_operator_specs_yaml }} \
+      > {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
+  when: get_scs_cluster_stack_operator_specs_yaml.changed
+
 - name: Apply operator specs for SCS
   become: true
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && curl -sSL {{scs_cluster_stack_operator_specs}} | {{ envsubst_bin }} | {{ k3s_bin }} kubectl apply -f -
+      && {{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
   args:
     executable: /bin/bash
 
