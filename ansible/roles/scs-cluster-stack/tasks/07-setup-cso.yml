@@ -6,6 +6,13 @@
     dest: "{{openstack_clouds_yaml}}"
     mode: 0444
 
+- name: Template "envsubst-helper.sh"
+  become: true
+  template:
+    src: envsubst-helper.sh.j2
+    dest: "{{ envsubst_helper }}"
+    mode: 0444
+
 - name: Template "scs-operator.yaml""
   become: true
   template:
@@ -28,15 +35,13 @@
   when: not check_scs_cluster_stack_operator_specs_yaml.stat.exists
   register: get_scs_cluster_stack_operator_specs_yaml
 
-- name: envsubst "{{scs_cluster_stack_operator_specs_yaml}}"
+- name: envsubst "{{scs_cluster_stack_operator_specs_yaml}}" using "envsubst-helper.sh"
   become: true
-  command:
-    cmd: |
-      cat {{ scs_cluster_stack_operator_specs_yaml }} | {{envsubst_bin}} \
-      > {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
+  shell:
+    cmd: {{ envsubst_helper }} "{{ scs_cluster_stack_operator_specs_yaml }}" "{{ scs_cluster_stack_operator_specs_yaml }}.envsubst"
   when: get_scs_cluster_stack_operator_specs_yaml.changed
-  environment:
-    MODULE_STRICT_UTF8_RESPONSE: 0
+  args:
+    executable: /bin/bash
 
 - name: Apply operator specs for SCS
   become: true

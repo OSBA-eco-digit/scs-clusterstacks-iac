@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# {{ ansible_managed }}
+
+cat $1 | {{envsubst_bin}} >$2
