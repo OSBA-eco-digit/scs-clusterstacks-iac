@@ -14,6 +14,7 @@
     mode: 0444
 
 - name: Check if "{{scs_cluster_stack_operator_specs_yaml}}" exists
+  become: true
   stat:
     path: "{{ scs_cluster_stack_operator_specs_yaml }}"
   register: check_scs_cluster_stack_operator_specs_yaml
