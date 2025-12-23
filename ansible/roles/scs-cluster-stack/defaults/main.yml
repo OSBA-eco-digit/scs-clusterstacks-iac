@@ -12,6 +12,12 @@ scs_cluster_stack_provider_specs_path: "{{scs_cluster_stack_home}}/scs-provider-
 scs_cluster_stack_user: "scs"
 
 #
+#
+#
+
+github_personal_token: "github_personal_token"
+
+#
 # canonical
 #
 

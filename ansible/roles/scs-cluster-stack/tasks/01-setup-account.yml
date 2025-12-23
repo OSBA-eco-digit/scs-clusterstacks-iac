@@ -58,7 +58,7 @@
   become: true
   file:
     group: "{{ scs_cluster_stack_group }}"
-    mode: 0440
+    mode: 0750
     owner: "{{ scs_cluster_stack_user }}"
     path: "{{scs_cluster_stack_home}}/.config/openstack"
     recurse: yes
