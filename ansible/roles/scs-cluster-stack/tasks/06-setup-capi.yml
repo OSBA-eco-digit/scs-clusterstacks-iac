@@ -39,7 +39,7 @@
   become: true
   git:
     depth: 1
-    dest: "{{scs_cluster_stack_home}}/cluster-api-k8s"
+    dest: "{{scs_cluster_stack_home}}/capi-k8s"
     repo: "{{ canonical_capi_repo }}"
     single_branch: true
     update: false
@@ -50,7 +50,7 @@
 - name: Generate cluster specs from template
   become: true
   shell:
-    chdir: "{{scs_cluster_stack_home}}/cluster-api-k8s"
+    chdir: "{{scs_cluster_stack_home}}/capi-k8s"
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
       && clusterctl generate cluster {{ cluster_name }} --kubernetes-version v{{kubernetes_release}} --from {{scs_cluster_stack_home}}/capi-k8s-specs.yaml \
@@ -65,7 +65,7 @@
 - name: Apply cluster specs
   become: true
   shell:
-    chdir: "{{scs_cluster_stack_home}}/cluster-api-k8s"
+    chdir: "{{scs_cluster_stack_home}}/capi-k8s"
     cmd: |
       sleep 13 \
       && source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \

@@ -32,7 +32,7 @@
   become: true
   command:
     cmd: |
-      {{envsubst_bin}} {{ scs_cluster_stack_operator_specs_yaml }} \
+      cat {{ scs_cluster_stack_operator_specs_yaml }} | {{envsubst_bin}} \
       > {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
   when: get_scs_cluster_stack_operator_specs_yaml.changed
 
