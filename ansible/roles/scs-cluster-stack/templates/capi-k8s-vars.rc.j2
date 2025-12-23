@@ -1,14 +1,13 @@
-# https://raw.githubusercontent.com/canonical/cluster-api-k8s/refs/tags/v0.4.2/templates/openstack/template-variables.rc
+# {{ ansible_managed }}
 ######################################################################
 
-# https://docs.scs.community/docs/container/components/cluster-stacks/components/cluster-stacks/providers/openstack/quickstart/
 export EXP_CLUSTER_RESOURCE_SET=true
 export EXP_RUNTIME_SDK=true
 
-export GIT_ACCESS_TOKEN_B64=$(echo -n '<my-personal-access-token>' | base64 -w0)
-export GIT_ORG_NAME_B64=U292ZXJlaWduQ2xvdWRTdGFjaw== # SovereignCloudStack
-export GIT_PROVIDER_B64=Z2l0aHVi  # github
-export GIT_REPOSITORY_NAME_B64=Y2x1c3Rlci1zdGFja3M=  # cluster-stacks
+export GIT_ACCESS_TOKEN_B64={{ github_personal_token }}
+export GIT_ORG_NAME_B64=U292ZXJlaWduQ2xvdWRTdGFjaw==
+export GIT_PROVIDER_B64=Z2l0aHVi
+export GIT_REPOSITORY_NAME_B64=Y2x1c3Rlci1zdGFja3M=
 
 export CLUSTER_NAME="{{ cluster_name }}"
 export CLUSTER_TOPOLOGY=true
