@@ -37,11 +37,8 @@
 
 - name: envsubst "{{scs_cluster_stack_operator_specs_yaml}}" using "envsubst-helper.sh"
   become: true
-  shell:
-    cmd: "{{ envsubst_helper }}" "{{ scs_cluster_stack_operator_specs_yaml }}" "{{ scs_cluster_stack_operator_specs_yaml }}.envsubst"
+  command: /bin/sh {{ envsubst_helper }} {{ scs_cluster_stack_operator_specs_yaml }} {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
   when: get_scs_cluster_stack_operator_specs_yaml.changed
-  args:
-    executable: /bin/bash
 
 - name: Apply operator specs for SCS
   become: true
@@ -70,7 +67,6 @@
          -i csp-helper-{{cluster_namespace}} \
          -n {{cluster_namespace}} \
          {{scs_cluster_stack_helper}} -f {{openstack_clouds_yaml}}
-         
   args:
     executable:  /bin/bash
   environment:
