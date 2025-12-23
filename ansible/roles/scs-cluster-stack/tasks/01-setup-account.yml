@@ -30,23 +30,6 @@
     mode: 0750
   when: scs_cluster_stack_user_created.changed
 
-- name: Generate random token key
-  command:
-    cmd: openssl rand -base64 32
-  register: random_token_key
-  args:
-    creates: "{{ scs_cluster_stack_home }}/token"
-
-- name: Copy token to a file
-  become: true
-  copy:
-    content: "{{ random_token_key.stdout }}"
-    dest:  "{{ scs_cluster_stack_home }}/token"
-    mode: 0440
-    owner: "{{ scs_cluster_stack_user }}"
-    group: "{{ scs_cluster_stack_group }}"
-  when: random_token_key.changed
-
 - name: Ensure "{{scs_cluster_stack_user}}" is a member of "ssl-cert"
   become: true
   user:

@@ -15,3 +15,20 @@
 - name: Apply 'k3s' role
   include_role:
     name: k3s
+
+- name: Generate random token key
+  command:
+    cmd: {{k3s_bin}} token create
+  register: random_token_key
+  args:
+    creates: "{{ scs_cluster_stack_home }}/token"
+
+- name: Copy token to a file
+  become: true
+  copy:
+    content: "{{ random_token_key.stdout }}"
+    dest:  "{{ scs_cluster_stack_home }}/token"
+    mode: 0440
+    owner: "{{ scs_cluster_stack_user }}"
+    group: "{{ scs_cluster_stack_group }}"
+  when: random_token_key.changed
