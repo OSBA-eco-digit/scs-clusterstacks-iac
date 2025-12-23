@@ -1,21 +1,46 @@
 ---
-- name: Template the Cluster Stack Operator manifest
+- name: Template "clouds.yaml"
+  become: true
+  template:
+    src: openstack-clouds.yaml.j2
+    dest: "{{openstack_clouds_yaml}}"
+    mode: 0444
+
+- name: Template "scs-operator.yaml""
   become: true
   template:
     src: scs-operator.yaml.j2
     dest: "{{scs_cluster_stack_home}}/scs-operator.yaml"
     mode: 0444
 
-- name: Install the Cluster Stack Operator via Helm
+- name: Apply operator specs for SCS
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && {{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_operator_specs }}
+  args:
+    executable: /bin/bash
+
+- name: Apply provider specs for SCS
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && {{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_provider_specs }}
+  args:
+    executable: /bin/bash
+
+- name: Install cluster stack helper via 'Helm'
   become: true
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
       && helm upgrade --create-namespace \
-         --set "octavia_ovn=true" \
-         --values "{{scs_cluster_stack_home}}/scs-operator.yaml" \
-         -i cso -n cso-system \
-         oci://{{ cluster_oci_repo_cso }}
+         -i csp-helper-{{cluster_namespace}} \
+         -n {{cluster_namespace}} \
+         {{scs_cluster_stack_helper}} -f {{openstack_clouds_yaml}}
+         
   args:
     executable:  /bin/bash
   environment:

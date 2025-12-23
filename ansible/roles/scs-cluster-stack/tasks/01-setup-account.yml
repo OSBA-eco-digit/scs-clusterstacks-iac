@@ -53,3 +53,13 @@
     name: "{{ scs_cluster_stack_user }}"
     groups: "ssl-cert"
     append: true
+
+- name: Ensure ".config/openstack" directory exists for the "{{scs_cluster_stack_user}}" user
+  become: true
+  file:
+    group: "{{ scs_cluster_stack_group }}"
+    mode: 0440
+    owner: "{{ scs_cluster_stack_user }}"
+    path: "{{scs_cluster_stack_home}}/.config/openstack"
+    recurse: yes
+    state: directory

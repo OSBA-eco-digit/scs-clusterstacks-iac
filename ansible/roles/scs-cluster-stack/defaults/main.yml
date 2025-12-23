@@ -1,10 +1,14 @@
 ---
-scs_cluster_stack_cso_infra_components: "{{scs_cluster_stack_operator_repo}}/releases/latest/download/cso-infrastructure-components.yaml"
-scs_cluster_stack_cspo_infra_components: "{{scs_cluster_stack_provider_repo}}/releases/latest/download/cspo-infrastructure-components.yaml"
 scs_cluster_stack_group: "{{ scs_cluster_stack_user }}"
-scs_cluster_stack_home: "/var/lib/scs_cluster_stack"
+scs_cluster_stack_helper: "{{scs_cluster_stack_helper_repo}}/releases/latest/download/openstack-csp-helper.tgz"
+scs_cluster_stack_helper_repo: "https://github.com/SovereignCloudStack/openstack-csp-helper"
+scs_cluster_stack_home: "/var/lib/{{ scs_cluster_stack_user }}"
 scs_cluster_stack_operator_repo: "https://github.com/SovereignCloudStack/cluster-stack-operator"
+scs_cluster_stack_operator_specs: "{{scs_cluster_stack_operator_repo}}/releases/latest/download/cso-infrastructure-components.yaml"
+scs_cluster_stack_operator_specs_path: "{{scs_cluster_stack_home}}/scs-operator-specs.yaml"
 scs_cluster_stack_provider_repo: "https://github.com/SovereignCloudStack/cluster-stack-provider-openstack"
+scs_cluster_stack_provider_specs: "{{scs_cluster_stack_provider_repo}}/releases/latest/download/cspo-infrastructure-components.yaml"
+scs_cluster_stack_provider_specs_path: "{{scs_cluster_stack_home}}/scs-provider-specs.yaml"
 scs_cluster_stack_user: "scs"
 
 #
