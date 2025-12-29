@@ -1,12 +1,12 @@
 # {{ ansible_managed }}
 ---
 clouds:
-  openstack:
+  "{{ openstack_cloud_name }}":
     auth:
-      auth_url: https://api.gx-scs.sovereignit.cloud:5000/v3
+      auth_url: "{{ openstack_auth_url }}"
       application_credential_id: "{{ application_credential_id }}"
       application_credential_secret: "{{ application_credential_secret }}"
-    region_name: "RegionOne"
-    interface: "public"
+    region_name: "{{ openstack_region_name }}"
+    interface: "{{ openstack_interface }}"
     identity_api_version: 3
     auth_type: "v3applicationcredential"

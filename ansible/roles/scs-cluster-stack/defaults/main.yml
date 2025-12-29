@@ -53,6 +53,9 @@ docker_gpg_keyserver: "https://keys.openpgp.org"
 # openstack
 #
 
+openstack_application_credential_id: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_ID') }}"
+openstack_application_credential_secret: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_SECRET') }}"
+openstack_auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
 openstack_bastion_machine_flavor: "SCS-2V-4-20s"
 openstack_cloud_name: "{{ lookup('env', 'OS_CLOUD') }}"
 openstack_clouds_yaml: "{{scs_cluster_stack_home}}/.config/openstack/clouds.yaml"
@@ -65,6 +68,8 @@ openstack_orc_release: "v2.4.0"
 openstack_orc_repo: "https://github.com/k-orc/openstack-resource-controller"
 openstack_orc_yaml: "{{openstack_orc_repo}}/releases/download/{{openstack_orc_release}}/install.yaml"
 openstack_ssh_key_name: "mysshkey"
+openstack_region_name: "{{ lookup('env', 'OS_REGION_NAME') }}"
+openstack_interface: "{{ lookup('env', 'OS_INTERFACE') }}"
 
 #
 # kubernetes
@@ -112,16 +117,12 @@ cluster_name: "mycluster"
 cluster_namespace: "mynamespace"
 cluster_oci_repo_cso: "registry.scs.community/cluster-stacks/cso"
 cluster_oci_repo_kaas: "registry.scs.community/kaas/cluster-stacks"
-cluster_os_cloud: "openstack"
 cluster_release: "{{kubernetes_release}}"
 cluster_release_version: "{{kubernetes_release_version}}"
 cluster_series: "scs2"
 cluster_variables: "apiserverloadbalancer: octavia-ovn"
 cluster_version: [v1]
 cluster_wrkrnodes: 1
-
-application_credential_id: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_ID') }}"
-application_credential_secret: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_SECRET') }}"
 
 snakeoil_cert: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 snakeoil_key: "/etc/ssl/private/ssl-cert-snakeoil.key"

@@ -22,12 +22,15 @@ check-env-var-%:
 ######################################################################
 
 ifeq ($(OS_CLOUD),plusserver)
+  OS_AUTH_URL := https://scs2.api.pco.get-cloud.io:5000
   OS_EXTERNAL_NETWORK_ID := d051c0bd-510c-4da3-bcf3-d8b7082dd008
 endif
 ifeq ($(OS_CLOUD),scaleup)
+  OS_AUTH_URL := https://keystone.scs1.scaleup.cloud:443
   OS_EXTERNAL_NETWORK_ID := 15227829-b53d-48af-b136-85733999252e
 endif
 
+export OS_AUTH_URL
 export OS_EXTERNAL_NETWORK_ID
 ######################################################################
 
