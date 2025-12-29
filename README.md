@@ -11,6 +11,18 @@ Here's the current list of supported providers:
 
 Our goal is to install and setup the necessary virtual infrastructure and the companents to run a Kubernetes Cluster Stack.
 
+* **Environment Variables**
+
+To setup a custom `clouds.yaml` that will be used by the Cluster Stack, a few variables should be set. They are basically:
+
+ - 'OS_APPLICATION_CREDENTIAL_ID'
+ - 'OS_APPLICATION_CREDENTIAL_SECRET'
+ - 'OS_AUTH_URL'
+ - 'OS_CLOUD'
+ - 'OS_EXTERNAL_NETWORK_ID'
+ - 'OS_INTERFACE'
+ - 'OS_REGION_NAME'
+
 * **Submodules**
 
 This repository relies on submodules, please check those remotes before proceeding. Here's how:
