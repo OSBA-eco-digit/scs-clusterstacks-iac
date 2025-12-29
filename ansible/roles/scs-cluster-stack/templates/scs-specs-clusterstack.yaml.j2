@@ -8,7 +8,7 @@ metadata:
 spec:
   provider: openstack
   name: {{ cluster_series }}
-  kubernetesVersion: {{ cluster_release_version }}
+  kubernetesVersion: "{{ cluster_release_version }}"
   channel: {{ cluster_channel }}
   autoSubscribe: false
   providerRef:
