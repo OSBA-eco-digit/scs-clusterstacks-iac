@@ -32,9 +32,3 @@
     ( ansible_facts.distribution != 'Debian'
       or ansible_facts.distribution_major_version | int < 10
     ) and not ansible_virtualization_type == "docker"
-
-- name: Generate "snake-oil" certificate
-  become: true
-  command:
-    cmd: "make-ssl-cert generate-default-snakeoil"
-    creates: "{{ snakeoil_cert }}"

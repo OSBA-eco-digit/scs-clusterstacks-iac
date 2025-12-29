@@ -30,13 +30,6 @@
     mode: 0750
   when: scs_cluster_stack_user_created.changed
 
-- name: Ensure "{{scs_cluster_stack_user}}" is a member of "ssl-cert"
-  become: true
-  user:
-    name: "{{ scs_cluster_stack_user }}"
-    groups: "ssl-cert"
-    append: true
-
 - name: Ensure ".config/openstack" directory exists for the "{{scs_cluster_stack_user}}" user
   become: true
   file:

@@ -11,4 +11,3 @@ scs_cluster_stack_dependencies:
   - python3-openstackclient
   - python3-pip
   - python3-pretty-yaml
-  - ssl-cert
