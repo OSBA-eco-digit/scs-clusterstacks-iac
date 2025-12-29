@@ -125,6 +125,3 @@ cluster_series: "scs2"
 cluster_variables: "apiserverloadbalancer: octavia-ovn"
 cluster_version: "v1"
 cluster_wrkrnodes: 1
-
-snakeoil_cert: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
-snakeoil_key: "/etc/ssl/private/ssl-cert-snakeoil.key"
