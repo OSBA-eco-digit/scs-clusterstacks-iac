@@ -17,6 +17,7 @@
     name: k3s
 
 - name: Generate random token key
+  become: true
   command:
     cmd: "{{k3s_bin}} token create"
   register: random_token_key
