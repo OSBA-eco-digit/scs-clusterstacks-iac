@@ -120,5 +120,8 @@ cluster_variables: "apiserverloadbalancer: octavia-ovn"
 cluster_version: [v1]
 cluster_wrkrnodes: 1
 
+application_credential_id: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_ID') }}"
+application_credential_secret: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_SECRET') }}"
+
 snakeoil_cert: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
 snakeoil_key: "/etc/ssl/private/ssl-cert-snakeoil.key"
