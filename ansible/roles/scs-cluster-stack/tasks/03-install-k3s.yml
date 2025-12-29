@@ -18,7 +18,7 @@
 
 - name: Generate random token key
   command:
-    cmd: {{k3s_bin}} token create
+    cmd: "{{k3s_bin}} token create"
   register: random_token_key
   args:
     creates: "{{ scs_cluster_stack_home }}/token"
