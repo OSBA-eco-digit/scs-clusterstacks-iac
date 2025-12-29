@@ -4,32 +4,29 @@ apiVersion: clusterstack.x-k8s.io/v1alpha1
 kind: ClusterStack
 metadata:
   name: clusterstack
-  namespace: ${CS_NAMESPACE}
+  namespace: {{ cluster_namespace }}
 spec:
   provider: openstack
-  name: ${CS_NAME}
-  kubernetesVersion: "${CS_K8S_VERSION}"
-  channel: ${CS_CHANNEL}
+  name: {{ cluster_series }}
+  kubernetesVersion: {{ cluster_release_version }}
+  channel: {{ cluster_channel }}
   autoSubscribe: false
   providerRef:
     apiVersion: infrastructure.clusterstack.x-k8s.io/v1alpha1
     kind: OpenStackClusterStackReleaseTemplate
     name: cspotemplate
   versions:
-    - ${CS_VERSION}
+    - {{ cluster_version }}
 
 ---
 apiVersion: infrastructure.clusterstack.x-k8s.io/v1alpha1
 kind: OpenStackClusterStackReleaseTemplate
 metadata:
   name: cspotemplate
-  namespace: ${CS_NAMESPACE}
+  namespace: {{ cluster_namespace }}
 spec:
   template:
     spec:
       identityRef:
         kind: Secret
-        name: ${CS_SECRETNAME}
-EOF
-
-kubectl apply -f clusterstack.yaml
+        name: {{ cluster_secret }}
