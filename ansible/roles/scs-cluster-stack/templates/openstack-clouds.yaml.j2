@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 ---
 clouds:
-  "{{ openstack_cloud_name }}":
+  {{ openstack_cloud_name }}:
     auth:
       auth_url: "{{ openstack_auth_url }}"
       application_credential_id: "{{ openstack_application_credential_id }}"
