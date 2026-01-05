@@ -13,15 +13,18 @@ Our goal is to install and setup the necessary virtual infrastructure and the co
 
 * **Environment Variables**
 
-To setup a custom `clouds.yaml` that will be used by the Cluster Stack, a few variables should be set. They are basically:
+To setup a custom `clouds.yaml` that will be used by the Cluster Stack, a few variables should be set and exported to the shell environment.
 
- - 'OS_APPLICATION_CREDENTIAL_ID'
- - 'OS_APPLICATION_CREDENTIAL_SECRET'
- - 'OS_AUTH_URL'
- - 'OS_CLOUD'
- - 'OS_EXTERNAL_NETWORK_ID'
- - 'OS_INTERFACE'
- - 'OS_REGION_NAME'
+Those will be used while applying the Ansible Role. The variables are, in short, related to the setup of OpenStack's client credentials. Here is a list of them:
+
+  > 'OS_APPLICATION_CREDENTIAL_ID'
+  > 'OS_APPLICATION_CREDENTIAL_SECRET'
+  > 'OS_AUTH_URL'
+  > 'OS_CLOUD'
+  > 'OS_EXTERNAL_NETWORK_ID'
+  > 'OS_INTERFACE'
+  > 'OS_REGION_NAME'
+  > 'OS_SECRET'
 
 * **Submodules**
 
