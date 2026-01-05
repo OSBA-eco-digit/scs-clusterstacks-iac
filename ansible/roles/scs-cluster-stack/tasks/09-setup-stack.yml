@@ -14,3 +14,18 @@
       && {{ k3s_bin }} kubectl apply -f "{{scs_cluster_stack_home}}/scs-specs-clusterstack.yaml"
   args:
     executable: /bin/bash
+
+- name: Ensure ".config" directory exists for "root"
+  become: true
+  file:
+    mode: 0750
+    owner: "root"
+    path: "/root/.config"
+    recurse: yes
+    state: directory
+
+- name: Create symbolic link to ".config/openstack"
+  file:
+    dest: "/root/.config/openstack"
+    src: "{{scs_cluster_stack_home}}/.config/openstack"
+    state: link
