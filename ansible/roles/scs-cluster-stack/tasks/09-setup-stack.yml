@@ -6,12 +6,28 @@
     dest: "{{scs_cluster_stack_home}}/scs-specs-clusterstack.yaml"
     mode: 0444
 
+- name: Template "scs-specs-workloadcluster.yaml"
+  become: true
+  template:
+    src: scs-specs-workloadcluster.yaml.j2
+    dest: "{{scs_cluster_stack_home}}/scs-specs-workloadcluster.yaml"
+    mode: 0444
+
 - name: Apply specs from "scs-specs-clusterstack.yaml"
   become: true
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
       && {{ k3s_bin }} kubectl apply -f "{{scs_cluster_stack_home}}/scs-specs-clusterstack.yaml"
+  args:
+    executable: /bin/bash
+
+- name: Apply specs from "scs-specs-workloadcluster.yaml"
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && {{ k3s_bin }} kubectl apply -f "{{scs_cluster_stack_home}}/scs-specs-workloadcluster.yaml"
   args:
     executable: /bin/bash
 
