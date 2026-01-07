@@ -71,6 +71,7 @@ openstack_secret_name: "{{ lookup('env', 'OS_SECRET') }}"
 openstack_ssh_key_name: "mysshkey"
 openstack_region_name: "{{ lookup('env', 'OS_REGION_NAME') }}"
 openstack_interface: "{{ lookup('env', 'OS_INTERFACE') }}"
+openstack_worker_flavor: "{{ openstack_bastion_flavor }}"
 
 #
 # kubernetes
