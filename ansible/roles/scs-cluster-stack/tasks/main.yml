@@ -22,7 +22,7 @@
     - 03-install-k3s.yml
     - 04-install-components.yml
     - 05-setup-modules-sysctl.yml
-  # - 06-setup-capi.yml
+    - 06-setup-capi.yml
     - 07-setup-cso.yml
     - 08-setup-csp.yml
     - 09-setup-stack.yml
