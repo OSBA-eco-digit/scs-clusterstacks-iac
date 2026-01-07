@@ -72,6 +72,7 @@ openstack_ssh_key_name: "mysshkey"
 openstack_region_name: "{{ lookup('env', 'OS_REGION_NAME') }}"
 openstack_interface: "{{ lookup('env', 'OS_INTERFACE') }}"
 openstack_worker_flavor: "{{ openstack_bastion_flavor }}"
+openstack_worker_rootdisk_size: 32
 
 #
 # kubernetes
