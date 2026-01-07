@@ -25,6 +25,7 @@
     state: directory
 
 - name: Create symbolic link to ".config/openstack"
+  become: true
   file:
     dest: "/root/.config/openstack"
     src: "{{scs_cluster_stack_home}}/.config/openstack"
