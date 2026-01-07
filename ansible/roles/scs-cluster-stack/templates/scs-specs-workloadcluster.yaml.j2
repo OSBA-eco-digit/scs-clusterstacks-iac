@@ -19,9 +19,9 @@ spec:
   topology:
     variables:
       - name: controller_flavor
-        value: "SCS-2V-4-20s"
+        value: "{{ openstack_controlplane_flavor }}"
       - name: worker_flavor
-        value: "SCS-2V-4"
+        value: "{{ openstack_worker_flavor }}"
       - name: worker_root_disk
         value: 30
       - name: external_id
@@ -29,7 +29,7 @@ spec:
     class: {{ cluster_class }}
     controlPlane:
       replicas: 1
-    version: v{{ cluster_release_version }}
+    version: v{{ cluster_release }}
     workers:
       machineDeployments:
         - class: default-worker
