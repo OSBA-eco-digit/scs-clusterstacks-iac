@@ -26,6 +26,12 @@ Those will be used while applying the Ansible Role. The variables are, in short,
   > 'OS_REGION_NAME'
   > 'OS_SECRET'
 
+Should you be exclusively using the web interface, navigate to the `/identity/application_credentials/create/` route and generate the credentials from there.
+
+A bit more about application credentials used by `clouds.yaml`?
+  - https://docs.openstack.org/keystone/queens/user/application_credentials.html
+  - https://docs.redhat.com/en/documentation/red_hat_openstack_platform/16.0/html/users_and_identity_management_guide/application_credentials
+
 * **Submodules**
 
 This repository relies on submodules, please check those remotes before proceeding. Here's how:
