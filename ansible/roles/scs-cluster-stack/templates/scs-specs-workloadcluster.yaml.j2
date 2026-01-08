@@ -28,7 +28,7 @@ spec:
         value: "{{ openstack_external_network_id }}"
     class: "{{ cluster_class }} | replace(".", "-")"
     controlPlane:
-      replicas: {{cluster_controlplane_replicas }}
+      replicas: {{ cluster_controlplane_replicas }}
     version: v{{ cluster_release }}
     workers:
       machineDeployments:
