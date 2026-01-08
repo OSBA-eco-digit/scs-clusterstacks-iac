@@ -12,7 +12,7 @@ spec:
     pods:
       cidrBlocks:
         - {{ cluster_cidr_pods }}
-    serviceDomain: cluster.local
+    serviceDomain: {{ cluster_services_domain }}
     services:
       cidrBlocks:
         - {{ cluster_cidr_services }}
@@ -28,11 +28,11 @@ spec:
         value: "{{ openstack_external_network_id }}"
     class: "{{ cluster_class }} | replace(".", "-")"
     controlPlane:
-      replicas: 1
+      replicas: {{cluster_controlplane_replicas }}
     version: v{{ cluster_release }}
     workers:
       machineDeployments:
         - class: default-worker
           failureDomain: nova
           name: default-worker
-          replicas: 3
+          replicas: {{ cluster_workers_replicas }}
