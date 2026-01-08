@@ -23,10 +23,10 @@ spec:
       - name: worker_flavor
         value: "{{ openstack_worker_flavor }}"
       - name: worker_root_disk
-        value: "{{ openstack_worker_rootdisk_size }}"
+        value: {{ openstack_worker_rootdisk_size }}
       - name: external_id
         value: "{{ openstack_external_network_id }}"
-    class: "{{ cluster_class }} | replace(".", "-")"
+    class: "{{ cluster_class | replace(".", "-") }}"
     controlPlane:
       replicas: {{ cluster_controlplane_replicas }}
     version: v{{ cluster_release }}
