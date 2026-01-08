@@ -28,7 +28,7 @@
   args:
     executable: /bin/bash
 
-- name: Install cluster stack helper via 'Helm'
+- name: Install cluster stack helper
   become: true
   shell:
     cmd: |

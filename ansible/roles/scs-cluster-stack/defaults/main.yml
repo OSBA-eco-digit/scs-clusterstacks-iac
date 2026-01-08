@@ -88,6 +88,11 @@ kubernetes_release_version_patch: "2"
 kubernetes_service_host: "127.0.0.1"
 kubernetes_service_port: 6443
 
+csctl_bin: "/usr/local/bin/csctl"
+csctl_bin_sha256: "3f8344093e93c5c30a622bb81cb92bd31371882e91010d7b303914cceddbca51"
+csctl_bin_url: "https://github.com/SovereignCloudStack/csctl/releases/download/v{{clusterctl_release}}/csctl_{{csctl_release}}_linux_amd64.tar.gz"
+csctl_release: "0.0.5"
+
 clusterctl_bin: "/usr/local/bin/clusterctl"
 clusterctl_bin_sha256: "cedcb3ec1694dcae19f57368b69c4b9edce48648b2795fe5867edff27bfee65e"
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"

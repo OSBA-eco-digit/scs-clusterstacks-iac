@@ -1,4 +1,18 @@
 ---
+- name: Get "csctl"
+  become: true
+  unarchive:
+    dest: "/usr/local/bin/"
+    include:
+      - csctl
+    extra_opts: "--strip-components=1"
+    mode: 0755
+    remote_src: true
+    src: "{{ csctl_bin_url }}"
+  args:
+    creates: "{{ csctl_bin }}"
+  register: get_csctl
+
 - name: Check if "clusterctl" exists
   stat:
     path: "{{ clusterctl_bin }}"
@@ -20,7 +34,7 @@
     cmd: "strip {{ clusterctl_bin }}"
   when: get_clusterctl.changed
 
-- name: Get "helm" if it does not exist
+- name: Get "helm"
   become: true
   unarchive:
     dest: "/usr/local/bin/"
@@ -60,7 +74,7 @@
     path: "{{ envsubst_bin }}"
   register: check_envsubst
 
-- name: Get "envsubst" via Go
+- name: Get "envsubst"
   become: true
   command:
     cmd: "go install github.com/drone/envsubst/v2/cmd/envsubst@{{envsubst_release}}"
