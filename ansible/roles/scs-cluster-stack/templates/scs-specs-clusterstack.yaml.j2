@@ -9,7 +9,7 @@ spec:
   provider: openstack
   name: {{ cluster_series }}
   kubernetesVersion: "{{ cluster_release_version }}"
-  channel: {{ cluster_channel }}
+  channel: {{ cluster_series_channel }}
   autoSubscribe: false
   providerRef:
     apiVersion: infrastructure.clusterstack.x-k8s.io/v1alpha1
