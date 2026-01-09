@@ -82,6 +82,8 @@ k3s_bin: "/usr/local/bin/k3s"
 
 kubeconfig_path: "/etc/rancher/k3s/k3s.yaml"
 
+oras_release: "1.3.0"
+
 kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"
 kubernetes_release_version: "1.34"
 kubernetes_release_version_patch: "2"
