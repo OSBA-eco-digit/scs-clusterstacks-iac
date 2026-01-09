@@ -96,9 +96,9 @@ csctl_bin_url: "https://github.com/SovereignCloudStack/csctl/releases/download/v
 csctl_release: "0.0.5"
 
 clusterctl_bin: "/usr/local/bin/clusterctl"
-clusterctl_bin_sha256: "cedcb3ec1694dcae19f57368b69c4b9edce48648b2795fe5867edff27bfee65e"
+clusterctl_bin_sha256: "c80f6e7451355b34cca9f0ddf087bb4fa14a3fcef7833614b3d59e9b4b345036"
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
-clusterctl_release: "1.12.1"
+clusterctl_release: "1.10.10"
 
 envsubst_bin: "/usr/local/bin/envsubst"
 envsubst_helper: "/usr/local/bin/envsubst-helper.sh"
