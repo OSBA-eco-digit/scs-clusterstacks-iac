@@ -19,7 +19,7 @@
     chdir: "{{scs_cluster_stack_home}}/capi-k8s"
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && clusterctl generate cluster {{cluster_name}} --kubernetes-version v{{kubernetes_release}} -i openstack --flavor clusterclass \
+      && clusterctl generate cluster {{cluster_name}} -n {{ cluster_namespace }} --kubernetes-version v{{kubernetes_release}} -i openstack --flavor clusterclass \
          > {{scs_cluster_stack_home}}/class_{{cluster_name}}.yaml
   args:
     executable: /bin/bash
