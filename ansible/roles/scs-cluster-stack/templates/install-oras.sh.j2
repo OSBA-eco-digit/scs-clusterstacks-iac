@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#
+# {{ ansible_managed }}
+#
+
+curl -LO "https://github.com/oras-project/oras/releases/download/v${oras_release}/oras_${oras_release}_linux_amd64.tar.gz"
+mkdir -p oras-install/
+tar -zxf oras_${oras_release}_*.tar.gz -C oras-install/
+sudo mv oras-install/oras /usr/local/bin/
+rm -rf oras_${oras_release}_*.tar.gz oras-install/
