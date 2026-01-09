@@ -13,6 +13,30 @@
     dest: "{{scs_cluster_stack_home}}/scs-specs-workloadcluster.yaml"
     mode: 0444
 
+- name: Generate clusterclass template for "{{ cluster_name }}"
+  become: true
+  shell:
+    chdir: "{{scs_cluster_stack_home}}/capi-k8s"
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && clusterctl generate cluster {{cluster_name}} --kubernetes-version v{{kubernetes_release}} -i openstack --flavor clusterclass \
+         > {{scs_cluster_stack_home}}/class_{{cluster_name}}.yaml
+  args:
+    executable: /bin/bash
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
+
+- name: Apply clusterclass template for "{{ cluster_name }}"
+  become: true
+  shell:
+    cmd: |
+      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
+      && {{ k3s_bin }} kubectl apply -f "{{scs_cluster_stack_home}}/scs-specs-clusterstack.yaml"
+  args:
+    executable: /bin/bash
+
 - name: Apply specs from "scs-specs-clusterstack.yaml"
   become: true
   shell:
