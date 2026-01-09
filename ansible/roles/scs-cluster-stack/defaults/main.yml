@@ -120,9 +120,8 @@ kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/am
 cluster_api_version: "clusterstack.x-k8s.io/v1alpha1"
 cluster_api_version_addons: "addons.cluster.x-k8s.io/v1beta1"
 
-cluster_class: "openstack-{{cluster_name}}-{{kubernetes_release_version}}-{{cluster_series}}-{{cluster_version}}"
+cluster_class: "openstack-{{cluster_series}}-{{kubernetes_release_version}}-{{cluster_series_version}}"
 
-cluster_channel: "stable"
 cluster_cidr_pods: "172.16.0.0/18"
 cluster_cidr_services: "10.96.0.0/14"
 cluster_controlplane_replicas: 1
@@ -137,8 +136,9 @@ cluster_release_version: "{{kubernetes_release_version}}"
 cluster_release_version_patch: "{{kubernetes_release_version_patch}}"
 cluster_secret: "{{ openstack_secret_name }}"
 cluster_series: "scs2"
+cluster_series_channel: "stable"
+cluster_series_version: "v1"
 cluster_services_domain: "mydomain.local"
 cluster_variables: "apiserverloadbalancer: octavia-ovn"
-cluster_version: "v1"
 cluster_workers_replicas: 3
 cluster_wrkrnodes: 1
