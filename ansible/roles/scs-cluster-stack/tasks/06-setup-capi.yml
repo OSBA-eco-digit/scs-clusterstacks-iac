@@ -1,7 +1,7 @@
 ---
 - name: Initialize management cluster
   become: true
-  command: "clusterctl init -i openstack --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
+  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
