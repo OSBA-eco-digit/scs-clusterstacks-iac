@@ -1,94 +1,16 @@
 ---
-- name: Template "{{scs_cluster_stack_home}}/capi-k8s-specs.yaml"
+- name: Initialize management cluster
   become: true
-  template:
-    src: capi-k8s-specs.yaml.j2
-    dest: "{{scs_cluster_stack_home}}/capi-k8s-specs.yaml"
-    mode: 0440
-
-- name: Template "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
-  become: true
-  template:
-    src: capi-k8s-vars.rc.j2
-    dest: "{{scs_cluster_stack_home}}/capi-k8s-vars.rc"
-    mode: 0440
-
-- name: Initialize cluster
-  become: true
-  shell:
-    cmd: |
-      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && clusterctl init -i openstack \
-         --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}
-  args:
-    executable: /bin/bash
+  command: clusterctl init -i openstack --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
 
-# - name: Initialize canonical-kubernetes cluster
-#   become: true
-#   shell:
-#     cmd: |
-#       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-#       && clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack \
-#          --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}
-#   args:
-#     executable: /bin/bash
-#   environment:
-#     - CLUSTER_TOPOLOGY: true
-#     - EXP_CLUSTER_RESOURCE_SET: true
-#     - EXP_RUNTIME_SDK: true
-
-- name: Install OpenStack Resource Controller (ORC)
+- name: Bootstrap Cluster API implementation for OpenStack
   become: true
-  shell:
-    cmd: |
-      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && {{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}
-  args:
-    executable: /bin/bash
+  command: {{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
-
-# - name: Checkout "{{ canonical_capi_repo }}"
-#   become: true
-#   git:
-#     depth: 1
-#     dest: "{{scs_cluster_stack_home}}/capi-k8s"
-#     repo: "{{ canonical_capi_repo }}"
-#     single_branch: true
-#     update: false
-#     version: "{{ canonical_capi_version }}"
-#   environment:
-#     GIT_TERMINAL_PROMPT: 0
-# 
-# - name: Generate cluster specs from template
-#   become: true
-#   shell:
-#     chdir: "{{scs_cluster_stack_home}}/capi-k8s"
-#     cmd: |
-#       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-#       && clusterctl generate cluster {{ cluster_name }} --kubernetes-version v{{kubernetes_release}} --from {{scs_cluster_stack_home}}/capi-k8s-specs.yaml \
-#          > {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
-#   args:
-#     executable: /bin/bash
-#   environment:
-#     - CLUSTER_TOPOLOGY: true
-#     - EXP_CLUSTER_RESOURCE_SET: true
-#     - EXP_RUNTIME_SDK: true
-# 
-# - name: Apply cluster specs
-#   ignore_errors: true
-#   become: true
-#   shell:
-#     chdir: "{{scs_cluster_stack_home}}/capi-k8s"
-#     cmd: |
-#       sleep 13 \
-#       && source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-#       && {{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/cluster_{{cluster_name}}.yaml
-#   args:
-#     executable: /bin/bash
