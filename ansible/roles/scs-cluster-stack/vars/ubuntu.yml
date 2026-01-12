@@ -1,13 +1,5 @@
 ---
 scs_cluster_stack_dependencies:
-  - bash-completion
-  - ca-certificates 
   - curl
-  - git
   - golang
-  - jq
-  - procps
-  - python3-jsonpatch
   - python3-openstackclient
-  - python3-pip
-  - python3-pretty-yaml
