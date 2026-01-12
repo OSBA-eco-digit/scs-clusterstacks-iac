@@ -11,7 +11,7 @@ metadata:
   name: ${CLUSTER_NAME}-cloud-config
 
 ---
-apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+apiVersion: controlplane.cluster.x-k8s.io/v1beta1
 kind: CK8sControlPlane
 metadata:
   name: ${CLUSTER_NAME}
@@ -55,7 +55,7 @@ spec:
         kind: OpenStackMachineTemplate
 
 ---
-apiVersion: bootstrap.cluster.x-k8s.io/v1beta2
+apiVersion: bootstrap.cluster.x-k8s.io/v1beta1
 kind: CK8sConfigTemplate
 metadata:
   name: ${CLUSTER_NAME}-md-0
@@ -84,7 +84,7 @@ spec:
       cidrBlocks:
         - 10.152.183.0/24
   controlPlaneRef:
-    apiVersion: controlplane.cluster.x-k8s.io/v1beta2
+    apiVersion: controlplane.cluster.x-k8s.io/v1beta1
     kind: CK8sControlPlane
     name: ${CLUSTER_NAME}
   infrastructureRef:
