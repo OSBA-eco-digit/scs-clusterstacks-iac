@@ -1,7 +1,7 @@
 ---
 - name: Initialize management cluster
   become: true
-  command: clusterctl init -i openstack --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}
+  command: "clusterctl init -i openstack --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
@@ -9,7 +9,7 @@
 
 - name: Bootstrap Cluster API implementation for OpenStack
   become: true
-  command: {{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}
+  command: "{{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
