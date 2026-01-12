@@ -49,6 +49,10 @@
       && {{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}
   args:
     executable: /bin/bash
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
 
 # - name: Checkout "{{ canonical_capi_repo }}"
 #   become: true

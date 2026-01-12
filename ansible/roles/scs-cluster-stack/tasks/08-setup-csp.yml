@@ -27,6 +27,10 @@
       && {{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_provider_specs_yaml }}.envsubst
   args:
     executable: /bin/bash
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
 
 - name: Install cluster stack helper
   become: true
