@@ -29,11 +29,7 @@
 
 - name: Install cluster stack helper
   become: true
-  command:
-    cmd: |
-      helm upgrade --create-namespace \
-         -i csp-helper-{{cluster_namespace}} -n {{cluster_namespace}} \
-         {{scs_cluster_stack_helper}} -f {{openstack_clouds_yaml}}
+  command: "helm upgrade --create-namespace -i csp-helper-{{cluster_namespace}} -n {{cluster_namespace}} {{scs_cluster_stack_helper}} -f {{openstack_clouds_yaml}}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
