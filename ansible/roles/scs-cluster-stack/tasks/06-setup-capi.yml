@@ -18,7 +18,8 @@
   shell:
     cmd: |
       source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack --kubeconfig {{ kubeconfig_path }}
+      && clusterctl init -b canonical-kubernetes -c canonical-kubernetes -i openstack \
+         --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}
   args:
     executable: /bin/bash
   environment:
