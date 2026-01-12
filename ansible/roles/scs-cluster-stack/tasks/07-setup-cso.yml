@@ -42,12 +42,7 @@
 
 - name: Apply operator specs for SCS
   become: true
-  shell:
-    cmd: |
-      source {{scs_cluster_stack_home}}/capi-k8s-vars.rc \
-      && {{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
-  args:
-    executable: /bin/bash
+  command: "{{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_operator_specs_yaml }}.envsubst"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
