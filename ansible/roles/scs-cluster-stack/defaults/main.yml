@@ -137,7 +137,7 @@ cluster_release_version_patch: "{{kubernetes_release_version_patch}}"
 cluster_secret: "{{ openstack_secret_name }}"
 cluster_series: "scs2"
 cluster_series_channel: "stable"
-cluster_series_version: "v1"
+cluster_series_version: "v4"
 cluster_services_domain: "mydomain.local"
 cluster_variables: "apiserverloadbalancer: octavia-ovn"
 cluster_workers_replicas: 3
