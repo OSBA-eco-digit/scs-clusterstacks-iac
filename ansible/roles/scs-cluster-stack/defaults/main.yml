@@ -85,8 +85,8 @@ kubeconfig_path: "/etc/rancher/k3s/k3s.yaml"
 oras_release: "1.3.0"
 
 kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"
-kubernetes_release_version: "1.34"
-kubernetes_release_version_patch: "2"
+kubernetes_release_version: "1.33"
+kubernetes_release_version_patch: "7"
 kubernetes_service_host: "127.0.0.1"
 kubernetes_service_port: 6443
 
