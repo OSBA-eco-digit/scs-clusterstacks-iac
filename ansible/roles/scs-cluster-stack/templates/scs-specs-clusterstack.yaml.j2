@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 ---
-apiVersion: clusterstack.x-k8s.io/v1alpha1
+apiVersion: clusterstack.x-k8s.io/{{ cluster_api_contract }}
 kind: ClusterStack
 metadata:
   name: clusterstack
@@ -12,14 +12,14 @@ spec:
   channel: {{ cluster_series_channel }}
   autoSubscribe: false
   providerRef:
-    apiVersion: infrastructure.clusterstack.x-k8s.io/v1alpha1
+    apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract }}
     kind: OpenStackClusterStackReleaseTemplate
     name: cspotemplate
   versions:
     - {{ cluster_series_version }}
 
 ---
-apiVersion: infrastructure.clusterstack.x-k8s.io/v1alpha1
+apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract }}
 kind: OpenStackClusterStackReleaseTemplate
 metadata:
   name: cspotemplate

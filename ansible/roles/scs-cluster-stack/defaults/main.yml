@@ -118,13 +118,10 @@ kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/am
 # cluster stack settings
 #
 
-cluster_api_version: "clusterstack.x-k8s.io/v1alpha1"
-cluster_api_version_addons: "addons.cluster.x-k8s.io/v1beta1"
-
-cluster_class: "openstack-{{cluster_series}}-{{kubernetes_release_version}}-{{cluster_series_version}}"
-
+cluster_api_contract: "v1beta1"
 cluster_cidr_pods: "172.16.0.0/18"
 cluster_cidr_services: "10.96.0.0/14"
+cluster_class: "openstack-{{cluster_series}}-{{kubernetes_release_version}}-{{cluster_series_version}}"
 cluster_controlplane_replicas: 1
 cluster_ctrlnodes: 1
 cluster_external_network_id: "{{ openstack_external_network_id }}"
