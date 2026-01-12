@@ -63,6 +63,7 @@
     - EXP_RUNTIME_SDK: true
 
 - name: Apply cluster specs
+  ignore_errors: true
   become: true
   shell:
     chdir: "{{scs_cluster_stack_home}}/capi-k8s"
