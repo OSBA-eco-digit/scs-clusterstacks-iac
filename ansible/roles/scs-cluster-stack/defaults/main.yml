@@ -1,6 +1,7 @@
 ---
 scs_cluster_stack_group: "{{ scs_cluster_stack_user }}"
-scs_cluster_stack_helper: "{{scs_cluster_stack_helper_repo}}/releases/latest/download/openstack-csp-helper.tgz"
+scs_cluster_stack_helper: "{{scs_cluster_stack_helper_repo}}/releases/download/v{{scs_cluster_stack_helper_release}}/openstack-csp-helper.tgz"
+scs_cluster_stack_helper_release: "0.10.0"
 scs_cluster_stack_helper_repo: "https://github.com/SovereignCloudStack/openstack-csp-helper"
 scs_cluster_stack_home: "/var/lib/{{ scs_cluster_stack_user }}"
 scs_cluster_stack_operator_repo: "https://github.com/SovereignCloudStack/cluster-stack-operator"
