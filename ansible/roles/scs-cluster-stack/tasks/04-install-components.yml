@@ -6,20 +6,6 @@
     dest: "{{scs_cluster_stack_home}}/tool-install-oras.sh"
     mode: 0555
 
-# - name: Get "csctl"
-#   become: true
-#   unarchive:
-#     dest: "/usr/local/bin/"
-#     include:
-#       - csctl
-#     extra_opts: "--strip-components=1"
-#     mode: 0755
-#     remote_src: true
-#     src: "{{ csctl_bin_url }}"
-#   args:
-#     creates: "{{ csctl_bin }}"
-#   register: get_csctl
-
 - name: Check if "clusterctl" exists
   stat:
     path: "{{ clusterctl_bin }}"
@@ -71,48 +57,6 @@
     creates: "{{ helm_bin }}"
   register: get_helm
 
-# - name: Check if "kubectl" exists
-#   stat:
-#     path: "{{ kubectl_bin }}"
-#   register: check_kubectl
-# 
-# - name: Get "kubectl"
-#   become: true
-#   get_url:
-#     url: "{{ kubectl_bin_url }}"
-#     dest: "{{ kubectl_bin }}"
-#     checksum: "sha256:{{kubectl_bin_sha256}}"
-#     mode: 0755
-#   when: not check_kubectl.stat.exists
-#   register: get_kubectl
-# 
-# - name: Strip "kubectl"
-#   become: true
-#   command:
-#     cmd: "strip {{ kubectl_bin }}"
-#   when: get_kubectl.changed
-# 
-# - name: Generate bash completions for "kubectl"
-#   become: true
-#   command:
-#     cmd: "{{ kubectl_bin }} completion bash"
-#   register: completions_kubectl
-#   args:
-#     creates: "/etc/bash_completion.d/kubectl"
-# 
-# - name: Copy completions for "kubectl" to a file
-#   become: true
-#   copy:
-#     content: "{{ completions_clusterctl.stdout }}"
-#     dest:  "/etc/bash_completion.d/kubectl"
-#     mode: 0444
-#   when: completions_kubectl.changed
-
-# - name: Check if "envsubst" exists
-#   stat:
-#     path: "{{ envsubst_bin }}"
-#   register: check_envsubst
-
 - name: Get "envsubst"
   become: true
   command:
@@ -122,7 +66,6 @@
     creates: "{{ envsubst_bin }}"
   environment:
     GOBIN: "/usr/local/bin"
-# when: not check_envsubst.stat.exists
 
 - name: Strip "envsubst"
   become: true
