@@ -117,12 +117,12 @@
   become: true
   command:
     cmd: "go install github.com/drone/envsubst/v2/cmd/envsubst@{{envsubst_release}}"
-  when: not check_envsubst.stat.exists
   register: get_envsubst
   args:
     creates: "{{ envsubst_bin }}"
   environment:
     GOBIN: "/usr/local/bin"
+# when: not check_envsubst.stat.exists
 
 - name: Strip "envsubst"
   become: true
