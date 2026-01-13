@@ -22,7 +22,7 @@
 
 - name: Apply specs from "scs-resourceset.yaml"
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/scs-resourceset.yaml"
+  command: "{{ k3s_bin }} kubectl apply --validate=false -f {{scs_cluster_stack_home}}/scs-resourceset.yaml"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
