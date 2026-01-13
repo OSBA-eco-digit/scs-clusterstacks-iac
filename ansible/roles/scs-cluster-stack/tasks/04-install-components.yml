@@ -119,7 +119,8 @@
     cmd: "go install github.com/drone/envsubst/v2/cmd/envsubst@{{envsubst_release}}"
   when: not check_envsubst.stat.exists
   register: get_envsubst
-  creates: "{{ envsubst_bin }}"
+  args:
+    creates: "{{ envsubst_bin }}"
   environment:
     GOBIN: "/usr/local/bin"
 

@@ -13,12 +13,12 @@
     dest: "{{ envsubst_helper }}"
     mode: 0444
 
-- name: Template "scs-operator.yaml""
-  become: true
-  template:
-    src: scs-operator.yaml.j2
-    dest: "{{scs_cluster_stack_home}}/scs-operator.yaml"
-    mode: 0444
+# - name: Template "scs-operator.yaml"
+#   become: true
+#   template:
+#     src: scs-operator.yaml.j2
+#     dest: "{{scs_cluster_stack_home}}/scs-operator.yaml"
+#     mode: 0444
 
 - name: Check if "{{scs_cluster_stack_operator_specs_yaml}}" exists
   become: true
