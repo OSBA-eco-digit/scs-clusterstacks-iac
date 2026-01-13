@@ -15,6 +15,29 @@ spec:
       kind: Secret
 
 ---
+apiVersion: clusteraddonconfig.x-k8s.io/{{ cluster_api_contract_addons }}
+clusterAddonVersion: clusteraddons.clusterstack.x-k8s.io/{{ cluster_api_contract_addons }}
+addonStages:
+  AfterControlPlaneInitialized:
+    - name: cni
+      action: apply
+    - name: metrics-server
+      action: apply
+    - name: csi
+      action: apply
+    - name: ccm
+      action: apply
+  BeforeClusterUpgrade:
+    - name: cni
+      action: apply
+    - name: metrics-server
+      action: apply
+    - name: csi
+      action: apply
+    - name: ccm
+      action: apply
+
+---
 apiVersion: csctl.clusterstack.x-k8s.io/{{cluster_api_contract_clusterstack_csctl}}
 config:
   clusterStackName: {{cluster_series}}
