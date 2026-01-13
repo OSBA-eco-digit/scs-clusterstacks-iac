@@ -1,5 +1,6 @@
 ---
 scs_cluster_stack_dependencies:
+  - bash-completion
   - curl
   - golang
   - python3-openstackclient
