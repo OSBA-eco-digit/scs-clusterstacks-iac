@@ -1,4 +1,11 @@
 ---
+- name: Template "scs-resourceset.yaml"
+  become: true
+  template:
+    src: scs-resourceset.yaml.j2
+    dest: "{{scs_cluster_stack_home}}/scs-resourceset.yaml"
+    mode: 0444
+
 - name: Template "scs-specs-clusterstack.yaml"
   become: true
   template:
@@ -12,6 +19,14 @@
     src: scs-specs-workloadcluster.yaml.j2
     dest: "{{scs_cluster_stack_home}}/scs-specs-workloadcluster.yaml"
     mode: 0444
+
+- name: Apply specs from "scs-resourceset.yaml"
+  become: true
+  command: "{{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/scs-resourceset.yaml"
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
 
 - name: Apply specs from "scs-specs-clusterstack.yaml"
   become: true

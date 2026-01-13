@@ -88,7 +88,7 @@ oras_release: "1.3.0"
 
 kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"
 kubernetes_release_version: "1.33"
-kubernetes_release_version_patch: "7"
+kubernetes_release_version_patch: "5"
 kubernetes_service_host: "127.0.0.1"
 kubernetes_service_port: 6443
 
@@ -120,6 +120,7 @@ kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/am
 #
 
 cluster_api_contract: "v1beta1"
+cluster_api_contract_addons: "{{ cluster_api_contract }}"
 cluster_api_contract_clusterstack: "v1alpha1"
 cluster_api_contract_clusterstack_infrastructure: "{{ cluster_api_contract_clusterstack }}"
 cluster_cidr_pods: "172.16.0.0/18"
