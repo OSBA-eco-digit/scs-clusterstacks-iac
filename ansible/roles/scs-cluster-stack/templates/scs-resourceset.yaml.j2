@@ -13,3 +13,12 @@ spec:
   resources:
     - name: clouds-yaml
       kind: Secret
+
+---
+apiVersion: csctl.clusterstack.x-k8s.io/{{cluster_api_contract_clusterstack_csctl}}
+config:
+  clusterStackName: {{cluster_series}}
+  kubernetesVersion: v{{kubernetes_release}}
+  provider:
+    apiVersion: openstack.csctl.clusterstack.x-k8s.io/{{cluster_api_contract_clusterstack_csctl}}
+    type: openstack

@@ -122,6 +122,7 @@ kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/am
 cluster_api_contract: "v1beta1"
 cluster_api_contract_addons: "{{ cluster_api_contract }}"
 cluster_api_contract_clusterstack: "v1alpha1"
+cluster_api_contract_clusterstack_csctl: "{{ cluster_api_contract_clusterstack }}"
 cluster_api_contract_clusterstack_infrastructure: "{{ cluster_api_contract_clusterstack }}"
 cluster_cidr_pods: "172.16.0.0/18"
 cluster_cidr_services: "10.96.0.0/14"

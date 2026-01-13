@@ -11,6 +11,7 @@ spec:
   kubernetesVersion: "{{ cluster_release_version }}"
   channel: {{ cluster_series_channel }}
   autoSubscribe: false
+  noProvider: true
   providerRef:
     apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack_infrastructure }}
     kind: OpenStackClusterStackReleaseTemplate
