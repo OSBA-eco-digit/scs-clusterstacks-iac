@@ -41,6 +41,12 @@
     cmd: "strip {{ clusterctl_bin }}"
   when: get_clusterctl.changed
 
+- name: Generate bash completions for "clusterctl"
+  become: true
+  command:
+    cmd: "{{ clusterctl_bin }} completion bash >/etc/bash_completion.d/clusterctl"
+  when: get_clusterctl.changed
+
 - name: Get "helm"
   become: true
   unarchive:
@@ -74,6 +80,12 @@
   become: true
   command:
     cmd: "strip {{ kubectl_bin }}"
+  when: get_kubectl.changed
+
+- name: Generate bash completions for "kubectl"
+  become: true
+  command:
+    cmd: "{{ kubectl_bin }} completion bash >/etc/bash_completion.d/kubectl"
   when: get_kubectl.changed
 
 - name: Check if "envsubst" exists
