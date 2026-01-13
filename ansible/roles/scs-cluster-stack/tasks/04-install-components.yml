@@ -1,4 +1,11 @@
 ---
+- name: Template "tool-install-oras.sh"
+  become: true
+  template:
+    src: tool-install-oras.sh.j2
+    dest: "{{scs_cluster_stack_home}}/tool-install-oras.sh"
+    mode: 0555
+
 - name: Get "csctl"
   become: true
   unarchive:
