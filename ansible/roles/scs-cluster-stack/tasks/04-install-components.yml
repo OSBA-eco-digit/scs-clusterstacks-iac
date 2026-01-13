@@ -95,7 +95,7 @@
 - name: Generate bash completions for "kubectl"
   become: true
   command:
-    cmd: "{{ kubectl_bin }} completion bash >/etc/bash_completion.d/kubectl"
+    cmd: "{{ kubectl_bin }} completion bash"
   register: completions_kubectl
   args:
     creates: "/etc/bash_completion.d/kubectl"
