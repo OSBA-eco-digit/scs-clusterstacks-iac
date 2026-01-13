@@ -44,8 +44,18 @@
 - name: Generate bash completions for "clusterctl"
   become: true
   command:
-    cmd: "{{ clusterctl_bin }} completion bash >/etc/bash_completion.d/clusterctl"
-  when: get_clusterctl.changed
+    cmd: "{{ clusterctl_bin }} completion bash"
+  register: completions_clusterctl
+  args:
+    creates: "/etc/bash_completion.d/clusterctl"
+
+- name: Copy completions for "clusterctl" to a file
+  become: true
+  copy:
+    content: "{{ completions_clusterctl.stdout }}"
+    dest:  "/etc/bash_completion.d/clusterctl"
+    mode: 0444
+  when: completions_clusterctl.changed
 
 - name: Get "helm"
   become: true
@@ -86,7 +96,18 @@
   become: true
   command:
     cmd: "{{ kubectl_bin }} completion bash >/etc/bash_completion.d/kubectl"
-  when: get_kubectl.changed
+  register: completions_kubectl
+  args:
+    creates: "/etc/bash_completion.d/kubectl"
+
+- name: Copy completions for "kubectl" to a file
+  become: true
+  copy:
+    content: "{{ completions_clusterctl.stdout }}"
+    dest:  "/etc/bash_completion.d/kubectl"
+    mode: 0444
+  when: completions_kubectl.changed
+
 
 - name: Check if "envsubst" exists
   stat:
