@@ -15,6 +15,12 @@
 - name: Apply 'k3s' role
   include_role:
     name: k3s
+  vars:
+    k3s_agent:
+      node-label:
+        - "control-plane=true"
+        - "worker=true"
+        - "workload=true"
 
 - name: Generate random token key
   become: true
