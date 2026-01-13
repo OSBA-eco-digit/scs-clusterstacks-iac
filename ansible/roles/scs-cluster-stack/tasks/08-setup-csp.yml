@@ -22,15 +22,7 @@
 - name: Apply provider specs for SCS
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_provider_specs_yaml }}.envsubst"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true
 
 - name: Install cluster stack helper
   become: true
   command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i csp-helper-{{cluster_namespace}} -n {{cluster_namespace}} {{scs_cluster_stack_helper}} -f {{openstack_clouds_yaml}}"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true

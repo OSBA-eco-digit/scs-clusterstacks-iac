@@ -43,7 +43,3 @@
 - name: Apply operator specs for SCS
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_operator_specs_yaml }}.envsubst"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true

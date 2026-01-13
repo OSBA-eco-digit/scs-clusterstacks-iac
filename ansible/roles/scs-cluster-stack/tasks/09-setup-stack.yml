@@ -23,26 +23,14 @@
 - name: Apply specs from "scs-resourceset.yaml"
   become: true
   command: "{{ k3s_bin }} kubectl apply --validate=false -f {{scs_cluster_stack_home}}/scs-resourceset.yaml"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true
 
 - name: Apply specs from "scs-specs-clusterstack.yaml"
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/scs-specs-clusterstack.yaml"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true
 
 - name: Apply specs from "scs-specs-workloadcluster.yaml"
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{scs_cluster_stack_home}}/scs-specs-workloadcluster.yaml"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true
 
 - name: Ensure ".config" directory exists for "root"
   become: true
