@@ -1,4 +1,9 @@
 # {{ ansible_managed }}
+
+#
+# https://github.com/SovereignCloudStack/cluster-stacks/tree/main/providers/openstack/scs2
+#
+
 ---
 apiVersion: cluster.x-k8s.io/v1beta1
 kind: Cluster
@@ -27,12 +32,12 @@ spec:
       - name: external_id
         value: "{{ openstack_external_network_id }}"
     class: "{{ cluster_class | replace(".", "-") }}"
+    classNamespace: {{ cluster_namespace }}
     controlPlane:
       replicas: {{ cluster_controlplane_replicas }}
     version: v{{ cluster_release }}
     workers:
       machineDeployments:
         - class: default-worker
-          failureDomain: nova
-          name: default-worker
+          name: md-0
           replicas: {{ cluster_workers_replicas }}

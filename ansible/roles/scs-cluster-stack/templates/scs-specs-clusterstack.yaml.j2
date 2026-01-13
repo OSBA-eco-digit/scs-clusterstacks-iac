@@ -1,4 +1,9 @@
 # {{ ansible_managed }}
+
+#
+# https://github.com/SovereignCloudStack/cluster-stacks/tree/main/providers/openstack/scs2
+#
+
 ---
 apiVersion: clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack }}
 kind: ClusterStack
@@ -6,28 +11,15 @@ metadata:
   name: clusterstack
   namespace: {{ cluster_namespace }}
 spec:
-  provider: openstack
-  name: {{ cluster_series }}
-  kubernetesVersion: "{{ cluster_release_version }}"
-  channel: {{ cluster_series_channel }}
   autoSubscribe: false
+  channel: {{ cluster_series_channel }}
+  kubernetesVersion: "{{ cluster_release_version }}"
+  name: {{ cluster_series }}
   noProvider: true
+  provider: openstack
   providerRef:
     apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack_infrastructure }}
     kind: OpenStackClusterStackReleaseTemplate
     name: cspotemplate
   versions:
     - {{ cluster_series_version }}
-
----
-apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack_infrastructure }}
-kind: OpenStackClusterStackReleaseTemplate
-metadata:
-  name: cspotemplate
-  namespace: {{ cluster_namespace }}
-spec:
-  template:
-    spec:
-      identityRef:
-        kind: Secret
-        name: {{ cluster_secret }}
