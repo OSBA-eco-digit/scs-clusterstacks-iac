@@ -43,7 +43,7 @@ metadata:
   namespace: default
 spec:
   clusterName: {{cluster_name}}
-  replicas: ${WORKER_MACHINE_COUNT}
+  replicas: {{cluster_workers_replicas}}
   selector:
     matchLabels: null
   template:
@@ -54,12 +54,12 @@ spec:
           kind: KThreesConfigTemplate
           name: {{cluster_name}}-md-0
       clusterName: {{cluster_name}}
-      failureDomain: ${OPENSTACK_FAILURE_DOMAIN}
+      failureDomain: {{openstack_failure_domain}}
       infrastructureRef:
         apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
         kind: OpenStackMachineTemplate
         name: {{cluster_name}}-md-0
-      version: ${KUBERNETES_VERSION}
+      version: {{kubernetes_release_version}}
 
 ---
 apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
@@ -73,7 +73,7 @@ spec:
     kind: OpenStackMachineTemplate
     name: {{cluster_name}}-control-plane
   replicas: 1
-  version: ${KUBERNETES_VERSION}
+  version: {{kubernetes_release_version}}
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
@@ -83,16 +83,16 @@ metadata:
   namespace: default
 spec:
   externalNetwork:
-    id: ${OPENSTACK_EXTERNAL_NETWORK_ID}
+    id: {{openstack_external_network_id}}
   identityRef:
-    cloudName: ${OPENSTACK_CLOUD}
+    cloudName: {{openstack_cloud_name}}
     name: k3s-cloud-config
   managedSecurityGroups: {}
   disablePortSecurity: true
   managedSubnets:
   - cidr: 10.6.0.0/24
     dnsNameservers:
-    - ${OPENSTACK_DNS_NAMESERVERS}
+    - 1.1.1.1
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
@@ -103,11 +103,11 @@ metadata:
 spec:
   template:
     spec:
-      flavor: ${OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR}
+      flavor: {{openstack_controlplane_flavor}}
       image:
         filter:
-          name: ${OPENSTACK_IMAGE_NAME}
-      sshKeyName: ${OPENSTACK_SSH_KEY_NAME}
+          name: {{openstack_image_name}}
+      sshKeyName: {{openstack_ssh_key_name}}
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
@@ -118,8 +118,8 @@ metadata:
 spec:
   template:
     spec:
-      flavor: ${OPENSTACK_NODE_MACHINE_FLAVOR}
+      flavor: {{openstack_node_flavor}}
       image:
         filter:
-          name: ${OPENSTACK_IMAGE_NAME}
-      sshKeyName: ${OPENSTACK_SSH_KEY_NAME}
+          name: {{openstack_image_name}}
+      sshKeyName: {{openstack_ssh_key_name}}

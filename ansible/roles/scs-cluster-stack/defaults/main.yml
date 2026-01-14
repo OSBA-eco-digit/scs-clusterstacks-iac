@@ -56,6 +56,7 @@ docker_gpg_keyserver: "https://keys.openpgp.org"
 # openstack
 #
 
+openstack_failure_domain: "myfailuredomain.local""
 openstack_application_credential_id: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_ID') }}"
 openstack_application_credential_secret: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_SECRET') }}"
 openstack_auth_url: "{{ lookup('env', 'OS_AUTH_URL') }}"
