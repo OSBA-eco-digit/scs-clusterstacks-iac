@@ -16,7 +16,7 @@
 - name: Generate generic secret for OpenStack from "clouds.yaml"
   become: true
   command:
-    cmd: "{{k3s_bin}} kubectl create secret generic openstack -n {{cluster_namespace}} --from-file=clouds.yaml={{clouds_yaml_path}} --dry-run=client -o yaml"
+    cmd: "{{k3s_bin}} kubectl create secret generic openstack -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
   register: secrets_openstack_generic
 
 - name: Copy generated secret to a file
