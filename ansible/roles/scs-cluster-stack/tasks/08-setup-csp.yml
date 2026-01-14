@@ -23,6 +23,6 @@
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_provider_specs_yaml }}.envsubst"
 
-- name: Install cluster stack helper
-  become: true
-  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i csp-helper-{{cluster_namespace}} -n {{cluster_namespace}} {{scs_cluster_stack_helper}} -f {{openstack_clouds_yaml}}"
+# - name: Install cluster stack helper
+#   become: true
+#   command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i csp-helper-{{cluster_namespace}} -n {{cluster_namespace}} {{scs_cluster_stack_helper}} -f {{openstack_clouds_yaml}}"
