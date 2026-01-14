@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+---
+providers:
+  - name: "k3s"
+    url: "https://github.com/k3s-io/cluster-api-k3s/releases/v{{k3s_capi_release}}/bootstrap-components.yaml"
+    type: "BootstrapProvider"
+  - name: "k3s"
+    url: "https://github.com/k3s-io/cluster-api-k3s/releases/v{{k3s_capi_release}}/control-plane-components.yaml"
+    type: "ControlPlaneProvider"
