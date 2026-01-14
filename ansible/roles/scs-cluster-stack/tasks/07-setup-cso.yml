@@ -94,6 +94,6 @@
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_operator_specs_yaml }}.envsubst"
 
-- name: Install cluster stack operator helper
-  become: true
-  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
+# - name: Install cluster stack operator helper
+#   become: true
+#   command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
