@@ -1,0 +1,125 @@
+# {{ ansible_managed }}
+
+#
+# https://raw.githubusercontent.com/k3s-io/cluster-api-k3s/refs/heads/main/samples/openstack/k3s-template.yaml
+#
+
+---
+apiVersion: bootstrap.cluster.x-k8s.io/{{cluster_api_contract}}
+kind: KThreesConfigTemplate
+metadata:
+  name: {{cluster_name}}-md-0
+  namespace: default
+spec:
+  template:
+    spec:
+
+---
+apiVersion: cluster.x-k8s.io/{{cluster_api_contract}}
+kind: Cluster
+metadata:
+  name: {{cluster_name}}
+  namespace: default
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    serviceDomain: cluster.local
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
+    kind: KThreesControlPlane
+    name: {{cluster_name}}-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
+    kind: OpenStackCluster
+    name: {{cluster_name}}
+
+---
+apiVersion: cluster.x-k8s.io/{{cluster_api_contract}}
+kind: MachineDeployment
+metadata:
+  name: {{cluster_name}}-md-0
+  namespace: default
+spec:
+  clusterName: {{cluster_name}}
+  replicas: ${WORKER_MACHINE_COUNT}
+  selector:
+    matchLabels: null
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/{{cluster_api_contract}}
+          kind: KThreesConfigTemplate
+          name: {{cluster_name}}-md-0
+      clusterName: {{cluster_name}}
+      failureDomain: ${OPENSTACK_FAILURE_DOMAIN}
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
+        kind: OpenStackMachineTemplate
+        name: {{cluster_name}}-md-0
+      version: ${KUBERNETES_VERSION}
+
+---
+apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
+kind: KThreesControlPlane
+metadata:
+  name: {{cluster_name}}-control-plane
+  namespace: default
+spec:
+  infrastructureTemplate:
+    apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
+    kind: OpenStackMachineTemplate
+    name: {{cluster_name}}-control-plane
+  replicas: 1
+  version: ${KUBERNETES_VERSION}
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
+kind: OpenStackCluster
+metadata:
+  name: {{cluster_name}}
+  namespace: default
+spec:
+  externalNetwork:
+    id: ${OPENSTACK_EXTERNAL_NETWORK_ID}
+  identityRef:
+    cloudName: ${OPENSTACK_CLOUD}
+    name: k3s-cloud-config
+  managedSecurityGroups: {}
+  disablePortSecurity: true
+  managedSubnets:
+  - cidr: 10.6.0.0/24
+    dnsNameservers:
+    - ${OPENSTACK_DNS_NAMESERVERS}
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
+kind: OpenStackMachineTemplate
+metadata:
+  name: {{cluster_name}}-control-plane
+  namespace: default
+spec:
+  template:
+    spec:
+      flavor: ${OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR}
+      image:
+        filter:
+          name: ${OPENSTACK_IMAGE_NAME}
+      sshKeyName: ${OPENSTACK_SSH_KEY_NAME}
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
+kind: OpenStackMachineTemplate
+metadata:
+  name: {{cluster_name}}-md-0
+  namespace: default
+spec:
+  template:
+    spec:
+      flavor: ${OPENSTACK_NODE_MACHINE_FLAVOR}
+      image:
+        filter:
+          name: ${OPENSTACK_IMAGE_NAME}
+      sshKeyName: ${OPENSTACK_SSH_KEY_NAME}
