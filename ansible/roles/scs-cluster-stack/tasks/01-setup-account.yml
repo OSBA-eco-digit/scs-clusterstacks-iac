@@ -59,6 +59,13 @@
     recurse: yes
     state: directory
 
+- name: Create symbolic link to ".config/cluster-api"
+  become: true
+  file:
+    dest: "/root/.config/cluster-api"
+    src: "{{scs_cluster_stack_home}}/.config/cluster-api"
+    state: link
+
 - name: Create symbolic link to ".config/openstack"
   become: true
   file:

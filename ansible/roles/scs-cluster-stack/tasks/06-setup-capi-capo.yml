@@ -1,4 +1,11 @@
 ---
+- name: Template "clusterctl.yaml"
+  become: true
+  template:
+    src: clusterctl.yaml.j2
+    dest: "{{scs_cluster_stack_home}}/.config/cluster-api/clusterctl.yaml"
+    mode: 0444
+
 - name: Bootstrap Cluster API implementation for OpenStack
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}"
@@ -9,7 +16,7 @@
 
 - name: Initialize management cluster
   become: true
-  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
+  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --bootstrap k3s --control-plane k3s --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
