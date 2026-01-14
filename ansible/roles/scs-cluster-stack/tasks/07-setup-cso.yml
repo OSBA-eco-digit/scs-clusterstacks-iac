@@ -13,12 +13,24 @@
     dest: "{{ envsubst_helper }}"
     mode: 0444
 
-# - name: Template "scs-operator.yaml"
-#   become: true
-#   template:
-#     src: scs-operator.yaml.j2
-#     dest: "{{scs_cluster_stack_home}}/scs-operator.yaml"
-#     mode: 0444
+- name: Generate generic secret for OpenStack from "clouds.yaml"
+  become: true
+  command:
+    cmd: "{{k3s_bin}} kubectl create secret generic openstack -n {{cluster_namespace}} --from-file=clouds.yaml={{clouds_yaml_path}} --dry-run=client -o yaml"
+  register: secrets_openstack_generic
+
+- name: Copy generated secret to a file
+  become: true
+  copy:
+    content: "{{ secrets_openstack_generic.stdout }}"
+    dest:  "{{scs_cluster_stack_home}}/.secret"
+    mode: 0444
+  when: secrets_openstack_generic.changed
+
+- name: Apply generated secret
+  become: true
+  command:
+    cmd: "{{k3s_bin}} kubectl apply -f {{scs_cluster_stack_home}}/.secret"
 
 - name: Check if "{{scs_cluster_stack_operator_specs_yaml}}" exists
   become: true
