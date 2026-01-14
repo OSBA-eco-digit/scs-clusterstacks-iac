@@ -1,15 +1,15 @@
 ---
-- name: Initialize management cluster
+- name: Bootstrap Cluster API implementation for OpenStack
   become: true
-  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
+  command: "{{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
 
-- name: Bootstrap Cluster API implementation for OpenStack
+- name: Initialize management cluster
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}"
+  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
