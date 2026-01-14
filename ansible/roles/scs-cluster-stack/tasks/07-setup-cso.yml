@@ -96,4 +96,4 @@
 
 - name: Install cluster stack operator helper
   become: true
-  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
+  command: "helm upgrade --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
