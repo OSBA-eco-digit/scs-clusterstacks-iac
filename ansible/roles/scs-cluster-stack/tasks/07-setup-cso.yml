@@ -13,6 +13,11 @@
     dest: "{{ envsubst_helper }}"
     mode: 0444
 
+- name: Ensure we have the namespace available before generating secrets
+  become: true
+  command:
+    cmd: "{{k3s_bin}} kubectl create namespace {{cluster_namespace}}"
+
 - name: Generate generic secret for "openstack" capo
   become: true
   command:
