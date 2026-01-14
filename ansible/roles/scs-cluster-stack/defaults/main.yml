@@ -83,7 +83,7 @@ openstack_worker_rootdisk_size: 32
 #
 
 k3s_bin: "/usr/local/bin/k3s"
-
+kind_release: "0.31.0"
 kubeconfig_path: "/etc/rancher/k3s/k3s.yaml"
 
 oras_release: "1.3.0"
