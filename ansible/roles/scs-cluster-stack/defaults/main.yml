@@ -125,8 +125,8 @@ cluster_api_contract_clusterstack: "v1alpha1"
 cluster_api_contract_clusterstack_addons: "{{ cluster_api_contract_clusterstack }}"
 cluster_api_contract_clusterstack_csctl: "{{ cluster_api_contract_clusterstack }}"
 cluster_api_contract_clusterstack_infrastructure: "{{ cluster_api_contract_clusterstack }}"
-cluster_cidr_pods: "172.16.0.0/18"
-cluster_cidr_services: "10.96.0.0/14"
+cluster_cidr_pods: "172.16.0.0/16"
+cluster_cidr_services: "10.96.0.0/12"
 cluster_class: "openstack-{{cluster_series}}-{{kubernetes_release_version}}-{{cluster_series_version}}"
 cluster_controlplane_replicas: 1
 cluster_ctrlnodes: 1
