@@ -59,7 +59,7 @@ spec:
         apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
         kind: OpenStackMachineTemplate
         name: {{cluster_name}}-md-0
-      version: {{kubernetes_release_version}}
+      version: "{{kubernetes_release_version}}"
 
 ---
 apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
@@ -73,7 +73,7 @@ spec:
     kind: OpenStackMachineTemplate
     name: {{cluster_name}}-control-plane
   replicas: 1
-  version: {{kubernetes_release_version}}
+  version: "{{kubernetes_release_version}}"
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
