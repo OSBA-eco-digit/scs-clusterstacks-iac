@@ -1,10 +1,10 @@
 ---
-- name: Template "cluster-class.yaml"
-  become: true
-  template:
-    src: cluster-class.yaml.j2
-    dest: "{{scs_cluster_stack_home}}/cluster-class.yaml"
-    mode: 0444
+# - name: Template "cluster-class.yaml"
+#   become: true
+#   template:
+#     src: cluster-class.yaml.j2
+#     dest: "{{scs_cluster_stack_home}}/cluster-class.yaml"
+#     mode: 0444
 
 - name: Template "scs-resourceset.yaml"
   become: true
@@ -34,9 +34,9 @@
     dest: "{{scs_cluster_stack_home}}/scs-specs-workloadcluster-k3s.yaml"
     mode: 0444
 
-- name: Apply specs from "cluster-class.yaml"
-  become: true
-  command: "{{ k3s_bin }} kubectl apply --validate=false -f {{scs_cluster_stack_home}}/cluster-class.yaml"
+# - name: Apply specs from "cluster-class.yaml"
+#   become: true
+#   command: "{{ k3s_bin }} kubectl apply --validate=false -f {{scs_cluster_stack_home}}/cluster-class.yaml"
 
 - name: Apply specs from "scs-resourceset.yaml"
   become: true
