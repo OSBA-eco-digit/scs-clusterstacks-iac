@@ -17,6 +17,8 @@
   become: true
   command:
     cmd: "{{k3s_bin}} kubectl create namespace {{cluster_namespace}}"
+  ignore_errors: true
+  no_log: true
 
 - name: Generate generic secret for "openstack" capo
   become: true
