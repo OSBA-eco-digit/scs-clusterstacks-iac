@@ -9,7 +9,15 @@ Here's the current list of supported providers:
   - plusserver
   - scaleup
 
-Our goal is to install and setup the necessary virtual infrastructure and the companents to run a Kubernetes Cluster Stack.
+Our goal is to install and setup the necessary virtual infrastructure and the companents to run a Kubernetes Cluster Stack. For that we would need to get Cluster API up and running as well.
+
+* **Official Documentations**
+
+Here's a list of some of documentations we based this work on:
+
+  - https://cluster-api-openstack.sigs.k8s.io/getting-started.html
+  - https://github.com/SovereignCloudStack/cluster-stacks/blob/main/providers/openstack/scs2/README.md
+  - https://github.com/k3s-io/cluster-api-k3s/blob/main/README.md
 
 * **Environment Variables**
 
