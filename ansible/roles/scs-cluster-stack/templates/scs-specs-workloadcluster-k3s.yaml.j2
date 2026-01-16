@@ -22,6 +22,8 @@ metadata:
   namespace: default
 spec:
   topology:
+    class: "{{ cluster_class | replace(".", "-") }}"
+    classNamespace: {{ cluster_namespace }}
     variables:
       - name: controller_flavor
         value: "{{ openstack_controlplane_flavor }}"
