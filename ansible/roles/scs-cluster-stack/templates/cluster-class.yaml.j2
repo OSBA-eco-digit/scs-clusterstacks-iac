@@ -8,23 +8,23 @@
 apiVersion: clusterx-k8sio/v1beta1
 kind: ClusterClass
 metadata:
-  name: {{ cluster_class | replace(".", "-") }}
+  name: "{{ cluster_class | replace(".", "-") }}"
 spec:
   controlPlane:
     ref:
       apiVersion: controlplaneclusterx-k8sio/v1beta1
       kind: KubeadmControlPlaneTemplate
-      name: {{ cluster_class | replace(".", "-") }}-control-plane
+      name: "{{ cluster_class | replace(".", "-") }}-control-plane"
     machineInfrastructure:
       ref:
         kind: OpenStackMachineTemplate
         apiVersion: infrastructureclusterx-k8sio/v1beta1
-        name: {{ cluster_class | replace(".", "-") }}-control-plane
+        name: "{{ cluster_class | replace(".", "-") }}-control-plane"
   infrastructure:
     ref:
       apiVersion: infrastructureclusterx-k8sio/v1beta1
       kind: OpenStackClusterTemplate
-      name: {{ cluster_class | replace(".", "-") }}-cluster
+      name: "{{ cluster_class | replace(".", "-") }}-cluster"
   workers:
     machineDeployments:
     - class: default-worker
@@ -33,12 +33,12 @@ spec:
           ref:
             apiVersion: bootstrapclusterx-k8sio/v1beta1
             kind: KubeadmConfigTemplate
-            name: {{ cluster_class | replace(".", "-") }}-default-worker
+            name: "{{ cluster_class | replace(".", "-") }}-default-worker"
         infrastructure:
           ref:
             apiVersion: infrastructureclusterx-k8sio/v1beta1
             kind: OpenStackMachineTemplate
-            name: {{ cluster_class | replace(".", "-") }}-default-worker
+            name: "{{ cluster_class | replace(".", "-") }}-default-worker"
   variables:
     # Image variables
     - name: imageName
