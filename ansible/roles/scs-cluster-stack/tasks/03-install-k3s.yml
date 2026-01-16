@@ -21,6 +21,7 @@
         - "control-plane=true"
         - "worker=true"
         - "workload=true"
+  when: k3s_apply_role
 
 - name: Generate random token key
   become: true
