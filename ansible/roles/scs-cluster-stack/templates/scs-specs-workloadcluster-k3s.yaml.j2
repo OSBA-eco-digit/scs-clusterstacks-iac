@@ -21,6 +21,18 @@ metadata:
   name: {{cluster_name}}
   namespace: default
 spec:
+  topology:
+    variables:
+      - name: controller_flavor
+        value: "{{ openstack_controlplane_flavor }}"
+      - name: worker_flavor
+        value: "{{ openstack_worker_flavor }}"
+      - name: worker_root_disk
+        value: {{ openstack_worker_rootdisk_size }}
+      - name: external_id
+        value: "{{ openstack_external_network_id }}"
+    class: "{{ cluster_class | replace(".", "-") }}"
+    classNamespace: {{ cluster_namespace }}
   clusterNetwork:
     pods:
       cidrBlocks:
