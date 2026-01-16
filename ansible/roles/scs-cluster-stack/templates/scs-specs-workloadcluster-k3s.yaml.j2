@@ -31,8 +31,6 @@ spec:
         value: {{ openstack_worker_rootdisk_size }}
       - name: external_id
         value: "{{ openstack_external_network_id }}"
-    class: "{{ cluster_class | replace(".", "-") }}"
-    classNamespace: {{ cluster_namespace }}
   clusterNetwork:
     pods:
       cidrBlocks:
