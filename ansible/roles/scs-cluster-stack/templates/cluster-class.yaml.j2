@@ -48,9 +48,9 @@ spec:
           type: string
           description: |
             The base name of the OpenStack image used for provisioning servers.
-            If 'imageIsOrc' is enabled, this name refers to an ORC image resource.
-            If 'imageIsOrc' is disabled, the name is used to filter images available in the OpenStack project. In this case, the specified image must already exist within the project.
-            If 'imageAddVersion' is enabled, the Kubernetes version will be appended to form the complete image name (e.g., imageName-v1.32.5)
+            If imageIsOrc is enabled, this name refers to an ORC image resource.
+            If imageIsOrc is disabled, the name is used to filter images available in the OpenStack project. In this case, the specified image must already exist within the project.
+            If imageAddVersion is enabled, the Kubernetes version will be appended to form the complete image name (e.g., imageName-v1.32.5)
           default: "ubuntu-capi-image"
     - name: imageIsOrc
       required: false
@@ -59,8 +59,8 @@ spec:
           type: boolean
           description: |
             Indicates whether the image name refers to an ORC image resource.
-            If set to true (default), the 'imageName' is interpreted as a reference to an ORC image.
-            If set to false, the 'imageName' is used to filter images in the OpenStack project instead.
+            If set to true (default), the imageName is interpreted as a reference to an ORC image.
+            If set to false, the imageName is used to filter images in the OpenStack project instead.
           default: false
     - name: imageAddVersion
       required: false
@@ -231,7 +231,7 @@ spec:
           example: ["security-group-1"]
           description: |-
             The names of extra security groups to assign to worker and control plane nodes.
-            Will be ignored if 'securityGroupIDs' is used.
+            Will be ignored if securityGroupIDs is used.
           items:
             type: string
     - name: securityGroupIDs
@@ -254,7 +254,7 @@ spec:
           example: ["security-group-1"]
           description: |-
             The names of extra security groups to assign to the worker nodes.
-            Will be ignored if 'workerSecurityGroupIDs' is used.
+            Will be ignored if workerSecurityGroupIDs is used.
           items:
             type: string
     - name: workerSecurityGroupIDs
@@ -313,10 +313,10 @@ spec:
               No LoadBalancer solution will be deployed
 
             octavia-amphora:
-              Uses OpenStack's LoadBalancer service Octavia (provider:amphora)
+              Uses OpenStacks LoadBalancer service Octavia (provider:amphora)
 
             octavia-ovn:
-              (default) Uses OpenStack's LoadBalancer service Octavia (provider:ovn)
+              (default) Uses OpenStacks LoadBalancer service Octavia (provider:ovn)
     - name: apiServerLoadBalancerOctaviaAmphoraAllowedCIDRs
       required: false
       schema:
@@ -346,7 +346,7 @@ spec:
               description: >-
                 URL of the provider that allows the API server to
                 discover public signing keys. Only URLs that use the https:// scheme are
-                accepted. This is typically the provider's discovery URL, changed to have an
+                accepted. This is typically the providers discovery URL, changed to have an
                 empty path.
             usernameClaim:
               type: string
@@ -362,7 +362,7 @@ spec:
               type: string
               example: "groups"
               default: "groups"
-              description: "JWT claim to use as the user's group. If the claim is present it must be an array of strings."
+              description: "JWT claim to use as the users group. If the claim is present it must be an array of strings."
             usernamePrefix:
               type: string
               example: "oidc:"
@@ -370,7 +370,7 @@ spec:
               description: >-
                 Prefix prepended to username claims to prevent
                 clashes with existing names (such as system: users). For example, the value
-                oidc: will create usernames like oidc:jane.doe. If this flag isn't provided and
+                oidc: will create usernames like oidc:jane.doe. If this flag isnt provided and
                 --oidc-username-claim is a value other than email the prefix defaults to (
                 Issuer URL )# where ( Issuer URL ) is the value of --oidc-issuer-url. The value
                 - can be used to disable all prefixing.
@@ -391,7 +391,7 @@ spec:
     #
     - name: apiServerLoadBalancerOctaviaAmphora
       description: "Takes care of the patches that should be applied when variable apiServerLoadBalancer is set to octavia-amphora."
-      enabledIf: {{ ''{{ eq .apiServerLoadBalancer "octavia-amphora" }}'' }}
+      #enabledIf: {{ {{ eq .apiServerLoadBalancer "octavia-amphora" }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -407,7 +407,7 @@ spec:
               value: "amphora"
     - name: apiServerLoadBalancerOctaviaOVN
       description: "Takes care of the patches that should be applied when variable apiServerLoadBalancer is set to octavia-ovn."
-      enabledIf: {{ ''{{ eq .apiServerLoadBalancer "octavia-ovn" }}'' }}
+      #enabledIf: {{ {{ eq .apiServerLoadBalancer "octavia-ovn" }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -423,7 +423,7 @@ spec:
               value: "ovn"
     - name: apiServerLoadBalancerOctaviaAmphoraAllowedCIDRs
       description: "Takes care of the patches that should be applied when variable allowedCIDRs is set."
-      enabledIf: {{ ''{{ and .apiServerLoadBalancerOctaviaAmphoraAllowedCIDRs (eq .apiServerLoadBalancer "octavia-amphora") }}'' }}
+      #enabledIf: {{ {{ and .apiServerLoadBalancerOctaviaAmphoraAllowedCIDRs (eq .apiServerLoadBalancer "octavia-amphora") }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -437,7 +437,7 @@ spec:
                 variable: apiServerLoadBalancerOctaviaAmphoraAllowedCIDRs
     - name: networkExternalID
       description: "Sets the ID of an external OpenStack Network. This is necessary to get public internet to the VMs."
-      enabledIf: {{ ''{{ if .networkExternalID }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .networkExternalID }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -454,7 +454,7 @@ spec:
               variable: networkExternalID
     - name: networkMTU
       description: "Sets the network MTU when variable networkMTU exist in cluster resource."
-      enabledIf: {{ ''{{ if .networkMTU }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .networkMTU }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -468,7 +468,7 @@ spec:
               variable: networkMTU
     - name: controlPlaneAvailabilityZones
       description: "Sets the availability zones which control plane machines may be deployed to."
-      enabledIf: {{ ''{{ if .controlPlaneAvailabilityZones }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .controlPlaneAvailabilityZones }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -482,7 +482,7 @@ spec:
               variable: controlPlaneAvailabilityZones
     - name: controlPlaneOmitAvailabilityZone
       description: "Causes availability zone to be omitted when creating control plane nodes."
-      enabledIf: {{ ''{{ if .controlPlaneOmitAvailabilityZone }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .controlPlaneOmitAvailabilityZone }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -512,7 +512,7 @@ spec:
         Sets the NodeCIDR for the OpenStack Subnet to be created.
         Cluster actuator will create a network, a subnet with NodeCIDR,
         and a router connected to this subnet.
-      enabledIf: {{ ''{{ if .nodeCIDR }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .nodeCIDR }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -524,14 +524,14 @@ spec:
             path: "/spec/template/spec/managedSubnets"
             valueFrom:
               template: |
-                - cidr: '{{ '{{ .nodeCIDR }}' }}'
+                - cidr: {{ {{ .nodeCIDR }} }}
                   dnsNameservers:
-                  {{ '{{- range .dnsNameservers }}' }}
-                                  - {{ '{{ . }}' }}
-                  {{ '{{- end }}' }}
+                  {{ {{- range .dnsNameservers }} }}
+                                  - {{ {{ . }} }}
+                  {{ {{- end }} }}
     - name: disableAPIServerFloatingIP
       description: "DisableAPIServerFloatingIP controls whether a floating IP should be attached to the API server."
-      enabledIf: {{ '"{{ if .disableAPIServerFloatingIP }}true{{end}}"' }}
+      #enabledIf: {{ "{{ if .disableAPIServerFloatingIP }}true{{end}}" }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -544,7 +544,7 @@ spec:
             valueFrom:
               variable: disableAPIServerFloatingIP
     #
-    # Patches for control plane's OpenStackMachineTemplate resources.
+    # Patches for control planes OpenStackMachineTemplate resources.
     # Note: Control plane patches are only applied when the control plane is managed by Kubeadm.
     - name: controlPlaneImage
       description: "Sets the OpenStack image name that is used for creating the control plane servers."
@@ -559,11 +559,11 @@ spec:
               path: /spec/template/spec/image
               valueFrom:
                 template: |
-                  {{ '{{ if .imageIsOrc }}imageRef{{ else }}filter{{ end }}' }}:
-                    name: {{ '{{ .imageName }}{{ if .imageAddVersion }}-{{ .builtin.controlPlane.version }}{{ end }}' }}
+                  {{ {{ if .imageIsOrc }}imageRef{{ else }}filter{{ end }} }}:
+                    name: {{ {{ .imageName }}{{ if .imageAddVersion }}-{{ .builtin.controlPlane.version }}{{ end }} }}
     - name: controlPlaneFlavor
       description: "Sets the openstack instance flavor for the KubeadmControlPlane."
-      enabledIf: {{ ''{{ ne .controlPlaneFlavor "" }}'' }}
+      #enabledIf: {{ {{ ne .controlPlaneFlavor "" }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -577,7 +577,7 @@ spec:
                 variable: controlPlaneFlavor
     - name: controlPlaneRootDisk
       description: "Sets the root disk size in GiB for control-plane nodes."
-      enabledIf: {{ ''{{ if .controlPlaneRootDisk }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .controlPlaneRootDisk }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -589,10 +589,10 @@ spec:
               path: "/spec/template/spec/rootVolume"
               valueFrom:
                 template: |
-                  sizeGiB: {{ '{{ .controlPlaneRootDisk }}' }}
+                  sizeGiB: {{ {{ .controlPlaneRootDisk }} }}
     - name: controlPlaneServerGroupID
       description: "Sets the server group to assign the control plane nodes to."
-      enabledIf: {{ ''{{ ne .controlPlaneServerGroupID "" }}'' }}
+      #enabledIf: {{ {{ ne .controlPlaneServerGroupID "" }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -604,16 +604,16 @@ spec:
               path: "/spec/template/spec/serverGroup"
               valueFrom:
                 template: |
-                  id: {{ '{{ .controlPlaneServerGroupID }}' }}
+                  id: {{ {{ .controlPlaneServerGroupID }} }}
     #
-    # Patches for control plane's as well as worker's OpenStackMachineTemplate resources.
+    # Patches for control planes as well as workers OpenStackMachineTemplate resources.
     # Note: Control plane patches are only applied when the control plane is managed by Kubeadm.
     #
     # Note: The securityGroups patch must be placed before securityGroupIDs, workerSecurityGroups, and workerSecurityGroupIDs.
     # The patch order ensures the last applied patch overwrites previous ones.
     - name: securityGroups
       description: "Sets the list of the openstack security groups for the worker and the control plane instances."
-      enabledIf: {{ ''{{ if .securityGroups }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .securityGroups }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -627,12 +627,12 @@ spec:
             - op: add
               path: "/spec/template/spec/securityGroups"
               valueFrom:
-                template: {{ ''[ {{ range .securityGroups }} { filter: { name: {{ . }}}}, {{ end }} ]'' }}
+                template: {{ [ {{ range .securityGroups }} { filter: { name: {{ . }}}}, {{ end }} ] }}
     # Note: The securityGroupIDs patch must be placed before workerSecurityGroups, workerSecurityGroupIDs and after securityGroupIDs.
     # The patch order ensures the last applied patch overwrites previous ones.
     - name: securityGroupIDs
       description: "Sets the list of the openstack security groups for the worker and the control plane instances by UUID."
-      enabledIf: {{ ''{{ if .securityGroupIDs }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .securityGroupIDs }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -646,10 +646,10 @@ spec:
             - op: add
               path: "/spec/template/spec/securityGroups"
               valueFrom:
-                template: {{ ''[ {{ range .securityGroupIDs }} { id: {{ . }} }, {{ end }} ]'' }}
+                template: {{ [ {{ range .securityGroupIDs }} { id: {{ . }} }, {{ end }} ] }}
     - name: sshKeyName
       description: "Sets the ssh key to inject in the nodes."
-      enabledIf: {{ ''{{ ne .sshKeyName "" }}'' }}
+      #enabledIf: {{ {{ ne .sshKeyName "" }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -665,7 +665,7 @@ spec:
               valueFrom:
                 variable: sshKeyName
     #
-    # Patches for worker's OpenStackMachineTemplate resources.
+    # Patches for workers OpenStackMachineTemplate resources.
     #
     - name: workerImage
       description: "Sets the OpenStack image name that is used for creating the worker servers."
@@ -683,11 +683,11 @@ spec:
               path: /spec/template/spec/image
               valueFrom:
                 template: |
-                  {{ '{{ if .imageIsOrc }}imageRef{{ else }}filter{{ end }}' }}:
-                    name: {{ '{{ .imageName }}{{ if .imageAddVersion }}-{{ .builtin.machineDeployment.version }}{{ end }}' }}
+                  {{ {{ if .imageIsOrc }}imageRef{{ else }}filter{{ end }} }}:
+                    name: {{ {{ .imageName }}{{ if .imageAddVersion }}-{{ .builtin.machineDeployment.version }}{{ end }} }}
     - name: workerFlavor
       description: "Sets the openstack instance flavor for the worker nodes."
-      enabledIf: {{ ''{{ ne .workerFlavor "" }}'' }}
+      #enabledIf: {{ {{ ne .workerFlavor "" }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -704,7 +704,7 @@ spec:
                 variable: workerFlavor
     - name: workerRootDisk
       description: "Sets the root disk size in GiB for worker nodes."
-      enabledIf: {{ ''{{ if .workerRootDisk }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .workerRootDisk }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -719,10 +719,10 @@ spec:
               path: "/spec/template/spec/rootVolume"
               valueFrom:
                 template: |
-                  sizeGiB: {{ '{{ .workerRootDisk }}' }}
+                  sizeGiB: {{ {{ .workerRootDisk }} }}
     - name: workerServerGroupID
       description: "Sets the server group to assign the worker nodes to."
-      enabledIf: {{ ''{{ ne .workerServerGroupID "" }}'' }}
+      #enabledIf: {{ {{ ne .workerServerGroupID "" }} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -737,9 +737,9 @@ spec:
               path: "/spec/template/spec/serverGroup"
               valueFrom:
                 template: |
-                  id: {{ '{{ .workerServerGroupID }}' }}
+                  id: {{ {{ .workerServerGroupID }} }}
     - name: workerAdditionalBlockDevices
-      enabledIf: {{ ''{{ if .workerAdditionalBlockDevices }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .workerAdditionalBlockDevices }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -754,19 +754,19 @@ spec:
               path: /spec/template/spec/additionalBlockDevices
               valueFrom:
                 template: |
-                  {{ '{{- range .workerAdditionalBlockDevices }}' }}
-                  - name: {{ '{{ .name }}' }}
-                    sizeGiB: {{ '{{ .sizeGiB }}' }}
+                  {{ {{- range .workerAdditionalBlockDevices }} }}
+                  - name: {{ {{ .name }} }}
+                    sizeGiB: {{ {{ .sizeGiB }} }}
                     storage:
                       type: Volume
                       volume:
-                        type: {{ '{{ .type }}' }}
-                  {{ '{{- end }}' }}
+                        type: {{ {{ .type }} }}
+                  {{ {{- end }} }}
     # Note: The workerSecurityGroups patch must be placed before workerSecurityGroupIDs and after securityGroups and securityGroupIDs.
     # The patch order ensures the last applied patch overwrites previous ones.
     - name: workerSecurityGroups
       description: "Sets the list of the openstack security groups for the worker instances."
-      enabledIf: {{ ''{{ if .workerSecurityGroups }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .workerSecurityGroups }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -780,12 +780,12 @@ spec:
             - op: add
               path: "/spec/template/spec/securityGroups"
               valueFrom:
-                template: {{ ''[ {{ range .workerSecurityGroups }} { filter: { name: {{ . }}}}, {{ end }} ]'' }}
+                template: {{ [ {{ range .workerSecurityGroups }} { filter: { name: {{ . }}}}, {{ end }} ] }}
     # Note: The workerSecurityGroupIDs patch must be placed after securityGroups, securityGroupIDs and workerSecurityGroupIDs.
     # The patch order ensures the last applied patch overwrites previous ones.
     - name: workerSecurityGroupIDs
       description: "Sets the list of the openstack security groups for the worker instances by UUID."
-      enabledIf: {{ ''{{ if .workerSecurityGroupIDs }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .workerSecurityGroupIDs }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: infrastructure.cluster.x-k8s.io/v1beta1
@@ -799,11 +799,11 @@ spec:
             - op: add
               path: "/spec/template/spec/securityGroups"
               valueFrom:
-                template: {{ ''[ {{ range .workerSecurityGroupIDs }} { id: {{ . }} }, {{ end }} ]'' }}
+                template: {{ [ {{ range .workerSecurityGroupIDs }} { id: {{ . }} }, {{ end }} ] }}
     #
     - name: certSANs
       description: "certSANs sets extra Subject Alternative Names for the API Server signing cert."
-      enabledIf: {{ ''{{ if .certSANs }}true{{end}}'' }}
+      #enabledIf: {{ {{ if .certSANs }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: controlplane.cluster.x-k8s.io/v1beta1
@@ -817,7 +817,7 @@ spec:
                 variable: certSANs
     - name: oidcConfig
       description: "Configure API Server to use external authentication service."
-      enabledIf: {{ ''{{ if and .oidcConfig .oidcConfig.clientID .oidcConfig.issuerURL }}true{{end}}'' }}
+      #enabledIf: {{ {{ if and .oidcConfig .oidcConfig.clientID .oidcConfig.issuerURL }}true{{end}} }}
       definitions:
         - selector:
             apiVersion: controlplane.cluster.x-k8s.io/v1beta1
