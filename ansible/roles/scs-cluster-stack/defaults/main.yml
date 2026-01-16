@@ -39,7 +39,7 @@ oci_repo_cso: "oci://registry.scs.community/cluster-stacks/cso"
 #
 
 canonical_capi_repo: "https://github.com/canonical/cluster-api-k8s"
-canonical_capi_version: "v0.4.2"
+canonical_capi_version: "0.4.2"
 
 #
 # docker
@@ -69,7 +69,7 @@ openstack_failure_domain: "myfailuredomain.local"
 openstack_image_name: "Ubuntu 24.04"
 openstack_interface: "{{ lookup('env', 'OS_INTERFACE') }}"
 openstack_node_flavor: "{{ openstack_bastion_flavor }}"
-openstack_orc_release: "v2.4.0"
+openstack_orc_release: "2.4.0"
 openstack_orc_repo: "https://github.com/k-orc/openstack-resource-controller"
 openstack_orc_yaml: "{{openstack_orc_repo}}/releases/download/{{openstack_orc_release}}/install.yaml"
 openstack_provider_release: "0.12.5"
