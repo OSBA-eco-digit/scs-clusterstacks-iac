@@ -1,6 +1,6 @@
 # scs-openstack-iac
 
-Proof of Concept for the SCS, using OpenStack and OpenTofu (Infrastructure as Code)
+Proof of Concept for the SCS, using OpenStack and OpenTofu (Infrastructure as Code) to deploy ClusterStack and setup KaaS.
 
 > Ensure you have defined (and exported) the `OS_CLOUD` environment varible for the openstack client. That's the name of your "cloud credentials" set via `clouds.yaml`.
 
