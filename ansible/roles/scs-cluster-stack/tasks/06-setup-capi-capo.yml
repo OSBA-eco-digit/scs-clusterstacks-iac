@@ -16,7 +16,7 @@
 
 - name: Initialize management cluster
   become: true
-  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --bootstrap k3s --control-plane k3s --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
+  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --bootstrap k3s:v{{kubernetes_release}}+k3s2 --control-plane k3s:v{{kubernetes_release}}+k3s2 --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
