@@ -39,6 +39,9 @@ all check init validate:
 	$(TOFU_CMD) fmt -check
 	$(TOFU_CMD) validate -compact-warnings
 
+scripts-only:
+	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
+		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e scripts_only=true $(CURDIR)/ansible/playbook.yml
 setup:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
 		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CURDIR)/ansible/playbook.yml

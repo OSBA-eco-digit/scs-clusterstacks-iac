@@ -13,11 +13,17 @@
     extensions: [ yml ]
   when: ansible_distribution == 'Ubuntu'
 
-- name: Include tasks
+- name: Include base tasks to install dependencies and setup user account
   include_tasks: "{{ t }}"
   loop:
     - 00-install-dependencies.yml
     - 01-setup-account.yml
+  loop_control:
+    loop_var: t
+
+- name: Include all other "setup" and "installation" tasks
+  include_tasks: "{{ t }}"
+  loop:
     - 02-install-docker.yml
     - 03-install-k3s.yml
     - 04-install-components.yml
@@ -43,5 +49,23 @@
     - tool-install-kind.sh
     - tool-install-kubectl.sh
     - tool-install-oras.sh
+  loop_control:
+    loop_var: s
+
+- name: Copy over scripts from "scs2" cluster-stack repository documentation
+  become: true
+  copy:
+    src: "files/{{s}}"
+    dest: "{{scs_cluster_stack_home}}/{{s}}"
+    mode: 0555
+  loop:
+    - 001.sh
+    - 002.sh
+    - 003.sh
+    - 004.sh
+    - 005.sh
+    - 006.sh
+    - 007.sh
+    - 008.sh
   loop_control:
     loop_var: s
