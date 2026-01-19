@@ -22,6 +22,7 @@ metadata:
   namespace: default
 spec:
   topology:
+    version: "{{ kubernetes_release }}"
     class: "{{ cluster_class | replace(".", "-") }}"
     classNamespace: {{ cluster_namespace }}
     variables:
@@ -85,7 +86,7 @@ spec:
     kind: OpenStackMachineTemplate
     name: {{cluster_name}}-control-plane
   replicas: 1
-  version: "{{kubernetes_release_version}}"
+  version: "{{kubernetes_release}}"
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
