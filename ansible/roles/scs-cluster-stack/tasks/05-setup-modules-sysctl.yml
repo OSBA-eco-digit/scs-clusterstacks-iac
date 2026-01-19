@@ -32,3 +32,18 @@
     ( ansible_facts.distribution != 'Debian'
       or ansible_facts.distribution_major_version | int < 10
     ) and not ansible_virtualization_type == "docker"
+
+# https://cluster-api.sigs.k8s.io/user/troubleshooting.html?highlight=too%20many#cluster-api-with-docker----too-many-open-files
+- name: Ensure "fs.inotify.max_user_instances" sysctl is set
+  become: true
+  sysctl:
+    name: fs.inotify.max_user_instances
+    value: '8192'
+    state: present
+
+- name: Ensure "fs.inotify.max_user_watches" sysctl is set
+  become: true
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: '1048576'
+    state: present
