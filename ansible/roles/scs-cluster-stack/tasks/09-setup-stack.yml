@@ -54,7 +54,7 @@
     creates: "{{scs_cluster_stack_home}}/workloadcluster-k3s.yaml"
   environment:
     - CLUSTER_NAME: "{{ cluster_name }}"
-    - CONTROL_PLANE_MACHINE_COUNT: "{{ openstack_controlplane_machine_count }}"
+    - CONTROL_PLANE_MACHINE_COUNT: "{{ cluster_controlplane_replicas }}"
     - KUBERNETES_VERSION: "{{ kubernetes_release }}"
     - OPENSTACK_CLOUD: "{{ openstack_cloud }}"
     - OPENSTACK_CLOUD_CACERT_B64: "{{ openstack_cloud_cacert_b64 }}"
@@ -66,7 +66,7 @@
     - OPENSTACK_IMAGE_NAME: "{{ openstack_image_name }}"
     - OPENSTACK_NODE_MACHINE_FLAVOR: "{{ openstack_node_machine_flavor }}"
     - OPENSTACK_SSH_KEY_NAME: "{{ openstack_ssh_key_name }}"
-    - WORKER_MACHINE_COUNT: "{{ openstack_worker_machine_count }}"
+    - WORKER_MACHINE_COUNT: "{{ cluster_workers_replicas }}"
 
 - name: Apply generate workload cluster specs based on "k3s" template for OpenStack
   become: true
