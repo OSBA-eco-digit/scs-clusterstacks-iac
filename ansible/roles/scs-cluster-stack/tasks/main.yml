@@ -13,20 +13,20 @@
     extensions: [ yml ]
   when: ansible_distribution == 'Ubuntu'
 
-- name: Include base tasks to install dependencies and setup user account
+- name: Include base tasks to install dependencies and user account
   include_tasks: "{{ t }}"
   loop:
     - 00-install-dependencies.yml
-    - 01-setup-account.yml
+    - 01-install-account.yml
   loop_control:
     loop_var: t
 
-- name: Include all other "setup" and "installation" tasks
+- name: Include all other "setup" tasks
   include_tasks: "{{ t }}"
   loop:
-    - 02-install-docker.yml
-    - 03-install-k3s.yml
-    - 04-install-components.yml
+    - 02-setup-docker.yml
+    - 03-setup-k3s.yml
+    - 04-setup-components.yml
     - 05-setup-modules-sysctl.yml
     - 06-setup-capi-capo.yml
     - 07-setup-cso.yml
