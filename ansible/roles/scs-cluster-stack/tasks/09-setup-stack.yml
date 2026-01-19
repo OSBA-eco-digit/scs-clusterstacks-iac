@@ -58,7 +58,7 @@
     - KUBERNETES_VERSION: "{{ kubernetes_release }}"
     - OPENSTACK_CLOUD: "{{ openstack_cloud }}"
     - OPENSTACK_CLOUD_CACERT_B64: "{{ openstack_cloud_cacert_b64 }}"
-    - OPENSTACK_CLOUD_YAML_B64: "{{ openstack_cloud_yaml_b64 }}"
+    - OPENSTACK_CLOUD_YAML_B64: "{{ openstack_clouds_yaml_b64 }}"
     - OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR: "{{ openstack_controlplane_machine_flavor }}"
     - OPENSTACK_DNS_NAMESERVERS: "{{ openstack_dns_servers }}"
     - OPENSTACK_EXTERNAL_NETWORK_ID: "{{ openstack_external_network_id }}"
