@@ -1,10 +1,19 @@
 ---
-- name: Template "tool-install-oras.sh"
+- name: Template "tool-install" scripts
   become: true
   template:
-    src: tool-install-oras.sh.j2
-    dest: "{{scs_cluster_stack_home}}/tool-install-oras.sh"
+    src: "{{s}}.j2"
+    dest: "{{scs_cluster_stack_home}}/{{s}}"
     mode: 0555
+  loop:
+    - tool-install-clusterctl.sh
+    - tool-install-docker.sh
+    - tool-install-helm.sh
+    - tool-install-kind.sh
+    - tool-install-kubectl.sh
+    - tool-install-oras.sh
+  loop_control:
+    loop_var: s
 
 - name: Check if "clusterctl" exists
   stat:
