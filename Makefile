@@ -34,31 +34,35 @@ export OS_AUTH_URL
 export OS_EXTERNAL_NETWORK_ID
 ######################################################################
 
+#
+# default targets
+#
+
 all check init validate:
 	$(TOFU_CMD) init -upgrade
 	$(TOFU_CMD) fmt -check
 	$(TOFU_CMD) validate -compact-warnings
 
-scripts-only:
-	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
-		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e scripts_only=true $(CURDIR)/ansible/playbook.yml
+destroy:
+	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
+	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
+	rm -f "$(CURDIR)/ansible/inventory_$(OS_CLOUD).ini" 2>/dev/null
+
 setup:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
 		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CURDIR)/ansible/playbook.yml
+
+scripts-only:
+	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
+		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e scripts_only=true $(CURDIR)/ansible/playbook.yml
 ######################################################################
+
+#
+# providers
+#
 
 plusserver:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
 
-plusserver-destroy:
-	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
-	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
-	rm -f $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini 2>/dev/null
-
 scaleup:
 	$(TOFU_CMD) apply $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
-
-scaleup-destroy:
-	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
-	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
-	rm -f $(CURDIR)/ansible/inventory_scaleup.ini 2>/dev/null
