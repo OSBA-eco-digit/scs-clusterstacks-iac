@@ -21,3 +21,19 @@
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
+
+- name: Request rollout status for CAPI
+  become: true
+  command: "{{ k3s_bin }} kubectl -n capi-system rollout status deployment"
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
+
+- name: Request rollout status for CAPO
+  become: true
+  command: "{{ k3s_bin }} kubectl -n capo-system rollout status deployment"
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
