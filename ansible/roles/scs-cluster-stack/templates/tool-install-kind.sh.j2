@@ -1,4 +1,4 @@
 #!/bin/sh
 go install sigs.k8s.io/kind@v{{kind_release}}
-sudo mv go/bin/kind /usr/local/bin/kind
+sudo mv $HOME/go/bin/kind /usr/local/bin/kind
 sudo strip /usr/local/bin/kind
