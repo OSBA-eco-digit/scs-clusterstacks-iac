@@ -12,6 +12,8 @@ scs_cluster_stack_provider_specs: "{{scs_cluster_stack_provider_repo}}/releases/
 scs_cluster_stack_provider_specs_yaml: "{{scs_cluster_stack_home}}/scs-provider-specs.yaml"
 scs_cluster_stack_user: "scs"
 
+scripts_only: false
+
 #
 # oci
 #
