@@ -53,20 +53,20 @@
   args:
     creates: "{{scs_cluster_stack_home}}/workloadcluster-k3s.yaml"
   environment:
-    - CLUSTER_NAME: {{ cluster_name }}
-    - CONTROL_PLANE_MACHINE_COUNT: {{ openstack_controlplane_machine_count }}
-    - KUBERNETES_VERSION: {{ kubernetes_release }}
-    - OPENSTACK_CLOUD: {{ openstack_cloud }}
-    - OPENSTACK_CLOUD_CACERT_B64: {{ openstack_cloud_cacert_b64 }}
-    - OPENSTACK_CLOUD_YAML_B64: {{ openstack_cloud_yaml_b64 }}
-    - OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR: {{ openstack_controlplane_machine_flavor }}
-    - OPENSTACK_DNS_NAMESERVERS: {{ openstack_dns_servers }}
-    - OPENSTACK_EXTERNAL_NETWORK_ID: {{ openstack_external_network_id }}
-    - OPENSTACK_FAILURE_DOMAIN: {{ openstack_failure_domain }}
-    - OPENSTACK_IMAGE_NAME: {{ openstack_image_name }}
-    - OPENSTACK_NODE_MACHINE_FLAVOR: {{ openstack_node_machine_flavor }}
-    - OPENSTACK_SSH_KEY_NAME: {{ openstack_ssh_key_name }}
-    - WORKER_MACHINE_COUNT: {{ openstack_worker_machine_count }}
+    - CLUSTER_NAME: "{{ cluster_name }}"
+    - CONTROL_PLANE_MACHINE_COUNT: "{{ openstack_controlplane_machine_count }}"
+    - KUBERNETES_VERSION: "{{ kubernetes_release }}"
+    - OPENSTACK_CLOUD: "{{ openstack_cloud }}"
+    - OPENSTACK_CLOUD_CACERT_B64: "{{ openstack_cloud_cacert_b64 }}"
+    - OPENSTACK_CLOUD_YAML_B64: "{{ openstack_cloud_yaml_b64 }}"
+    - OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR: "{{ openstack_controlplane_machine_flavor }}"
+    - OPENSTACK_DNS_NAMESERVERS: "{{ openstack_dns_servers }}"
+    - OPENSTACK_EXTERNAL_NETWORK_ID: "{{ openstack_external_network_id }}"
+    - OPENSTACK_FAILURE_DOMAIN: "{{ openstack_failure_domain }}"
+    - OPENSTACK_IMAGE_NAME: "{{ openstack_image_name }}"
+    - OPENSTACK_NODE_MACHINE_FLAVOR: "{{ openstack_node_machine_flavor }}"
+    - OPENSTACK_SSH_KEY_NAME: "{{ openstack_ssh_key_name }}"
+    - WORKER_MACHINE_COUNT: "{{ openstack_worker_machine_count }}"
 
 - name: Apply generate workload cluster specs based on "k3s" template for OpenStack
   become: true
