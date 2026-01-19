@@ -8,7 +8,7 @@
 apiVersion: clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack }}
 kind: ClusterStack
 metadata:
-  name: clusterstack
+  name: openstack
   namespace: {{ cluster_namespace }}
 spec:
   autoSubscribe: false
@@ -17,9 +17,9 @@ spec:
   name: {{ cluster_series }}
   noProvider: true
   provider: openstack
-  providerRef:
-    apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack_infrastructure }}
-    kind: OpenStackClusterStackReleaseTemplate
-    name: cspotemplate
   versions:
     - {{ cluster_series_version }}
+  # providerRef:
+  #   apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack_infrastructure }}
+  #   kind: OpenStackClusterStackReleaseTemplate
+  #   name: cspotemplate
