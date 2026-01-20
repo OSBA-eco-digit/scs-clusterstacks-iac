@@ -34,6 +34,24 @@ Those will be used while applying the Ansible Role. The variables are, in short,
   > 'OS_REGION_NAME'
   > 'OS_SECRET'
 
+A list with some other variables available to be set:
+
+  > OS_APPLICATION_CREDENTIAL_ID
+  > OS_APPLICATION_CREDENTIAL_SECRET
+  > OS_AUTH_TYPE
+  > OS_AUTH_URL
+  > OS_CLOUD
+  > OS_IDENTITY_API_VERSION
+  > OS_INTERFACE
+  > OS_PASSWORD
+  > OS_PROJECT_ID
+  > OS_PROJECT_NAME
+  > OS_REGION_NAME
+  > OS_SECRET
+  > OS_TENANT_ID
+  > OS_USER_ID
+  > OS_USERNAME
+
 Should you be exclusively using the web interface, navigate to the `/identity/application_credentials/create/` route and generate the credentials from there.
 
 A bit more about application credentials used by `clouds.yaml`?
