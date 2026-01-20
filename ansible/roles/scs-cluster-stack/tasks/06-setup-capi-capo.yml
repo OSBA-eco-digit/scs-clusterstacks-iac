@@ -27,7 +27,6 @@
     # - EXP_PRIORITY_QUEUE: true
     # - EXP_RECONCILER_RATE_LIMITING: true
 
-# kubectl describe -n capi-system deployment.apps/capi-controller-manager
 - name: Request rollout status for CAPI
   become: true
   command: "{{ k3s_bin }} kubectl -n capi-system rollout status deployment"
