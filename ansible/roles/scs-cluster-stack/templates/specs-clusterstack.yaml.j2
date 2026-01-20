@@ -13,13 +13,9 @@ metadata:
 spec:
   autoSubscribe: false
   channel: {{ cluster_series_channel }}
-  kubernetesVersion: "{{ cluster_release_version }}"
+  kubernetesVersion: "{{ kubernetes_release_version }}"
   name: {{ cluster_series }}
   noProvider: true
   provider: openstack
   versions:
     - {{ cluster_series_version }}
-  # providerRef:
-  #   apiVersion: infrastructure.clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack_infrastructure }}
-  #   kind: OpenStackClusterStackReleaseTemplate
-  #   name: cspotemplate
