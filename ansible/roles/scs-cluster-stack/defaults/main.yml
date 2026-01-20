@@ -118,5 +118,5 @@ cluster_series: "scs2"
 cluster_series_channel: "stable"
 cluster_series_version: "v4"
 cluster_services_domain: "mydomain.local"
-cluster_workers_replicas: 3
+cluster_workers_replicas: 1
 cluster_wrkrnodes: 1
