@@ -13,10 +13,6 @@
     dest: "{{ envsubst_helper }}"
     mode: 0444
 
-- name: Ensure we delete the "cso-controller-manager" accont before installing the operator
-  become: true
-  command: "{{ k3s_bin }} kubectl delete serviceaccount cso-controller-manager -n cso-system"
-
 - name: Install cluster stack operator
   become: true
   command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
