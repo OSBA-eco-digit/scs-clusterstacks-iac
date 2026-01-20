@@ -1,6 +1,10 @@
 ---
 scripts_only: false
 
+#
+# scs
+#
+
 scs_cs_group: "{{ scs_cs_user }}"
 scs_cs_repo_cso: "oci://registry.scs.community/cluster-stacks/cso"
 scs_cs_user: "scs2"

@@ -8,7 +8,7 @@
 
 - name: Install cluster stack operator and openstack provider
   become: true
-  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
+  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{scs_cs_repo_cso}}"
 
 # - name: Install cluster stack helper
 #   become: true
