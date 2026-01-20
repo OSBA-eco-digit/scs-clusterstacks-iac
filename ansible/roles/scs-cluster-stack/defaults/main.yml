@@ -44,10 +44,13 @@ openstack_node_flavor: "{{ openstack_bastion_flavor }}"
 openstack_orc_release: "2.4.0"
 openstack_orc_repo: "https://github.com/k-orc/openstack-resource-controller"
 openstack_orc_yaml: "{{openstack_orc_repo}}/releases/download/v{{openstack_orc_release}}/install.yaml"
+openstack_password: "{{ lookup('env', 'OS_PASSWORD') }}"
 openstack_provider_release: "0.12.6"
 openstack_region_name: "{{ lookup('env', 'OS_REGION_NAME') }}"
 openstack_secret_name: "{{ lookup('env', 'OS_SECRET') }}"
 openstack_ssh_key_name: "mysshkey"
+openstack_tenant_id: "{{ lookup('env', 'OS_TENANT_ID') }}"
+openstack_username: "{{ lookup('env', 'OS_USERNAME') }}"
 openstack_worker_flavor: "{{ openstack_bastion_flavor }}"
 openstack_worker_rootdisk_size: 32
 
@@ -58,6 +61,7 @@ openstack_worker_rootdisk_size: 32
 k3s_apply_role: true
 k3s_bin: "/usr/local/bin/k3s"
 k3s_capi_release: "0.3.0"
+k3s_cloud_config_b64: ""
 
 kind_release: "0.31.0"
 

@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k3s-cloud-config
+  namespace: kube-system
+data:
+  cloud.conf: {{ k3s_cloud_config_b64 }}
