@@ -52,7 +52,7 @@ openstack_worker_flavor: "{{ openstack_bastion_flavor }}"
 openstack_worker_rootdisk_size: 32
 
 #
-# kubernetes
+# kubernetes components
 #
 
 k3s_apply_role: true
@@ -80,10 +80,6 @@ clusterctl_bin: "/usr/local/bin/clusterctl"
 clusterctl_bin_sha256: "c80f6e7451355b34cca9f0ddf087bb4fa14a3fcef7833614b3d59e9b4b345036"
 clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
 clusterctl_release: "1.10.10"
-
-envsubst_bin: "/usr/local/bin/envsubst"
-envsubst_helper: "/usr/local/bin/envsubst-helper.sh"
-envsubst_release: "latest"
 
 helm_bin: "/usr/local/bin/helm"
 helm_bin_sha256: "c77e9e7c1cc96e066bd240d190d1beed9a6b08060b2043ef0862c4f865eca08f"
