@@ -16,14 +16,12 @@
 
 - name: Strip "clusterctl"
   become: true
-  command:
-    cmd: "strip {{ clusterctl_bin }}"
+  command: "strip {{ clusterctl_bin }}"
   when: get_clusterctl.changed
 
 - name: Generate bash completions for "clusterctl"
   become: true
-  command:
-    cmd: "{{ clusterctl_bin }} completion bash"
+  command: "{{ clusterctl_bin }} completion bash"
   register: completions_clusterctl
   args:
     creates: "/etc/bash_completion.d/clusterctl"
@@ -49,19 +47,3 @@
   args:
     creates: "{{ helm_bin }}"
   register: get_helm
-
-- name: Get "envsubst"
-  become: true
-  command:
-    cmd: "go install github.com/drone/envsubst/v2/cmd/envsubst@{{envsubst_release}}"
-  register: get_envsubst
-  args:
-    creates: "{{ envsubst_bin }}"
-  environment:
-    GOBIN: "/usr/local/bin"
-
-- name: Strip "envsubst"
-  become: true
-  command:
-    cmd: "strip {{ envsubst_bin }}"
-  when: get_envsubst.changed

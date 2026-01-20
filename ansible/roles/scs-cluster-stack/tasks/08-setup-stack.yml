@@ -22,8 +22,7 @@
 
 - name: Generate workload cluster specs from template
   become: true
-  command:
-    cmd: "clusterctl generate cluster --kubeconfig {{ kubeconfig_path }} --target-namespace {{cluster_namespace}} --from {{scs_cs_user_home}}/specs-workloadcluster.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
+  command: "clusterctl generate cluster --kubeconfig {{ kubeconfig_path }} --target-namespace {{cluster_namespace}} --from {{scs_cs_user_home}}/specs-workloadcluster.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
   args:
     creates: "{{scs_cs_user_home}}/workloadcluster.yaml"
   environment:
