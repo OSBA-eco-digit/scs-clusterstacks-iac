@@ -31,6 +31,7 @@
     - 06-setup-capi-capo.yml
     - 07-setup-cso-cspo.yml
     - 08-setup-stack.yml
+    - 09-setup-cloud-credentials.yml
   loop_control:
     loop_var: t
   when: not scripts_only

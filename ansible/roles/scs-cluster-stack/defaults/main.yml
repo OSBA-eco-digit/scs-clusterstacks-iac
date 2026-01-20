@@ -61,7 +61,7 @@ openstack_worker_rootdisk_size: 32
 k3s_apply_role: true
 k3s_bin: "/usr/local/bin/k3s"
 k3s_capi_release: "0.3.0"
-k3s_cloud_config_b64: ""
+k3s_cloud_conf_b64: ""
 
 kind_release: "0.31.0"
 

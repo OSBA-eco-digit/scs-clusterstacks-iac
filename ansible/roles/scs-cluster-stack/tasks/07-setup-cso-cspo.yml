@@ -13,6 +13,10 @@
     dest: "{{scs_cs_user_home}}/specs-namespace.yaml"
     mode: 0444
 
+- name: Encode "clouds.yaml"
+  set_fact:
+    openstack_clouds_yaml_b64: "{{ lookup('file', {{scs_cs_user_home}}/.config/openstack/clouds.yaml) | b64encode }}"
+
 - name: Ensure we have the namespace available before generating secrets
   become: true
   command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/specs-namespace.yaml"
