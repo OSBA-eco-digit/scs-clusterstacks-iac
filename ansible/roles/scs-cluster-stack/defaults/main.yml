@@ -1,24 +1,10 @@
 ---
-scs_cs_group: "{{ scs_cs_user }}"
-scs_cs_helper: "{{scs_cs_helper_repo}}/releases/download/v{{scs_cs_helper_release}}/openstack-csp-helper.tgz"
-scs_cs_helper_release: "0.10.0"
-scs_cs_helper_repo: "https://github.com/SovereignCloudStack/openstack-csp-helper"
-scs_cs_user_home: "/var/lib/{{ scs_cs_user }}"
-scs_cs_operator_repo: "https://github.com/SovereignCloudStack/cluster-stack-operator"
-scs_cs_operator_specs: "{{scs_cs_operator_repo}}/releases/latest/download/cso-infrastructure-components.yaml"
-scs_cs_operator_specs_yaml: "{{scs_cs_user_home}}/scs-operator-specs.yaml"
-scs_cs_provider_repo: "https://github.com/SovereignCloudStack/cluster-stack-provider-openstack"
-scs_cs_provider_specs: "{{scs_cs_provider_repo}}/releases/latest/download/cspo-infrastructure-components.yaml"
-scs_cs_provider_specs_yaml: "{{scs_cs_user_home}}/scs-provider-specs.yaml"
-scs_cs_user: "scs2"
-
 scripts_only: false
 
-#
-# oci
-#
-
-oci_repo_cso: "oci://registry.scs.community/cluster-stacks/cso"
+scs_cs_group: "{{ scs_cs_user }}"
+scs_cs_repo_cso: "oci://registry.scs.community/cluster-stacks/cso"
+scs_cs_user: "scs2"
+scs_cs_user_home: "/var/lib/{{ scs_cs_user }}"
 
 #
 # docker
@@ -123,16 +109,10 @@ cluster_ctrlnodes: 1
 cluster_external_network_id: "{{ openstack_external_network_id }}"
 cluster_name: "mycluster"
 cluster_namespace: "mynamespace"
-cluster_oci_repo_cso: "registry.scs.community/cluster-stacks/cso"
-cluster_oci_repo_kaas: "registry.scs.community/kaas/cluster-stacks"
-cluster_release: "{{kubernetes_release}}"
-cluster_release_version: "{{kubernetes_release_version}}"
-cluster_release_version_patch: "{{kubernetes_release_version_patch}}"
 cluster_secret: "{{ openstack_secret_name }}"
 cluster_series: "scs2"
 cluster_series_channel: "stable"
 cluster_series_version: "v4"
 cluster_services_domain: "mydomain.local"
-cluster_variables: "apiserverloadbalancer: octavia-ovn"
 cluster_workers_replicas: 3
 cluster_wrkrnodes: 1

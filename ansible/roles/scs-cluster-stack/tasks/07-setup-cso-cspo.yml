@@ -6,16 +6,13 @@
     dest: "{{openstack_clouds_yaml}}"
     mode: 0444
 
-- name: Template "envsubst.sh"
-  become: true
-  template:
-    src: envsubst.sh.j2
-    dest: "{{ envsubst_helper }}"
-    mode: 0444
-
-- name: Install cluster stack operator
+- name: Install cluster stack operator and openstack provider
   become: true
   command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
+
+# - name: Install cluster stack helper
+#   become: true
+#   command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i csp-helper-{{cluster_namespace}} -n {{cluster_namespace}} {{scs_cs_helper}} -f {{openstack_clouds_yaml}}"
 
 - name: Ensure we have the namespace available before generating secrets
   become: true
@@ -24,13 +21,13 @@
   ignore_errors: true
   no_log: true
 
-- name: Generate generic secret for "openstack" capo
+- name: Generate generic secret for CAPO
   become: true
   command:
     cmd: "{{k3s_bin}} kubectl create secret generic openstack -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
   register: secrets_openstack
 
-- name: Copy generated secret for "openstack" capo to a file
+- name: Copy generated secret for CAPO to a file
   become: true
   copy:
     content: "{{ secrets_openstack.stdout }}"
@@ -38,7 +35,7 @@
     mode: 0444
   when: secrets_openstack.changed
 
-- name: Apply generated secret for "openstack" capo
+- name: Apply generated secret for CAPO
   become: true
   command:
     cmd: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-capo"
@@ -57,13 +54,13 @@
     mode: 0444
   when: secrets_kubesys.changed
 
-- name: Generate secret based on "clouds-yaml" kube-system output file for the ClusterResourceSet (crs)
+- name: Generate secret based on "clouds-yaml" kube-system output file for the ClusterResourceSet (CRS)
   become: true
   command:
     cmd: "{{k3s_bin}} kubectl create secret generic clouds-yaml -n {{cluster_namespace}} --from-file={{scs_cs_user_home}}/.secret-kubesys --dry-run=client -o yaml"
   register: secrets_crs
 
-- name: Copy generated secret for "crs" to a file
+- name: Copy generated secret for "CRS" to a file
   become: true
   copy:
     content: "{{ secrets_crs.stdout }}"
@@ -71,31 +68,7 @@
     mode: 0444
   when: secrets_crs.changed
 
-- name: Apply generated secret for "crs"
+- name: Apply generated secret for "CRS"
   become: true
   command:
     cmd: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-crs"
-
-- name: Check if "{{scs_cs_operator_specs_yaml}}" exists
-  become: true
-  stat:
-    path: "{{ scs_cs_operator_specs_yaml }}"
-  register: check_scs_cs_operator_specs_yaml
-
-- name: Get "{{scs_cs_operator_specs_yaml}}"
-  become: true
-  get_url:
-    url: "{{ scs_cs_operator_specs }}"
-    dest: "{{ scs_cs_operator_specs_yaml }}"
-    mode: 0640
-  when: not check_scs_cs_operator_specs_yaml.stat.exists
-  register: get_scs_cs_operator_specs_yaml
-
-- name: envsubst "{{scs_cs_operator_specs_yaml}}" using "envsubst-helper.sh"
-  become: true
-  command: /bin/sh {{ envsubst_helper }} {{ scs_cs_operator_specs_yaml }} {{ scs_cs_operator_specs_yaml }}.envsubst
-  when: get_scs_cs_operator_specs_yaml.changed
-
-- name: Apply operator specs for SCS
-  become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{ scs_cs_operator_specs_yaml }}.envsubst"
