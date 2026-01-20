@@ -13,7 +13,7 @@
     extensions: [ yml ]
   when: ansible_distribution == 'Ubuntu'
 
-- name: Include base tasks to install dependencies and user account
+- name: Include base install tasks
   include_tasks: "{{ t }}"
   loop:
     - 00-install-dependencies.yml
@@ -21,7 +21,7 @@
   loop_control:
     loop_var: t
 
-- name: Include all other "setup" tasks
+- name: Include additional setup tasks
   include_tasks: "{{ t }}"
   loop:
     - 02-setup-docker.yml
@@ -40,7 +40,7 @@
   become: true
   template:
     src: "{{s}}.j2"
-    dest: "{{scs_cluster_stack_home}}/{{s}}"
+    dest: "{{scs_cs_user_home}}/{{s}}"
     mode: 0555
   loop:
     - tool-install-clusterctl.sh
@@ -56,7 +56,7 @@
   become: true
   copy:
     src: "files/{{s}}"
-    dest: "{{scs_cluster_stack_home}}/{{s}}"
+    dest: "{{scs_cs_user_home}}/{{s}}"
     mode: 0555
   loop:
     - 001.sh

@@ -10,6 +10,6 @@
   apt:
     name: "{{ d }}"
     state: present
-  loop: "{{ scs_cluster_stack_dependencies }}"
+  loop: "{{ scs_cs_dependencies }}"
   loop_control:
     loop_var: d

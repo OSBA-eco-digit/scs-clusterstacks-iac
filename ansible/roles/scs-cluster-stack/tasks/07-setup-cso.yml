@@ -2,16 +2,24 @@
 - name: Template "clouds.yaml"
   become: true
   template:
-    src: openstack-clouds.yaml.j2
+    src: clouds.yaml.j2
     dest: "{{openstack_clouds_yaml}}"
     mode: 0444
 
-- name: Template "envsubst-helper.sh"
+- name: Template "envsubst.sh"
   become: true
   template:
-    src: envsubst-helper.sh.j2
+    src: envsubst.sh.j2
     dest: "{{ envsubst_helper }}"
     mode: 0444
+
+- name: Ensure we delete the "cso-controller-manager" accont before installing the operator
+  become: true
+  command: "{{ k3s_bin }} kubectl delete serviceaccount cso-controller-manager -n cso-system"
+
+- name: Install cluster stack operator
+  become: true
+  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
 
 - name: Ensure we have the namespace available before generating secrets
   become: true
@@ -30,14 +38,14 @@
   become: true
   copy:
     content: "{{ secrets_openstack.stdout }}"
-    dest:  "{{scs_cluster_stack_home}}/.secret-capo"
+    dest:  "{{scs_cs_user_home}}/.secret-capo"
     mode: 0444
   when: secrets_openstack.changed
 
 - name: Apply generated secret for "openstack" capo
   become: true
   command:
-    cmd: "{{k3s_bin}} kubectl apply -f {{scs_cluster_stack_home}}/.secret-capo"
+    cmd: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-capo"
 
 - name: Generate generic secret for "clouds-yaml" kube-system
   become: true
@@ -49,57 +57,49 @@
   become: true
   copy:
     content: "{{ secrets_kubesys.stdout }}"
-    dest:  "{{scs_cluster_stack_home}}/.secret-kubesys"
+    dest:  "{{scs_cs_user_home}}/.secret-kubesys"
     mode: 0444
   when: secrets_kubesys.changed
 
 - name: Generate secret based on "clouds-yaml" kube-system output file for the ClusterResourceSet (crs)
   become: true
   command:
-    cmd: "{{k3s_bin}} kubectl create secret generic clouds-yaml -n {{cluster_namespace}} --from-file={{scs_cluster_stack_home}}/.secret-kubesys --dry-run=client -o yaml"
+    cmd: "{{k3s_bin}} kubectl create secret generic clouds-yaml -n {{cluster_namespace}} --from-file={{scs_cs_user_home}}/.secret-kubesys --dry-run=client -o yaml"
   register: secrets_crs
 
 - name: Copy generated secret for "crs" to a file
   become: true
   copy:
     content: "{{ secrets_crs.stdout }}"
-    dest:  "{{scs_cluster_stack_home}}/.secret-crs"
+    dest:  "{{scs_cs_user_home}}/.secret-crs"
     mode: 0444
   when: secrets_crs.changed
 
 - name: Apply generated secret for "crs"
   become: true
   command:
-    cmd: "{{k3s_bin}} kubectl apply -f {{scs_cluster_stack_home}}/.secret-crs"
+    cmd: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-crs"
 
-- name: Check if "{{scs_cluster_stack_operator_specs_yaml}}" exists
+- name: Check if "{{scs_cs_operator_specs_yaml}}" exists
   become: true
   stat:
-    path: "{{ scs_cluster_stack_operator_specs_yaml }}"
-  register: check_scs_cluster_stack_operator_specs_yaml
+    path: "{{ scs_cs_operator_specs_yaml }}"
+  register: check_scs_cs_operator_specs_yaml
 
-- name: Get "{{scs_cluster_stack_operator_specs_yaml}}"
+- name: Get "{{scs_cs_operator_specs_yaml}}"
   become: true
   get_url:
-    url: "{{ scs_cluster_stack_operator_specs }}"
-    dest: "{{ scs_cluster_stack_operator_specs_yaml }}"
+    url: "{{ scs_cs_operator_specs }}"
+    dest: "{{ scs_cs_operator_specs_yaml }}"
     mode: 0640
-  when: not check_scs_cluster_stack_operator_specs_yaml.stat.exists
-  register: get_scs_cluster_stack_operator_specs_yaml
+  when: not check_scs_cs_operator_specs_yaml.stat.exists
+  register: get_scs_cs_operator_specs_yaml
 
-- name: envsubst "{{scs_cluster_stack_operator_specs_yaml}}" using "envsubst-helper.sh"
+- name: envsubst "{{scs_cs_operator_specs_yaml}}" using "envsubst-helper.sh"
   become: true
-  command: /bin/sh {{ envsubst_helper }} {{ scs_cluster_stack_operator_specs_yaml }} {{ scs_cluster_stack_operator_specs_yaml }}.envsubst
-  when: get_scs_cluster_stack_operator_specs_yaml.changed
+  command: /bin/sh {{ envsubst_helper }} {{ scs_cs_operator_specs_yaml }} {{ scs_cs_operator_specs_yaml }}.envsubst
+  when: get_scs_cs_operator_specs_yaml.changed
 
 - name: Apply operator specs for SCS
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{ scs_cluster_stack_operator_specs_yaml }}.envsubst"
-
-- name: Ensure we do not have an existing "cso-controller-manager" accont
-  become: true
-  command: "{{ k3s_bin }} kubectl delete serviceaccount cso-controller-manager -n cso-system"
-
-- name: Install cluster stack operator helper
-  become: true
-  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{oci_repo_cso}}"
+  command: "{{ k3s_bin }} kubectl apply -f {{ scs_cs_operator_specs_yaml }}.envsubst"

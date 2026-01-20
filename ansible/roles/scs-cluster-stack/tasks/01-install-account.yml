@@ -1,60 +1,60 @@
 ---
-- name: Ensure "{{ scs_cluster_stack_user }}" group is present
+- name: Ensure "{{ scs_cs_user }}" group is present
   become: true
   group:
-    name: "{{ scs_cluster_stack_group }}"
+    name: "{{ scs_cs_group }}"
     state: present
 
-- name: Ensure "{{ scs_cluster_stack_user }}" user is present
+- name: Ensure "{{ scs_cs_user }}" user is present
   become: true
   user:
-    home: "{{ scs_cluster_stack_home }}"
+    home: "{{ scs_cs_user_home }}"
     create_home: true
-    comment: "{{ scs_cluster_stack_user }}"
-    name: "{{ scs_cluster_stack_user }}"
+    comment: "{{ scs_cs_user }}"
+    name: "{{ scs_cs_user }}"
     shell: "/bin/false"
-    groups: "{{ scs_cluster_stack_user }}"
+    groups: "{{ scs_cs_user }}"
     password: "{{ lookup('community.general.random_string', base64=true) | password_hash }}"
     password_lock: true
     update_password: on_create
     system: true
     state: present
-  register: scs_cluster_stack_user_created
+  register: scs_cs_user_created
 
-- name: Enforce permissions on "{{ scs_cluster_stack_home }}"
+- name: Enforce permissions on "{{ scs_cs_user_home }}"
   become: true
   file:
-    dest: "{{ scs_cluster_stack_home }}"
-    owner: "{{ scs_cluster_stack_user }}"
-    group: "{{ scs_cluster_stack_group }}"
+    dest: "{{ scs_cs_user_home }}"
+    owner: "{{ scs_cs_user }}"
+    group: "{{ scs_cs_group }}"
     mode: 0750
-  when: scs_cluster_stack_user_created.changed
+  when: scs_cs_user_created.changed
 
-- name: Ensure ".config" directory exists for the "{{scs_cluster_stack_user}}" user
+- name: Ensure ".config" directory exists for the "{{scs_cs_user}}" user
   become: true
   file:
-    group: "{{ scs_cluster_stack_group }}"
+    group: "{{ scs_cs_group }}"
     mode: 0750
-    owner: "{{ scs_cluster_stack_user }}"
-    path: "{{scs_cluster_stack_home}}/.config"
+    owner: "{{ scs_cs_user }}"
+    path: "{{scs_cs_user_home}}/.config"
     state: directory
 
-- name: Ensure ".config/cluster-api" directory exists for the "{{scs_cluster_stack_user}}" user
+- name: Ensure ".config/cluster-api" directory exists for the "{{scs_cs_user}}" user
   become: true
   file:
-    group: "{{ scs_cluster_stack_group }}"
+    group: "{{ scs_cs_group }}"
     mode: 0750
-    owner: "{{ scs_cluster_stack_user }}"
-    path: "{{scs_cluster_stack_home}}/.config/cluster-api"
+    owner: "{{ scs_cs_user }}"
+    path: "{{scs_cs_user_home}}/.config/cluster-api"
     state: directory
 
-- name: Ensure ".config/openstack" directory exists for the "{{scs_cluster_stack_user}}" user
+- name: Ensure ".config/openstack" directory exists for the "{{scs_cs_user}}" user
   become: true
   file:
-    group: "{{ scs_cluster_stack_group }}"
+    group: "{{ scs_cs_group }}"
     mode: 0750
-    owner: "{{ scs_cluster_stack_user }}"
-    path: "{{scs_cluster_stack_home}}/.config/openstack"
+    owner: "{{ scs_cs_user }}"
+    path: "{{scs_cs_user_home}}/.config/openstack"
     state: directory
 
 - name: Ensure ".config" directory exists for "root"
@@ -69,12 +69,12 @@
   become: true
   file:
     dest: "/root/.config/cluster-api"
-    src: "{{scs_cluster_stack_home}}/.config/cluster-api"
+    src: "{{scs_cs_user_home}}/.config/cluster-api"
     state: link
 
 - name: Create symbolic link to ".config/openstack"
   become: true
   file:
     dest: "/root/.config/openstack"
-    src: "{{scs_cluster_stack_home}}/.config/openstack"
+    src: "{{scs_cs_user_home}}/.config/openstack"
     state: link

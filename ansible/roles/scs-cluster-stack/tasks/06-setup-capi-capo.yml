@@ -3,37 +3,35 @@
   become: true
   template:
     src: clusterctl.yaml.j2
-    dest: "{{scs_cluster_stack_home}}/.config/cluster-api/clusterctl.yaml"
-    mode: 0444
+    dest: "{{scs_cs_user_home}}/.config/cluster-api/clusterctl.yaml"
+    mode: 0440
 
-- name: Bootstrap Cluster API implementation for OpenStack
+- name: Install openstack resources controller (ORC)
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true
 
-- name: Initialize management cluster
+- name: Initialize management cluster with the openstack provider
   become: true
-  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --bootstrap k3s:v{{k3s_capi_release}} --control-plane k3s:v{{k3s_capi_release}} --core cluster-api:v{{clusterctl_release}} --kubeconfig {{ kubeconfig_path }}"
+  command: "clusterctl init --kubeconfig {{ kubeconfig_path }} -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --bootstrap k3s:v{{k3s_capi_release}} --control-plane k3s:v{{k3s_capi_release}}"
   environment:
+    # https://cluster-api.sigs.k8s.io/tasks/experimental-features/experimental-features
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
+    # - EXP_IN_PLACE_UPDATES: true
+    # - EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION: true
+    # - EXP_MACHINE_POOL: true
+    # - EXP_MACHINE_SET_PREFLIGHT_CHECKS: true
+    # - EXP_MACHINE_TAINT_PROPAGATION: true
+    # - EXP_MACHINE_WAITFORVOLUMEDETACH_CONSIDER_VOLUMEATTACHMENTS: true
+    # - EXP_PRIORITY_QUEUE: true
+    # - EXP_RECONCILER_RATE_LIMITING: true
 
+# kubectl describe -n capi-system deployment.apps/capi-controller-manager
 - name: Request rollout status for CAPI
   become: true
   command: "{{ k3s_bin }} kubectl -n capi-system rollout status deployment"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true
 
 - name: Request rollout status for CAPO
   become: true
   command: "{{ k3s_bin }} kubectl -n capo-system rollout status deployment"
-  environment:
-    - CLUSTER_TOPOLOGY: true
-    - EXP_CLUSTER_RESOURCE_SET: true
-    - EXP_RUNTIME_SDK: true
