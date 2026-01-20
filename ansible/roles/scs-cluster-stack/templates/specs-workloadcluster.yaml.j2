@@ -38,7 +38,7 @@ spec:
     pods:
       cidrBlocks:
       - {{cluster_cidr_pods}}
-    serviceDomain: {{cluster_service_domain}}
+    serviceDomain: {{cluster_services_domain}}
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
     kind: KThreesControlPlane
