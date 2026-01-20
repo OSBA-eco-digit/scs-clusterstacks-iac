@@ -10,13 +10,13 @@
   become: true
   template:
     src: specs-namespace.yaml.j2
-    dest: "{{scs_cs_use_home}}/specs-namespace.yaml"
+    dest: "{{scs_cs_user_home}}/specs-namespace.yaml"
     mode: 0444
 
 - name: Ensure we have the namespace available before generating secrets
   become: true
   command:
-    cmd: "{{k3s_bin}} kubectl apply -f {scs_cs_use_home}}/specs-namespace.yaml"
+    cmd: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/specs-namespace.yaml"
 
 - name: Generate generic secret for CAPO
   become: true
