@@ -47,3 +47,19 @@
   args:
     creates: "{{ helm_bin }}"
   register: get_helm
+
+- name: Generate bash completions for "kubectl"
+  become: true
+  command: "{{ kubectl_bin }} completion bash"
+  register: completions_kubectl
+  args:
+    creates: "/etc/bash_completion.d/kubectl"
+
+- name: Copy completions for "kubectl" to a file
+  become: true
+  copy:
+    content: "{{ completions_kubectl.stdout }}"
+    dest:  "/etc/bash_completion.d/kubectl"
+    mode: 0444
+  when: completions_kubectl.changed
+
