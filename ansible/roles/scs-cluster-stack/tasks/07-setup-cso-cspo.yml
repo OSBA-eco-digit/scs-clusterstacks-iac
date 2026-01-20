@@ -13,10 +13,14 @@
     dest: "{{scs_cs_user_home}}/specs-namespace.yaml"
     mode: 0444
 
-- name: Encode "clouds.yaml"
+- name: Encode "clouds.yaml" into base64
   become: true
+  command: "base64 {{openstack_clouds_yaml}}"
+  register: stdout_base64_openstack_clouds_yaml
+
+- name: Set fact from encoded "clouds.yaml"
   set_fact:
-    openstack_clouds_yaml_b64: "{{ lookup('file', '/root/.config/openstack/clouds.yaml') | b64encode }}"
+    openstack_clouds_yaml_b64: "{{ stdout_base64_openstack_clouds_yaml.stdout }}"
 
 - name: Ensure we have the namespace available before generating secrets
   become: true
