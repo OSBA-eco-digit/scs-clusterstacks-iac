@@ -6,10 +6,6 @@
     dest: "{{openstack_clouds_yaml}}"
     mode: 0444
 
-- name: Install cluster stack operator and openstack provider
-  become: true
-  command: "helm upgrade --create-namespace --kubeconfig {{kubeconfig_path}} -i cso -n cso-system {{scs_cs_repo_cso}}"
-
 - name: Ensure we have the namespace available before generating secrets
   become: true
   command:
