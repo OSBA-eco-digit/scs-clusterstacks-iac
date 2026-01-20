@@ -15,7 +15,7 @@
 
 - name: Encode "clouds.yaml" into base64
   become: true
-  command: "base64 {{openstack_clouds_yaml}}"
+  command: "base64 -w 0 {{openstack_clouds_yaml}}"
   register: stdout_base64_openstack_clouds_yaml
 
 - name: Set fact from encoded "clouds.yaml"
