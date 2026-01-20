@@ -43,7 +43,7 @@
 
 - name: Install cluster stack operator
   become: true
-  command: "helm upgrade --kubeconfif {{kubeconfig_path}} -i cso -n cso-system --create-namespace {{scs_cs_repo_cso}}"
+  command: "helm upgrade --kubeconfig {{kubeconfig_path}} -i cso -n cso-system --create-namespace {{scs_cs_repo_cso}}"
 
 - name: Apply "specs-clusterresourceset.yaml"
   become: true
