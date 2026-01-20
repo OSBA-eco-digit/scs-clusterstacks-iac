@@ -1,3 +1,5 @@
+*.swp
+
 ansible/*.ini
 
 opentofu/*.tfstate
