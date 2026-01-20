@@ -67,3 +67,7 @@
 - name: Install cluster stack operator
   become: true
   command: "helm upgrade --kubeconfig {{kubeconfig_path}} -i cso -n cso-system --create-namespace {{scs_cs_repo_cso}}"
+
+- name: Request rollout status for cluster stack operator
+  become: true
+  command: "{{ k3s_bin }} kubectl -n cso-system rollout status deployment"
