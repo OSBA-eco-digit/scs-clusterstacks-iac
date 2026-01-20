@@ -63,3 +63,7 @@
 - name: Apply generated secret for "CRS"
   become: true
   command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-crs"
+
+- name: Install cluster stack operator
+  become: true
+  command: "helm upgrade --kubeconfig {{kubeconfig_path}} -i cso -n cso-system --create-namespace {{scs_cs_repo_cso}}"

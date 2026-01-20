@@ -41,10 +41,6 @@
     - OPENSTACK_SSH_KEY_NAME: "{{ openstack_ssh_key_name }}"
     - WORKER_MACHINE_COUNT: "{{ cluster_workers_replicas }}"
 
-- name: Install cluster stack operator
-  become: true
-  command: "helm upgrade --kubeconfig {{kubeconfig_path}} -i cso -n cso-system --create-namespace {{scs_cs_repo_cso}}"
-
 - name: Apply "specs-clusterresourceset.yaml"
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/specs-clusterresourceset.yaml"
