@@ -1,9 +1,9 @@
 ---
-- name: Template "specs-customresourceset.yaml"
+- name: Template "specs-clusterresourceset.yaml"
   become: true
   template:
-    src: specs-customresourceset.yaml.j2
-    dest: "{{scs_cs_user_home}}/specs-customresourceset.yaml"
+    src: specs-clusterresourceset.yaml.j2
+    dest: "{{scs_cs_user_home}}/specs-clusterresourceset.yaml"
     mode: 0440
 
 - name: Template "specs-clusterstack.yaml"
@@ -42,14 +42,14 @@
     - OPENSTACK_SSH_KEY_NAME: "{{ openstack_ssh_key_name }}"
     - WORKER_MACHINE_COUNT: "{{ cluster_workers_replicas }}"
 
-- name: Apply specs from "scs-resourceset.yaml"
+- name: Apply "specs-clusterresourceset.yaml"
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/scs-resourceset.yaml"
+  command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/specs-clusterresourceset.yaml"
 
-- name: Apply specs from "scs-specs-clusterstack.yaml"
+- name: Apply "specs-clusterstack.yaml"
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/scs-specs-clusterstack.yaml"
+  command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/specs-clusterstack.yaml"
 
-- name: Apply generated workload cluster specs based on "k3s" template for OpenStack
+- name: Apply generated workload cluster specs based on "specs-workloadcluster.yaml"
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/workloadcluster.yaml"
