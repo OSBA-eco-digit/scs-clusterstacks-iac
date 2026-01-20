@@ -14,8 +14,9 @@
     mode: 0444
 
 - name: Encode "clouds.yaml"
+  become: true
   set_fact:
-    openstack_clouds_yaml_b64: "{{ lookup('file', {{scs_cs_user_home}}/.config/openstack/clouds.yaml) | b64encode }}"
+    openstack_clouds_yaml_b64: "{{ lookup('file', '/root/.config/openstack/clouds.yaml') | b64encode }}"
 
 - name: Ensure we have the namespace available before generating secrets
   become: true
