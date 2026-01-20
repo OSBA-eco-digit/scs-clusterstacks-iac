@@ -18,25 +18,9 @@
   vars:
     k3s_agent:
       node-label:
+        - "cluster-api=true"
+        - "cluster-stack=true"
         - "control-plane=true"
         - "worker=true"
         - "workload=true"
   when: k3s_apply_role
-
-- name: Generate random token key
-  become: true
-  command:
-    cmd: "{{k3s_bin}} token create"
-  register: random_token_key
-  args:
-    creates: "{{ scs_cs_user_home }}/token"
-
-- name: Copy token to a file
-  become: true
-  copy:
-    content: "{{ random_token_key.stdout }}"
-    dest:  "{{ scs_cs_user_home }}/token"
-    mode: 0440
-    owner: "{{ scs_cs_user }}"
-    group: "{{ scs_cs_group }}"
-  when: random_token_key.changed
