@@ -1,9 +1,6 @@
 #!/bin/sh
-#
-### {{ ansible_managed }}
-#
-# EXAMPLE USAGE: oras repo tags registry.scs.community/kaas/cluster-stacks
-#
+
+# {{ ansible_managed }}
 
 curl -sLO "https://github.com/oras-project/oras/releases/download/v{{oras_release}}/oras_{{oras_release}}_linux_amd64.tar.gz"
 mkdir -p oras-install/

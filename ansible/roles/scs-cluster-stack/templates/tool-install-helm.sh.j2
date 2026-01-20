@@ -1,4 +1,7 @@
 #!/bin/sh
+
+# {{ ansible_managed }}
+
 sudo apt-get update
 sudo apt-get install -qq -y curl gpg apt-transport-https
 curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
