@@ -1,5 +1,5 @@
 ---
-scs_cluster_stack_dependencies:
+scs_cs_dependencies:
   - ca-certificates 
   - curl
   - git
