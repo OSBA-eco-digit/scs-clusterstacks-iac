@@ -52,6 +52,10 @@ setup:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
 		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini $(CURDIR)/ansible/playbook.yml
 
+setup-kind:
+	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
+		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e k3s_apply_role=false $(CURDIR)/ansible/playbook.yml
+
 scripts-only:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
 		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e scripts_only=true $(CURDIR)/ansible/playbook.yml
