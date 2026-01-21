@@ -62,4 +62,3 @@
     dest:  "/etc/bash_completion.d/kubectl"
     mode: 0444
   when: completions_kubectl.changed
-

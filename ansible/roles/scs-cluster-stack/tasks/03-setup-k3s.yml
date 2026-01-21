@@ -11,3 +11,20 @@
         - "worker=true"
         - "workload=true"
   when: k3s_apply_role
+
+- name: Apply 'k3s' bash completions
+  block:
+    - name: Generate bash completions for "k3s"
+      become: true
+      command: "{{ k3s_bin }} completion bash"
+      register: completions_k3s
+      args:
+        creates: "/etc/bash_completion.d/k3s"
+    - name: Copy completions for "k3s" to a file
+      become: true
+      copy:
+        content: "{{ completions_k3s.stdout }}"
+        dest:  "/etc/bash_completion.d/k3s"
+        mode: 0444
+      when: completions_k3s.changed
+  when: k3s_apply_role
