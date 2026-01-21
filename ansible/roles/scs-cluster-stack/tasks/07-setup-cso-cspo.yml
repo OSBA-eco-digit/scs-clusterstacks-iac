@@ -4,23 +4,43 @@
   template:
     src: clouds.yaml.j2
     dest: "{{openstack_clouds_yaml}}"
-    mode: 0444
+    mode: 0440
 
 - name: Template "specs-namespace.yaml"
   become: true
   template:
     src: specs-namespace.yaml.j2
     dest: "{{scs_cs_user_home}}/specs-namespace.yaml"
-    mode: 0444
+    mode: 0440
+
+- name: Template "specs-secret-kubeconfig.yaml"
+  become: true
+  template:
+    src: specs-secret-kubeconfig.yaml.j2
+    dest: "{{scs_cs_user_home}}/specs-secret-kubeconfig.yaml"
+    mode: 0440
+
+
 
 - name: Encode "clouds.yaml" into base64
   become: true
   command: "base64 -w 0 {{openstack_clouds_yaml}}"
   register: stdout_base64_openstack_clouds_yaml
 
+- name: Encode "{{kubeconfig_path}}" into base64
+  become: true
+  command: "base64 -w 0 {{kubeconfig_path}}"
+  register: stdout_base64_kubeconfig
+
+
+
 - name: Set fact from encoded "clouds.yaml"
   set_fact:
     openstack_clouds_yaml_b64: "{{ stdout_base64_openstack_clouds_yaml.stdout }}"
+
+- name: Set fact from encoded "{{kubeconfig_path}}"
+  set_fact:
+    kubeconfig_b64: "{{ stdout_base64_kubeconfig.stdout }}"
 
 
 
@@ -40,34 +60,12 @@
   copy:
     content: "{{ secrets_cluster.stdout }}"
     dest:  "{{scs_cs_user_home}}/.secret-cluster"
-    mode: 0444
+    mode: 0440
   when: secrets_cluster.changed
 
 - name: Apply generated secret for the openstack cloud provider
   become: true
   command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-cluster"
-
-
-
-- name: Generate generic secret for the cluster kubeconfig
-  become: true
-  command: "{{k3s_bin}} kubectl create secret generic {{cluster_name}}-kubeconfig -n {{cluster_namespace}} --from-file=kubeconfig={{kubeconfig_path}} --dry-run=client -o yaml"
-  register: secrets_cluster_kubeconfig
-
-- name: Copy generated secret for the cluster kubeconfig
-  become: true
-  copy:
-    content: "{{ secrets_cluster_kubeconfig.stdout }}"
-    dest:  "{{scs_cs_user_home}}/.secret-cluster-kubeconfig"
-    mode: 0444
-  when: secrets_cluster_kubeconfig.changed
-
-- name: Apply generated secret for the cluster kubeconfig
-  become: true
-  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-cluster-kubeconfig"
-
-
-
 
 
 
@@ -81,7 +79,7 @@
   copy:
     content: "{{ secrets_openstack_cloud_provider.stdout }}"
     dest:  "{{scs_cs_user_home}}/.secret-os-cloud-provider"
-    mode: 0444
+    mode: 0440
   when: secrets_openstack_cloud_provider.changed
 
 - name: Apply generated secret for the openstack cloud provider
@@ -100,7 +98,7 @@
   copy:
     content: "{{ secrets_openstack.stdout }}"
     dest:  "{{scs_cs_user_home}}/.secret-capo"
-    mode: 0444
+    mode: 0440
   when: secrets_openstack.changed
 
 - name: Apply generated secret for CAPO
@@ -119,7 +117,7 @@
   copy:
     content: "{{ secrets_kubesys.stdout }}"
     dest:  "{{scs_cs_user_home}}/.secret-kubesys"
-    mode: 0444
+    mode: 0440
   when: secrets_kubesys.changed
 
 
@@ -134,7 +132,7 @@
   copy:
     content: "{{ secrets_crs.stdout }}"
     dest:  "{{scs_cs_user_home}}/.secret-crs"
-    mode: 0444
+    mode: 0440
   when: secrets_crs.changed
 
 - name: Apply generated secret for "CRS"
