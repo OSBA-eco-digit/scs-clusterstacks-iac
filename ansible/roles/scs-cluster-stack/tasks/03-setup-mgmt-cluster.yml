@@ -1,8 +1,8 @@
 ---
-- name: Apply 'k3s' role
+- name: Install 'k3s' as management cluster
   block:
 
-    - name: Include tasks and define vars
+    - name: Include tasks from 'k3s' role
       include_role:
         name: k3s
       vars:
@@ -29,11 +29,18 @@
         mode: 0444
       when: completions_k3s.changed
 
+    - name: Encode "{{kubeconfig_path}}" into base64
+      become: true
+      command: "base64 -w 0 {{kubeconfig_path}}"
+      register: stdout_base64_kubeconfig
+    
+    - name: Set fact from encoded "{{kubeconfig_path}}"
+      set_fact:
+        kubeconfig_b64: "{{ stdout_base64_kubeconfig.stdout }}"
+
   when: k3s_apply_role | bool
 
-
-
-- name: Install 'kind' instead of 'k3s' as the management cluster
+- name: Install 'kind' as management cluster
   block:
 
     - name: Check if "kind" exists

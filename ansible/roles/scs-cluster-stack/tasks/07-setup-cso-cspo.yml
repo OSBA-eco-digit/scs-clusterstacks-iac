@@ -18,18 +18,9 @@
   command: "base64 -w 0 {{openstack_clouds_yaml}}"
   register: stdout_base64_openstack_clouds_yaml
 
-- name: Encode "{{kubeconfig_path}}" into base64
-  become: true
-  command: "base64 -w 0 {{kubeconfig_path}}"
-  register: stdout_base64_kubeconfig
-
 - name: Set fact from encoded "clouds.yaml"
   set_fact:
     openstack_clouds_yaml_b64: "{{ stdout_base64_openstack_clouds_yaml.stdout }}"
-
-- name: Set fact from encoded "{{kubeconfig_path}}"
-  set_fact:
-    kubeconfig_b64: "{{ stdout_base64_kubeconfig.stdout }}"
 
 - name: Ensure we have the namespace available before generating secrets
   become: true
@@ -133,4 +124,4 @@
 
 - name: Request rollout status for cluster stack operator
   become: true
-  command: "{{ k3s_bin }} kubectl -n cso-system rollout status deployment"
+  command: "kubectl -n cso-system rollout status deployment"
