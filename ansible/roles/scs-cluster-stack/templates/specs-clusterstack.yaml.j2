@@ -8,7 +8,7 @@
 apiVersion: clusterstack.x-k8s.io/{{ cluster_api_contract_clusterstack }}
 kind: ClusterStack
 metadata:
-  name: openstack
+  name: {{ openstack_cloud }}
   namespace: {{ cluster_namespace }}
 spec:
   autoSubscribe: false
