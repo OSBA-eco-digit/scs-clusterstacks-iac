@@ -92,6 +92,6 @@
     - name: Create management cluster with 'kind'
       become: true
       command: "{{kind_bin}} create cluster --image kindest/node:v{{kubernetes_release}}"
-      when: check_kind_control_plane.stdout == '1'
+      when: (check_kind_control_plane.stdout|int) < 3
 
   when: not k3s_apply_role | bool
