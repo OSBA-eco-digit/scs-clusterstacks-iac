@@ -51,7 +51,7 @@
 
 - name: Generate generic secret for the cluster kubeconfig
   become: true
-  command: "{{k3s_bin}} kubectl create secret generic {{cluster_name}}-kubeconfig -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  command: "{{k3s_bin}} kubectl create secret generic {{cluster_name}}-kubeconfig -n {{cluster_namespace}} --from-file=kubeconfig={{kubeconfig_path}} --dry-run=client -o yaml"
   register: secrets_cluster_kubeconfig
 
 - name: Copy generated secret for the cluster kubeconfig
