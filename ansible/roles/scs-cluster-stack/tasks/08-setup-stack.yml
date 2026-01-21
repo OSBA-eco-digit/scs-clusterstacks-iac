@@ -43,12 +43,12 @@
 
 - name: Apply "specs-clusterresourceset.yaml"
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/specs-clusterresourceset.yaml"
+  command: "kubectl apply -f {{scs_cs_user_home}}/specs-clusterresourceset.yaml"
 
 - name: Apply "specs-clusterstack.yaml"
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/specs-clusterstack.yaml"
+  command: "kubectl apply -f {{scs_cs_user_home}}/specs-clusterstack.yaml"
 
 - name: Apply generated workload cluster specs based on "specs-workloadcluster.yaml"
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{scs_cs_user_home}}/workloadcluster.yaml"
+  command: "kubectl apply -f {{scs_cs_user_home}}/workloadcluster.yaml"
