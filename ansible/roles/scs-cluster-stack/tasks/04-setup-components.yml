@@ -48,6 +48,31 @@
     creates: "{{ helm_bin }}"
   register: get_helm
 
+- name: Install 'kubectl' if we are not applying 'k3s' role
+  block:
+
+    - name: Check if "kubectl" exists
+      stat:
+        path: "{{ kubectl_bin }}"
+      register: check_kubectl
+
+    - name: Get "kubectl"
+      become: true
+      get_url:
+        url: "{{ kubectl_bin_url }}"
+        dest: "{{ kubectl_bin }}"
+        checksum: "sha256:{{kubectl_bin_sha256}}"
+        mode: 0755
+      when: not check_kubectl.stat.exists
+      register: get_kubectl
+    
+    - name: Strip "kubectl"
+      become: true
+      command: "strip {{ kubectl_bin }}"
+      when: get_kubectl.changed
+
+  when: not k3s_apply_role | bool
+
 - name: Generate bash completions for "kubectl"
   become: true
   command: "{{ kubectl_bin }} completion bash"

@@ -94,7 +94,7 @@ helm_bin_url: "https://get.helm.sh/helm-v{{helm_release}}-linux-amd64.tar.gz"
 helm_release: "4.0.0"
 
 kubectl_bin: "/usr/local/bin/kubectl"
-kubectl_bin_sha256: "9591f3d75e1581f3f7392e6ad119aab2f28ae7d6c6e083dc5d22469667f27253"
+kubectl_bin_sha256: "471d94e208a89be62eb776700fc8206cbef11116a8de2dc06fc0086b0015375b"
 kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/amd64/kubectl"
 kubectl_release: "{{kubernetes_release}}"
 
