@@ -49,6 +49,28 @@
 
 
 
+- name: Generate generic secret for the cluster kubeconfig
+  become: true
+  command: "{{k3s_bin}} kubectl create secret generic {{cluster_name}}-kubeconfig -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  register: secrets_cluster_kubeconfig
+
+- name: Copy generated secret for the cluster kubeconfig
+  become: true
+  copy:
+    content: "{{ secrets_cluster_kubeconfig.stdout }}"
+    dest:  "{{scs_cs_user_home}}/.secret-cluster-kubeconfig"
+    mode: 0444
+  when: secrets_cluster_kubeconfig.changed
+
+- name: Apply generated secret for the cluster kubeconfig
+  become: true
+  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-cluster-kubeconfig"
+
+
+
+
+
+
 - name: Generate generic secret for the openstack cloud provider
   become: true
   command: "{{k3s_bin}} kubectl create secret generic {{openstack_cloud}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
