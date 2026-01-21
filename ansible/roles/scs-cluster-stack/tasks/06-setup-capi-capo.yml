@@ -8,7 +8,7 @@
 
 - name: Install openstack resources controller (ORC)
   become: true
-  command: "{{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}"
+  command: "kubectl apply -f {{ openstack_orc_yaml }}"
 
 - name: Initialize management cluster using 'k3s'
   become: true
@@ -30,8 +30,8 @@
 
 - name: Request rollout status for CAPI
   become: true
-  command: "{{ k3s_bin }} kubectl -n capi-system rollout status deployment"
+  command: "kubectl -n capi-system rollout status deployment"
 
 - name: Request rollout status for CAPO
   become: true
-  command: "{{ k3s_bin }} kubectl -n capo-system rollout status deployment"
+  command: "kubectl -n capo-system rollout status deployment"
