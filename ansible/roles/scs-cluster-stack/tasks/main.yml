@@ -25,7 +25,7 @@
   include_tasks: "{{ t }}"
   loop:
     - 02-setup-docker.yml
-    - 03-setup-k3s.yml
+    - 03-setup-mgmt-cluster.yml
     - 04-setup-components.yml
     - 05-setup-modules-sysctl.yml
     - 06-setup-capi-capo.yml
