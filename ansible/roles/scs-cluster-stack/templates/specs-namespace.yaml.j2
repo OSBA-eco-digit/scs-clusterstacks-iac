@@ -4,12 +4,10 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: "{{ cluster_namespace }}"
- 
-### LEAVE IT HERE FOR A WHILE
-#  labels:
-#    pod-security.kubernetes.io/audit: restricted
-#    pod-security.kubernetes.io/audit-version: "v{{kubernetes_release_version}}"
-#    pod-security.kubernetes.io/enforce: baseline
-#    pod-security.kubernetes.io/enforce-version: "v{{kubernetes_release_version}}"
-#    pod-security.kubernetes.io/warn: restricted
-#    pod-security.kubernetes.io/warn-version: "v{{kubernetes_release_version}}"
+  labels:
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/audit-version: "v{{kubernetes_release_version}}"
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce-version: "v{{kubernetes_release_version}}"
+    pod-security.kubernetes.io/warn: restricted
+    pod-security.kubernetes.io/warn-version: "v{{kubernetes_release_version}}"
