@@ -54,6 +54,7 @@
         remote_src: true
         src: "{{scs_cs_user_home}}/go/bin/kind"
         dest: "{{ kind_bin }}"
+        mode: 0555
       when: get_kind.changed
     
     - name: Strip "kind"
