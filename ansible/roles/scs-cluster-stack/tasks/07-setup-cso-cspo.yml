@@ -118,9 +118,15 @@
   become: true
   command: "kubectl apply -f {{scs_cs_user_home}}/.secret-crs"
 
-- name: Install cluster stack operator
+- name: Install cluster stack operator using 'k3s'
   become: true
   command: "helm upgrade --kubeconfig {{kubeconfig_path}} -i cso -n cso-system --create-namespace {{scs_cs_repo_cso}}"
+  when: k3s_apply_role | bool
+
+- name: Install cluster stack operator using 'kind'
+  become: true
+  command: "helm upgrade -i cso -n cso-system --create-namespace {{scs_cs_repo_cso}}"
+  when: not k3s_apply_role | bool
 
 - name: Request rollout status for cluster stack operator
   become: true
