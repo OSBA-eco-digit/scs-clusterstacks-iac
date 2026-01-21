@@ -22,9 +22,51 @@
   set_fact:
     openstack_clouds_yaml_b64: "{{ stdout_base64_openstack_clouds_yaml.stdout }}"
 
+
+
 - name: Ensure we have the namespace available before generating secrets
   become: true
   command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/specs-namespace.yaml"
+
+
+
+- name: Generate generic secret for the cluster
+  become: true
+  command: "{{k3s_bin}} kubectl create secret generic {{cluster_name}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  register: secrets_cluster
+
+- name: Copy generated secret for the cluster
+  become: true
+  copy:
+    content: "{{ secrets_cluster.stdout }}"
+    dest:  "{{scs_cs_user_home}}/.secret-cluster"
+    mode: 0444
+  when: secrets_cluster.changed
+
+- name: Apply generated secret for the openstack cloud provider
+  become: true
+  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-cluster"
+
+
+
+- name: Generate generic secret for the openstack cloud provider
+  become: true
+  command: "{{k3s_bin}} kubectl create secret generic {{openstack_cloud}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  register: secrets_openstack_cloud_provider
+
+- name: Copy generated secret for the openstack cloud provider to a file
+  become: true
+  copy:
+    content: "{{ secrets_openstack_cloud_provider.stdout }}"
+    dest:  "{{scs_cs_user_home}}/.secret-os-cloud-provider"
+    mode: 0444
+  when: secrets_openstack_cloud_provider.changed
+
+- name: Apply generated secret for the openstack cloud provider
+  become: true
+  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-os-cloud-provider"
+
+
 
 - name: Generate generic secret for CAPO
   become: true
@@ -43,6 +85,8 @@
   become: true
   command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-capo"
 
+
+
 - name: Generate generic secret for "clouds-yaml" kube-system
   become: true
   command: "{{k3s_bin}} kubectl create secret generic clouds-yaml -n kube-system --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
@@ -55,6 +99,8 @@
     dest:  "{{scs_cs_user_home}}/.secret-kubesys"
     mode: 0444
   when: secrets_kubesys.changed
+
+
 
 - name: Generate secret based on "clouds-yaml" kube-system output file for the ClusterResourceSet (CRS)
   become: true
@@ -72,6 +118,8 @@
 - name: Apply generated secret for "CRS"
   become: true
   command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-crs"
+
+
 
 - name: Install cluster stack operator
   become: true
