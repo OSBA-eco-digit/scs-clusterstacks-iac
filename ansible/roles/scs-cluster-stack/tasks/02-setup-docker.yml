@@ -20,7 +20,7 @@
     repo: "deb [arch=amd64 signed-by={{docker_apt_sign_key}}] {{docker_apt_repo}} {{ansible_lsb.codename}} stable"
     filename: "{{ docker_apt_repo_filename }}"
 
-- name: Install packages
+- name: Install Docker packages
   become: true
   apt:
     name:
@@ -30,3 +30,17 @@
       - docker-ce-cli
       - docker-compose-plugin
     state: present
+
+- name: Ensure "{{scs_cs_user}}" user is a member of the docker group
+  become: true
+  user:
+    name: "{{ scs_cs_user }}"
+    groups: docker
+    append: yes
+
+- name: Ensure Docker service is enabled and started
+  become: true
+  systemd_service:
+    name: docker
+    enabled: yes
+    state: started
