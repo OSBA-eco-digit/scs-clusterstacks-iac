@@ -24,7 +24,7 @@
 
 - name: Ensure we have the namespace available before generating secrets
   become: true
-  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/specs-namespace.yaml"
+  command: "kubectl apply -f {{scs_cs_user_home}}/specs-namespace.yaml"
 
 - name: Template "specs-secret-kubeconfig.yaml"
   become: true
@@ -35,11 +35,11 @@
 
 - name: Apply "specs-secret-kubeconfig.yaml"
   become: true
-  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/specs-secret-kubeconfig.yaml"
+  command: "kubectl apply -f {{scs_cs_user_home}}/specs-secret-kubeconfig.yaml"
 
 - name: Generate generic secret for the cluster
   become: true
-  command: "{{k3s_bin}} kubectl create secret generic {{cluster_name}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  command: "kubectl create secret generic {{cluster_name}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
   register: secrets_cluster
 
 - name: Copy generated secret for the cluster
@@ -52,11 +52,11 @@
 
 - name: Apply generated secret for the openstack cloud provider
   become: true
-  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-cluster"
+  command: "kubectl apply -f {{scs_cs_user_home}}/.secret-cluster"
 
 - name: Generate generic secret for the openstack cloud provider
   become: true
-  command: "{{k3s_bin}} kubectl create secret generic {{openstack_cloud}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  command: "kubectl create secret generic {{openstack_cloud}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
   register: secrets_openstack_cloud_provider
 
 - name: Copy generated secret for the openstack cloud provider to a file
@@ -69,11 +69,11 @@
 
 - name: Apply generated secret for the openstack cloud provider
   become: true
-  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-os-cloud-provider"
+  command: "kubectl apply -f {{scs_cs_user_home}}/.secret-os-cloud-provider"
 
 - name: Generate generic secret for CAPO
   become: true
-  command: "{{k3s_bin}} kubectl create secret generic openstack -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  command: "kubectl create secret generic openstack -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
   register: secrets_openstack
 
 - name: Copy generated secret for CAPO to a file
@@ -86,11 +86,11 @@
 
 - name: Apply generated secret for CAPO
   become: true
-  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-capo"
+  command: "kubectl apply -f {{scs_cs_user_home}}/.secret-capo"
 
 - name: Generate generic secret for "clouds-yaml" kube-system
   become: true
-  command: "{{k3s_bin}} kubectl create secret generic clouds-yaml -n kube-system --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  command: "kubectl create secret generic clouds-yaml -n kube-system --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
   register: secrets_kubesys
 
 - name: Copy generated secret for "clouds-yaml" kube-system to a file
@@ -103,7 +103,7 @@
 
 - name: Generate secret based on "clouds-yaml" kube-system output file for the ClusterResourceSet (CRS)
   become: true
-  command: "{{k3s_bin}} kubectl create secret generic clouds-yaml -n {{cluster_namespace}} --from-file={{scs_cs_user_home}}/.secret-kubesys --dry-run=client -o yaml"
+  command: "kubectl create secret generic clouds-yaml -n {{cluster_namespace}} --from-file={{scs_cs_user_home}}/.secret-kubesys --dry-run=client -o yaml"
   register: secrets_crs
 
 - name: Copy generated secret for "CRS" to a file
@@ -116,7 +116,7 @@
 
 - name: Apply generated secret for "CRS"
   become: true
-  command: "{{k3s_bin}} kubectl apply -f {{scs_cs_user_home}}/.secret-crs"
+  command: "kubectl apply -f {{scs_cs_user_home}}/.secret-crs"
 
 - name: Install cluster stack operator
   become: true
