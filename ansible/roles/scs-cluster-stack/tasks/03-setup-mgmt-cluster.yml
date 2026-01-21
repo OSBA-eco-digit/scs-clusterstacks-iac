@@ -43,13 +43,18 @@
     
     - name: Get "kind"
       become: true
-      get_url:
-        url: "{{ kind_bin_url }}"
-        dest: "{{ kind_bin }}"
-        checksum: "sha256:{{kind_bin_sha256}}"
-        mode: 0755
+      become_user: "{{ scs_cs_user }}"
+      command: "go install sigs.k8s.io/kind@v{{kind_release}}"
       when: not check_kind.stat.exists
       register: get_kind
+
+    - name: Move "kind" binary
+      become: true
+      copy:
+        remote_src: true
+        src: "{{scs_cs_user_home}}/go/bin/kind"
+        dest: "{{ kind_bin }}"
+      when: get_kind.changed
     
     - name: Strip "kind"
       become: true
@@ -74,4 +79,4 @@
     - name: Create management cluster with 'kind'
       command: "{{kind_bin}} create cluster --image kindest/node:v{{kubernetes_release}}"
 
-  when: not k3s_apply_role
+  when: not k3s_apply_role | bool
