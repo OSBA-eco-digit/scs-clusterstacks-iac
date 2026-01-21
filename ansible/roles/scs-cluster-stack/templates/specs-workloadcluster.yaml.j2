@@ -52,6 +52,7 @@ spec:
     apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
     kind: KThreesControlPlane
     name: {{cluster_name}}-control-plane
+    namespace: capi-k3s-control-plane-system
   infrastructureRef:
     apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
     kind: OpenStackCluster
@@ -88,7 +89,8 @@ apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: KThreesControlPlane
 metadata:
   name: {{cluster_name}}-control-plane
-  namespace: {{cluster_namespace}}
+  namespace: capi-k3s-control-plane-system
+  # namespace: {{cluster_namespace}}
 spec:
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
