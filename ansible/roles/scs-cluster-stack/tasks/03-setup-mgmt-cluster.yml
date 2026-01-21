@@ -84,8 +84,14 @@
         mode: 0444
       when: completions_kind.changed
 
+    - name: Check if 'kind-control-plane' is present
+      shell:
+        cmd: "ps ax | grep -c =kind-control-plane"
+      register: check_kind_control_plane
+
     - name: Create management cluster with 'kind'
       become: true
       command: "{{kind_bin}} create cluster --image kindest/node:v{{kubernetes_release}}"
+      when: check_kind_control_plane.stdout = '1'
 
   when: not k3s_apply_role | bool
