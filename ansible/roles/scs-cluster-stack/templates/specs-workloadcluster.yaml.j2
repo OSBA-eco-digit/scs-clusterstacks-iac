@@ -20,11 +20,20 @@ kind: Cluster
 metadata:
   name: {{cluster_name}}
   namespace: {{cluster_namespace}}
+  labels:
+    managed-secret: clouds-yaml
 spec:
   topology:
     version: "{{ kubernetes_release }}"
     class: "{{ cluster_class | replace(".", "-") }}"
     classNamespace: {{ cluster_namespace }}
+    controlPlane:
+      replicas: {{cluster_controlplane_replicas}}
+    workers:
+      machineDeployments:
+        - class: default-worker
+          name: md-0
+          replicas: {{cluster_workers_replicas}}
     variables:
       - name: controller_flavor
         value: "{{ openstack_controlplane_flavor }}"
