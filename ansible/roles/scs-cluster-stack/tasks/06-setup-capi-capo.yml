@@ -10,22 +10,23 @@
   become: true
   command: "{{ k3s_bin }} kubectl apply -f {{ openstack_orc_yaml }}"
 
-- name: Initialize management cluster with the openstack provider
+- name: Initialize management cluster using 'k3s'
   become: true
   command: "clusterctl init --kubeconfig {{ kubeconfig_path }} -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --bootstrap k3s:v{{k3s_capi_release}} --control-plane k3s:v{{k3s_capi_release}}"
   environment:
-    # https://cluster-api.sigs.k8s.io/tasks/experimental-features/experimental-features
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
-    # - EXP_IN_PLACE_UPDATES: true
-    # - EXP_KUBEADM_BOOTSTRAP_FORMAT_IGNITION: true
-    # - EXP_MACHINE_POOL: true
-    # - EXP_MACHINE_SET_PREFLIGHT_CHECKS: true
-    # - EXP_MACHINE_TAINT_PROPAGATION: true
-    # - EXP_MACHINE_WAITFORVOLUMEDETACH_CONSIDER_VOLUMEATTACHMENTS: true
-    # - EXP_PRIORITY_QUEUE: true
-    # - EXP_RECONCILER_RATE_LIMITING: true
+  when: k3s_apply_role | bool
+
+- name: Initialize management cluster using 'kind'
+  become: true
+  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}}"
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
+  when: not k3s_apply_role | bool
 
 - name: Request rollout status for CAPI
   become: true

@@ -1,6 +1,7 @@
 ---
 - name: Apply 'k3s' role
   block:
+
     - name: Include tasks and define vars
       include_role:
         name: k3s
@@ -12,12 +13,14 @@
             - "control-plane=true"
             - "worker=true"
             - "workload=true"
+
     - name: Generate bash completions for "k3s"
       become: true
       command: "{{ k3s_bin }} completion bash"
       register: completions_k3s
       args:
         creates: "/etc/bash_completion.d/k3s"
+
     - name: Copy completions for "k3s" to a file
       become: true
       copy:
@@ -25,7 +28,8 @@
         dest:  "/etc/bash_completion.d/k3s"
         mode: 0444
       when: completions_k3s.changed
-  when: k3s_apply_role
+
+  when: k3s_apply_role | bool
 
 
 
