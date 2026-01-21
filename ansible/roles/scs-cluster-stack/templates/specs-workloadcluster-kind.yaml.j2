@@ -1,0 +1,30 @@
+# {{ ansible_managed }}
+---
+apiVersion: cluster.x-k8s.io/{{cluster_api_contract}}
+kind: Cluster
+metadata:
+  name: {{cluster_name}}
+  namespace: {{cluster_namespace}}
+  labels:
+    managed-secret: clouds-yaml
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - "{{cluster_cidr_pods}}"
+    serviceDomain: {{cluster_services_domain}}
+    services:
+      cidrBlocks:
+      - "{{cluster_cidr_services}}"
+  topology:
+    variables:
+    class: "{{ cluster_class | replace(".", "-") }}"
+    classNamespace: $CLUSTERSTACK_NAMESPACE
+    controlPlane:
+      replicas: {{cluster_controlplane_replicas}}
+    version: "v{{kubernetes_release}}"
+    workers:
+      machineDeployments:
+        - class: default-worker
+          name: md-0
+          replicas: {{cluster_workers_replicas}}

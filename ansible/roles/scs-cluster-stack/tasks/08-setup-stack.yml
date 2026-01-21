@@ -13,16 +13,23 @@
     dest: "{{scs_cs_user_home}}/specs-clusterstack.yaml"
     mode: 0440
 
-- name: Template "specs-workloadcluster.yaml"
+- name: Template "specs-workloadcluster-k3s.yaml"
   become: true
   template:
-    src: specs-workloadcluster.yaml.j2
-    dest: "{{scs_cs_user_home}}/specs-workloadcluster.yaml"
+    src: specs-workloadcluster-k3s.yaml.j2
+    dest: "{{scs_cs_user_home}}/specs-workloadcluster-k3s.yaml"
     mode: 0440
 
-- name: Generate workload cluster specs from template
+- name: Template "specs-workloadcluster-kind.yaml"
   become: true
-  command: "clusterctl generate cluster --kubeconfig {{ kubeconfig_path }} --target-namespace {{cluster_namespace}} --from {{scs_cs_user_home}}/specs-workloadcluster.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
+  template:
+    src: specs-workloadcluster-kind.yaml.j2
+    dest: "{{scs_cs_user_home}}/specs-workloadcluster-kind.yaml"
+    mode: 0440
+
+- name: Generate workload cluster specs from template using 'k3s'
+  become: true
+  command: "clusterctl generate cluster --kubeconfig {{ kubeconfig_path }} --target-namespace {{cluster_namespace}} --from {{scs_cs_user_home}}/specs-workloadcluster-k3s.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
   args:
     creates: "{{scs_cs_user_home}}/workloadcluster.yaml"
   environment:
@@ -40,6 +47,29 @@
     - OPENSTACK_NODE_MACHINE_FLAVOR: "{{ openstack_node_flavor }}"
     - OPENSTACK_SSH_KEY_NAME: "{{ openstack_ssh_key_name }}"
     - WORKER_MACHINE_COUNT: "{{ cluster_workers_replicas }}"
+  when: k3s_apply_role | bool
+
+- name: Generate workload cluster specs from template using 'kind'
+  become: true
+  command: "clusterctl generate cluster --target-namespace {{cluster_namespace}} --from {{scs_cs_user_home}}/specs-workloadcluster-k3s.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
+  args:
+    creates: "{{scs_cs_user_home}}/workloadcluster.yaml"
+  environment:
+    - CLUSTER_NAME: "{{ cluster_name }}"
+    - CONTROL_PLANE_MACHINE_COUNT: "{{ cluster_controlplane_replicas }}"
+    - KUBERNETES_VERSION: "{{ kubernetes_release }}"
+    - OPENSTACK_CLOUD: "{{ openstack_cloud }}"
+    - OPENSTACK_CLOUD_CACERT_B64: "{{ openstack_cloud_cacert_b64 }}"
+    - OPENSTACK_CLOUD_YAML_B64: "{{ openstack_clouds_yaml_b64 }}"
+    - OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR: "{{ openstack_controlplane_flavor }}"
+    - OPENSTACK_DNS_NAMESERVERS: "{{ openstack_dns_servers }}"
+    - OPENSTACK_EXTERNAL_NETWORK_ID: "{{ openstack_external_network_id }}"
+    - OPENSTACK_FAILURE_DOMAIN: "{{ openstack_failure_domain }}"
+    - OPENSTACK_IMAGE_NAME: "{{ openstack_image_name }}"
+    - OPENSTACK_NODE_MACHINE_FLAVOR: "{{ openstack_node_flavor }}"
+    - OPENSTACK_SSH_KEY_NAME: "{{ openstack_ssh_key_name }}"
+    - WORKER_MACHINE_COUNT: "{{ cluster_workers_replicas }}"
+  when: not k3s_apply_role | bool
 
 - name: Apply "specs-clusterresourceset.yaml"
   become: true
@@ -49,6 +79,6 @@
   become: true
   command: "kubectl apply -f {{scs_cs_user_home}}/specs-clusterstack.yaml"
 
-- name: Apply generated workload cluster specs based on "specs-workloadcluster.yaml"
+- name: Apply "workloadcluster.yaml"
   become: true
   command: "kubectl apply -f {{scs_cs_user_home}}/workloadcluster.yaml"
