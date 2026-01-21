@@ -19,7 +19,7 @@ spec:
   topology:
     variables:
     class: "{{ cluster_class | replace(".", "-") }}"
-    classNamespace: $CLUSTERSTACK_NAMESPACE
+    classNamespace: {{cluster_namespace}}
     controlPlane:
       replicas: {{cluster_controlplane_replicas}}
     version: "v{{kubernetes_release}}"
