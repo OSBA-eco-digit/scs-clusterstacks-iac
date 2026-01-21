@@ -28,6 +28,9 @@ spec:
     class: "{{ cluster_class | replace(".", "-") }}"
     classNamespace: {{ cluster_namespace }}
     controlPlane:
+      endpoint:
+        host: traefik
+        port: 6443
       replicas: {{cluster_controlplane_replicas}}
     workers:
       machineDeployments:
