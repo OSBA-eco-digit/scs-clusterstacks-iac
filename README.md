@@ -11,6 +11,11 @@ Here's the current list of supported providers:
 
 Our goal is to install and setup the necessary virtual infrastructure and the companents to run a Kubernetes Cluster Stack. For that we would need to get Cluster API up and running as well.
 
+* **Management Cluster**
+
+By default `k3s` is being used behind the setup of the management cluster here. Should you are willing to have `kind` please run **"setup-kind"** as your 'setup' target instead.
+
+
 * **Official Documentations**
 
 Here's a list of some of documentations we based this work on:
