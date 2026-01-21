@@ -1,12 +1,15 @@
 # {{ ansible_managed }}
 ---
-clusterctl:
-  config:
-    kubeconfig: "{{ kubeconfig_path }}"
 providers:
+  - name: "cluster-api"
+    url: "https://github.com/kubernetes-sigs/cluster-api/releases/v{{clusterctl_release}}/core-components.yaml"
+    type: "CoreProvider"
   - name: "k3s"
     url: "https://github.com/k3s-io/cluster-api-k3s/releases/v{{k3s_capi_release}}/bootstrap-components.yaml"
     type: "BootstrapProvider"
   - name: "k3s"
     url: "https://github.com/k3s-io/cluster-api-k3s/releases/v{{k3s_capi_release}}/control-plane-components.yaml"
     type: "ControlPlaneProvider"
+  - name: "openstack"
+    url: "https://github.com/kubernetes-sigs/cluster-api-provider-openstack/releases/v{{openstack_provider_release}}/infrastructure-components.yaml"
+    type: "InfrastructureProvider"
