@@ -1,19 +1,17 @@
 ---
 - name: Apply 'k3s' role
-  include_role:
-    name: k3s
-  vars:
-    k3s_agent:
-      node-label:
-        - "cluster-api=true"
-        - "cluster-stack=true"
-        - "control-plane=true"
-        - "worker=true"
-        - "workload=true"
-  when: k3s_apply_role
-
-- name: Apply 'k3s' bash completions
   block:
+    - name: Include tasks and define vars
+      include_role:
+        name: k3s
+      vars:
+        k3s_agent:
+          node-label:
+            - "cluster-api=true"
+            - "cluster-stack=true"
+            - "control-plane=true"
+            - "worker=true"
+            - "workload=true"
     - name: Generate bash completions for "k3s"
       become: true
       command: "{{ k3s_bin }} completion bash"
@@ -28,3 +26,48 @@
         mode: 0444
       when: completions_k3s.changed
   when: k3s_apply_role
+
+
+
+- name: Install 'kind' instead of 'k3s' as the management cluster
+  block:
+
+    - name: Check if "kind" exists
+      stat:
+        path: "{{ kind_bin }}"
+      register: check_kind
+    
+    - name: Get "kind"
+      become: true
+      get_url:
+        url: "{{ kind_bin_url }}"
+        dest: "{{ kind_bin }}"
+        checksum: "sha256:{{kind_bin_sha256}}"
+        mode: 0755
+      when: not check_kind.stat.exists
+      register: get_kind
+    
+    - name: Strip "kind"
+      become: true
+      command: "strip {{ kind_bin }}"
+      when: get_kind.changed
+    
+    - name: Generate bash completions for "kind"
+      become: true
+      command: "{{ kind_bin }} completion bash"
+      register: completions_kind
+      args:
+        creates: "/etc/bash_completion.d/kind"
+    
+    - name: Copy completions for "kind" to a file
+      become: true
+      copy:
+        content: "{{ completions_kind.stdout }}"
+        dest:  "/etc/bash_completion.d/kind"
+        mode: 0444
+      when: completions_kind.changed
+
+    - name: Create management cluster with 'kind'
+      command: "{{kind_bin}} create cluster --image kindest/node:v{{kubernetes_release}}"
+
+  when: not k3s_apply_role
