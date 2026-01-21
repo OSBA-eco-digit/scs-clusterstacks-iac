@@ -78,6 +78,7 @@
       when: completions_kind.changed
 
     - name: Create management cluster with 'kind'
+      become: true
       command: "{{kind_bin}} create cluster --image kindest/node:v{{kubernetes_release}}"
 
   when: not k3s_apply_role | bool
