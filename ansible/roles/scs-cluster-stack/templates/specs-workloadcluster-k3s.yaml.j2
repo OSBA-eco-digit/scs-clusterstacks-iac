@@ -49,7 +49,7 @@ spec:
   clusterNetwork:
     pods:
       cidrBlocks:
-      - {{cluster_cidr_pods}}
+      - "{{cluster_cidr_pods}}"
     serviceDomain: {{cluster_services_domain}}
   controlPlaneEndpoint:
     host: "127.0.0.1"
@@ -121,7 +121,7 @@ spec:
   managedSecurityGroups: {}
   disablePortSecurity: false
   managedSubnets:
-  - cidr: {{cluster_cidr_managed_subnet}}
+  - cidr: "{{cluster_cidr_managed_subnet}}"
     dnsNameservers:
     - 1.1.1.1
     - 8.8.8.8
