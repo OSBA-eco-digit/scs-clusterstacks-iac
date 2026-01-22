@@ -40,6 +40,7 @@
 - name: Generate generic secret for the cluster
   become: true
   command: "kubectl create secret generic {{cluster_name}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  args:
     chdir: "{{scs_cs_user_home}}/.config/openstack"
   register: secrets_cluster
 
@@ -58,6 +59,7 @@
 - name: Generate generic secret for the openstack cloud provider
   become: true
   command: "kubectl create secret generic {{openstack_cloud}} -n {{cluster_namespace}} --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  args:
     chdir: "{{scs_cs_user_home}}/.config/openstack"
   register: secrets_openstack_cloud_provider
 
@@ -93,6 +95,7 @@
 - name: Generate generic secret for "clouds-yaml" kube-system
   become: true
   command: "kubectl create secret generic clouds-yaml -n kube-system --from-file=clouds.yaml={{openstack_clouds_yaml}} --dry-run=client -o yaml"
+  args:
     chdir: "{{scs_cs_user_home}}/.config/openstack"
   register: secrets_kubesys
 
