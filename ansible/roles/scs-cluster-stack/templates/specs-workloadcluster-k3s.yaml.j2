@@ -9,7 +9,7 @@ apiVersion: bootstrap.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: KThreesConfigTemplate
 metadata:
   name: {{cluster_name}}-md-0
-  namespace: default
+  namespace: {{cluster_namespace}}
 spec:
   template:
     spec:
@@ -19,7 +19,7 @@ apiVersion: cluster.x-k8s.io/{{cluster_api_contract}}
 kind: Cluster
 metadata:
   name: {{cluster_name}}
-  namespace: default
+  namespace: {{cluster_namespace}}
   labels:
     managed-secret: clouds-yaml
 # networking:
@@ -51,6 +51,9 @@ spec:
       cidrBlocks:
       - {{cluster_cidr_pods}}
     serviceDomain: {{cluster_services_domain}}
+  controlPlaneEndpoint:
+    host: "127.0.0.1"
+    port: 6443
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
     kind: KThreesControlPlane
@@ -65,7 +68,7 @@ apiVersion: cluster.x-k8s.io/{{cluster_api_contract}}
 kind: MachineDeployment
 metadata:
   name: {{cluster_name}}-md-0
-  namespace: default
+  namespace: {{cluster_namespace}}
 spec:
   clusterName: {{cluster_name}}
   replicas: {{cluster_workers_replicas}}
@@ -91,7 +94,7 @@ apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: KThreesControlPlane
 metadata:
   name: {{cluster_name}}-control-plane
-  namespace: default
+  namespace: {{cluster_namespace}}
 spec:
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
@@ -99,13 +102,16 @@ spec:
     name: {{cluster_name}}-control-plane
   replicas: 1
   version: "{{kubernetes_release}}"
+  serverConfig:
+    bindAddress: "0.0.0.0"
+    advertisePort: 6443
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: OpenStackCluster
 metadata:
   name: {{cluster_name}}
-  namespace: default
+  namespace: {{cluster_namespace}}
 spec:
   externalNetwork:
     id: {{openstack_external_network_id}}
@@ -126,7 +132,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: OpenStackMachineTemplate
 metadata:
   name: {{cluster_name}}-control-plane
-  namespace: default
+  namespace: {{cluster_namespace}}
 spec:
   template:
     spec:
@@ -141,7 +147,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: OpenStackMachineTemplate
 metadata:
   name: {{cluster_name}}-md-0
-  namespace: default
+  namespace: {{cluster_namespace}}
 spec:
   template:
     spec:
