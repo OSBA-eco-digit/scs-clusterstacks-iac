@@ -1,8 +1,13 @@
 # {{ ansible_managed }}
 
-# FEATURES: https://cluster-api.sigs.k8s.io/tasks/experimental-features/experimental-features
+# https://cluster-api.sigs.k8s.io/clusterctl/configuration
+# https://cluster-api.sigs.k8s.io/tasks/experimental-features/experimental-features
 
 ---
+CLUSTERCTL_DISABLE_VERSIONCHECK: "true"
+KUBECONFIG: "{{ kubeconfig_path }}"
+KUBERNETES_VERSION: "v{{ kubernetes_release }}"
+
 providers:
   - name: "cluster-api"
     url: "https://github.com/kubernetes-sigs/cluster-api/releases/v{{clusterctl_release}}/core-components.yaml"
