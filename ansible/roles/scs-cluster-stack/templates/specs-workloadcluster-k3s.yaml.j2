@@ -102,9 +102,9 @@ spec:
     name: {{cluster_name}}-control-plane
   replicas: 1
   version: "{{kubernetes_release}}"
-  serverConfig:
-    bindAddress: "0.0.0.0"
-    advertisePort: 6443
+  # serverConfig:
+  #   bindAddress: "0.0.0.0"
+  #   advertisePort: 6443
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
