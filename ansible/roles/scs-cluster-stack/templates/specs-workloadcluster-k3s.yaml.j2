@@ -22,6 +22,9 @@ metadata:
   namespace: {{cluster_namespace}}
   labels:
     managed-secret: clouds-yaml
+# networking:
+#   apiServerAddress: "127.0.0.1"
+#   apiServerPort: 6443
 spec:
   topology:
     version: "{{ kubernetes_release }}"
