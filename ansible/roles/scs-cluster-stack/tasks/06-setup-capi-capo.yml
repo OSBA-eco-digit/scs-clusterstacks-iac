@@ -10,6 +10,15 @@
   become: true
   command: "kubectl apply -f {{ openstack_orc_yaml }}"
 
+- name: Define labels to the ORC CRD in order to successfully move objects
+  become: true
+  command: "kubectl label crd {{type}}.openstack.k-orc.cloud clusterctl.cluster.x-k8s.io/move=''"
+  loop:
+    - servers
+    - images
+  loop_control:
+    loop_var: type
+
 - name: Initialize management cluster using 'k3s'
   become: true
   command: "clusterctl init --kubeconfig {{ kubeconfig_path }} -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --bootstrap k3s:v{{k3s_capi_release}} --control-plane k3s:v{{k3s_capi_release}}"
