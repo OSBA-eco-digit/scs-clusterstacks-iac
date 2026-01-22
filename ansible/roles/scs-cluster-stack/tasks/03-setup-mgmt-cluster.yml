@@ -6,7 +6,11 @@
       include_role:
         name: k3s
       vars:
+        k3s_become: true
+        k3s_release_version: "v1.33.7+k3s1"
+        k3s_use_experimental: true
         k3s_agent:
+          with-node-id: true
           node-label:
             - "cluster-api=true"
             - "cluster-stack=true"
