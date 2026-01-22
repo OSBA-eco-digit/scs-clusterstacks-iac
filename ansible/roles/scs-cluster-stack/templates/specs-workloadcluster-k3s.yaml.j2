@@ -112,32 +112,14 @@ spec:
   identityRef:
     cloudName: {{openstack_cloud_name}}
     name: k3s-cloud-config
-  managedSecurityGroups:
-    allNodesSecurityGroupRules:
-    - remoteManagedGroups:
-      - controlplane
-      - worker
-      direction: ingress
-      etherType: IPv4
-      name: BGP (Calico)
-      portRangeMin: 179
-      portRangeMax: 179
-      protocol: tcp
-      description: "Allow BGP between control plane and workers"
-    - remoteManagedGroups:
-      - controlplane
-      - worker
-      direction: ingress
-      etherType: IPv4
-      name: IP-in-IP (Calico)
-      protocol: 4
-      description: "Allow IP-in-IP between control plane and workers"
-    allowAllInClusterTraffic: false
-  disablePortSecurity: true
+  managedSecurityGroups: {}
+  disablePortSecurity: false
   managedSubnets:
   - cidr: {{cluster_cidr_managed_subnet}}
     dnsNameservers:
     - 1.1.1.1
+    - 8.8.8.8
+    - 9.9.9.9
 
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
