@@ -2,9 +2,14 @@
 
 # {{ ansible_managed }}
 
-sudo apt-get update
-sudo apt-get install -qq -y curl gpg apt-transport-https
-curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
-echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
-sudo apt-get update
-sudo apt-get install -qq -y helm
+BIN="/usr/local/bin/helm"
+TARBALL="helm-v{{helm_release}}-linux-amd64.tar.gz"
+
+curl -sLO https://get.helm.sh/${TARBALL}
+curl -sLO https://get.helm.sh/${TARBALL}.sha256sum
+
+echo "$(cat ${TARBALL}.sha256sum) ${TARBALL}" | sha256sum --check
+
+tar --strip 1 -xpf helm-v4.0.0-linux-amd64.tar.gz linux-amd64/helm
+mv helm ${BIN}
+strip ${BIN}
