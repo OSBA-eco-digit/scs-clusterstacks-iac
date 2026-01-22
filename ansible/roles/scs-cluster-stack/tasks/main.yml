@@ -46,6 +46,7 @@
     - tool-install-clusterctl.sh
     - tool-install-docker.sh
     - tool-install-helm.sh
+    - tool-install-k3s.sh
     - tool-install-kind.sh
     - tool-install-kubectl.sh
     - tool-install-oras.sh
