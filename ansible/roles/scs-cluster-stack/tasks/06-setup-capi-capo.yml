@@ -21,7 +21,7 @@
 
 - name: Initialize management cluster using 'k3s'
   become: true
-  command: "clusterctl init --kubeconfig {{ kubeconfig_path }} -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --bootstrap k3s:v{{k3s_capi_release}} --control-plane k3s:v{{k3s_capi_release}}"
+  command: "clusterctl init --kubeconfig {{ kubeconfig_path }} -n {{cluster_namespace}} -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}} --bootstrap k3s:v{{k3s_capi_release}} --control-plane k3s:v{{k3s_capi_release}}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
@@ -30,7 +30,7 @@
 
 - name: Initialize management cluster using 'kind'
   become: true
-  command: "clusterctl init -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}}"
+  command: "clusterctl init -n {{cluster_namespace}} -i openstack:v{{openstack_provider_release}} --core cluster-api:v{{clusterctl_release}}"
   environment:
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
