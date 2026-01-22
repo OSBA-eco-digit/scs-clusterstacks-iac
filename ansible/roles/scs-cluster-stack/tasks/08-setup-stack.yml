@@ -29,7 +29,7 @@
 
 - name: Generate workload cluster specs from template using 'k3s'
   become: true
-  command: "clusterctl generate cluster --kubeconfig {{ kubeconfig_path }} --target-namespace {{cluster_namespace}} --from {{scs_cs_user_home}}/specs-workloadcluster-k3s.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
+  command: "clusterctl generate cluster --kubeconfig {{ kubeconfig_path }} --from {{scs_cs_user_home}}/specs-workloadcluster-k3s.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
   args:
     creates: "{{scs_cs_user_home}}/workloadcluster.yaml"
   environment:
@@ -51,7 +51,7 @@
 
 - name: Generate workload cluster specs from template using 'kind'
   become: true
-  command: "clusterctl generate cluster --target-namespace {{cluster_namespace}} --from {{scs_cs_user_home}}/specs-workloadcluster-kind.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
+  command: "clusterctl generate cluster --from {{scs_cs_user_home}}/specs-workloadcluster-kind.yaml --kubernetes-version {{kubernetes_release}} --worker-machine-count {{cluster_workers_replicas}} --control-plane-machine-count {{cluster_controlplane_replicas}} --write-to {{scs_cs_user_home}}/workloadcluster.yaml {{cluster_name}}"
   args:
     creates: "{{scs_cs_user_home}}/workloadcluster.yaml"
   environment:
