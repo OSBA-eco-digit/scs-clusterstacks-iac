@@ -9,7 +9,7 @@ apiVersion: bootstrap.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: KThreesConfigTemplate
 metadata:
   name: {{cluster_name}}-md-0
-  namespace: {{cluster_namespace}}
+  namespace: default
 spec:
   template:
     spec:
@@ -19,7 +19,7 @@ apiVersion: cluster.x-k8s.io/{{cluster_api_contract}}
 kind: Cluster
 metadata:
   name: {{cluster_name}}
-  namespace: {{cluster_namespace}}
+  namespace: default
   labels:
     managed-secret: clouds-yaml
 # networking:
@@ -35,7 +35,7 @@ spec:
     workers:
       machineDeployments:
         - class: default-worker
-          name: md-0
+          name: {{cluster_name}}-md-0
           replicas: {{cluster_workers_replicas}}
     variables:
       - name: controller_flavor
@@ -65,7 +65,7 @@ apiVersion: cluster.x-k8s.io/{{cluster_api_contract}}
 kind: MachineDeployment
 metadata:
   name: {{cluster_name}}-md-0
-  namespace: {{cluster_namespace}}
+  namespace: default
 spec:
   clusterName: {{cluster_name}}
   replicas: {{cluster_workers_replicas}}
@@ -91,7 +91,7 @@ apiVersion: controlplane.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: KThreesControlPlane
 metadata:
   name: {{cluster_name}}-control-plane
-  namespace: {{cluster_namespace}}
+  namespace: default
 spec:
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
@@ -105,7 +105,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: OpenStackCluster
 metadata:
   name: {{cluster_name}}
-  namespace: {{cluster_namespace}}
+  namespace: default
 spec:
   externalNetwork:
     id: {{openstack_external_network_id}}
@@ -124,7 +124,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: OpenStackMachineTemplate
 metadata:
   name: {{cluster_name}}-control-plane
-  namespace: {{cluster_namespace}}
+  namespace: default
 spec:
   template:
     spec:
@@ -139,7 +139,7 @@ apiVersion: infrastructure.cluster.x-k8s.io/{{cluster_api_contract}}
 kind: OpenStackMachineTemplate
 metadata:
   name: {{cluster_name}}-md-0
-  namespace: {{cluster_namespace}}
+  namespace: default
 spec:
   template:
     spec:

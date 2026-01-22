@@ -4,6 +4,17 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: k3s-cloud-config
+  labels:
+    clusterctl.cluster.x-k8s.io/move: "true"
+data:
+  cacert: ''
+  cloud.conf: {{ k3s_cloud_conf_b64 }}
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k3s-cloud-config
   namespace: {{ cluster_namespace }}
 data:
   cloud.conf: {{ k3s_cloud_conf_b64 }}
@@ -16,3 +27,29 @@ metadata:
   namespace: kube-system
 data:
   cloud.conf: {{ k3s_cloud_conf_b64 }}
+######################################################################
+
+# ### https://github.com/k3s-io/cluster-api-k3s/blob/v0.3.0/samples/openstack/setup.sh
+# ---
+# apiVersion: v1
+# kind: Secret
+# metadata:
+#   name: k3s-cloud-config
+#   labels:
+#     clusterctl.cluster.x-k8s.io/move: "true"
+# stringData:
+#   cacert: ''
+#   clouds.yaml: |
+#     clouds:
+#       openstack:
+#         auth:
+#           auth_url: "${OS_AUTH_URL}"
+#           username: "${OS_USERNAME}"
+#           password: "${OS_PASSWORD}"
+#           project_name: "${OS_PROJECT_NAME}"
+#           user_domain_name: "${OS_USER_DOMAIN_NAME}"
+#           project_domain_name: "${OS_PROJECT_DOMAIN_NAME}"
+#         region_name: "${OS_REGION_NAME}"
+#         interface: "public"
+#         verify: false
+#         identity_api_version: 3
