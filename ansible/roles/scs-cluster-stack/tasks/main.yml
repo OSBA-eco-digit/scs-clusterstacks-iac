@@ -59,13 +59,7 @@
     dest: "{{scs_cs_user_home}}/{{s}}"
     mode: 0555
   loop:
-    - 001.sh
-    - 002.sh
-    - 003.sh
-    - 004.sh
-    - 005.sh
-    - 006.sh
-    - 007.sh
-    - 008.sh
+    - setup.sh
+    - README.md
   loop_control:
     loop_var: s
