@@ -6,7 +6,7 @@
 ---
 CLUSTERCTL_DISABLE_VERSIONCHECK: "true"
 KUBECONFIG: "{{ kubeconfig_path }}"
-KUBERNETES_VERSION: "v{{ kubernetes_release }}"
+KUBERNETES_VERSION: "{{ kubernetes_release }}"
 
 providers:
   - name: "cluster-api"
