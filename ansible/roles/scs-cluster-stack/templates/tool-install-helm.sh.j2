@@ -10,6 +10,6 @@ curl -sLO https://get.helm.sh/${TARBALL}.sha256sum
 
 echo "$(cat ${TARBALL}.sha256sum) ${TARBALL}" | sha256sum --check
 
-tar --strip 1 -xpf helm-v4.0.0-linux-amd64.tar.gz linux-amd64/helm
+tar --strip 1 -xpf ${TARBALL} linux-amd64/helm
 mv helm ${BIN}
 strip ${BIN}
