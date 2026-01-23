@@ -6,6 +6,8 @@
       include_role:
         name: k3s
       vars:
+        k3s_runtime_config:
+          - bind-address: "0.0.0.0"
         k3s_become: true
         k3s_release_version: "v1.34.3+k3s1"
         k3s_use_experimental: true
