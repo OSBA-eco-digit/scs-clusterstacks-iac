@@ -4,16 +4,14 @@
 
 BIN="/usr/local/bin/helm"
 TARBALL="helm-v{{helm_release}}-linux-amd64.tar.gz"
-SHASUM="${TARBALL}.sha256sum"
 
-curl -sLO https://get.helm.sh/${TARBALL}
-curl -sLO https://get.helm.sh/${SHASUM}
+curl -sLO "https://get.helm.sh/${TARBALL}"
+curl -sLO "https://get.helm.sh/${TARBALL}.sha256sum"
 
-echo "$(cat ${SHASUM}) ${TARBALL}" | sha256sum --check
+echo $(cat ${TARBALL}.sha256sum) | sha256sum --check
 
 tar --strip 1 -xpf ${TARBALL} linux-amd64/helm
 mv helm ${BIN}
 strip ${BIN}
 
-rm -f ${TARBALL}
-rm -f ${SHASUM}
+rm -f ${TARBALL}*
