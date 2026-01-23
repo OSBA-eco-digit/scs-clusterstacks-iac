@@ -1,18 +1,34 @@
 ---
-scripts_only: false
+cluster_api_contract: "v1beta1"
+cluster_api_contract_addons: "{{ cluster_api_contract }}"
+cluster_api_contract_clusterstack: "v1alpha1"
+cluster_api_contract_clusterstack_addons: "{{ cluster_api_contract_clusterstack }}"
+cluster_api_contract_clusterstack_csctl: "{{ cluster_api_contract_clusterstack }}"
+cluster_api_contract_clusterstack_infrastructure: "{{ cluster_api_contract_clusterstack }}"
+cluster_cidr_managed_subnet: "10.96.0.0/24"
+cluster_cidr_pods: "172.16.0.0/16"
+cluster_cidr_services: "10.96.0.0/12"
+cluster_class: "openstack-{{cluster_series}}-{{kubernetes_release_version}}-{{cluster_series_version}}"
+cluster_controlplane_replicas: 1
+cluster_external_network_id: "{{ openstack_external_network_id }}"
+cluster_name: "mycluster"
+cluster_namespace: "mynamespace"
+cluster_secret: "{{ openstack_secret_name }}"
+cluster_series: "scs2"
+cluster_series_channel: "stable"
+cluster_series_version: "v1"
+cluster_services_domain: "mydomain.local"
 
-#
-# scs
-#
+cluster_workers_replicas: 0
+clusterctl_bin: "/usr/local/bin/clusterctl"
+clusterctl_bin_sha256: "c9f05fb8a7839067bcfb2c897f4b7cab37b7c2780aef12669b5fd89a1dd6dffd"
+clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
+clusterctl_release: "1.12.2"
 
-scs_cs_group: "{{ scs_cs_user }}"
-scs_cs_repo_cso: "oci://registry.scs.community/cluster-stacks/cso"
-scs_cs_user: "scs2"
-scs_cs_user_home: "/var/lib/{{ scs_cs_user }}"
-
-#
-# docker
-#
+csctl_bin: "/usr/local/bin/csctl"
+csctl_bin_sha256: "3f8344093e93c5c30a622bb81cb92bd31371882e91010d7b303914cceddbca51"
+csctl_bin_url: "https://github.com/SovereignCloudStack/csctl/releases/download/v{{csctl_release}}/csctl_{{csctl_release}}_linux_amd64.tar.gz"
+csctl_release: "0.0.5"
 
 docker_apt_repo: "https://download.docker.com/linux/{{ansible_distribution|lower}}"
 docker_apt_repo_filename: "docker"
@@ -21,9 +37,33 @@ docker_apt_sign_key: "/etc/apt/trusted.gpg.d/{{docker_apt_repo_filename}}.asc"
 docker_gpg_key: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
 docker_gpg_keyserver: "https://keys.openpgp.org"
 
-#
-# openstack
-#
+helm_bin: "/usr/local/bin/helm"
+helm_bin_sha256: "8e7ae5cb890c56f53713bffec38e41cd8e7e4619ebe56f8b31cd383bfb3dbb83"
+helm_bin_url: "https://get.helm.sh/helm-v{{helm_release}}-linux-amd64.tar.gz"
+helm_release: "4.1.0"
+
+k3s_apply_role: true
+k3s_bin: "/usr/local/bin/k3s"
+k3s_capi_release: "0.1.9"
+k3s_cloud_conf_b64: ""
+
+kind_bin: "/usr/local/bin/kind"
+kind_bin_sha256: "eb244cbafcc157dff60cf68693c14c9a75c4e6e6fedaf9cd71c58117cb93e3fa"
+kind_release: "0.31.0"
+
+kubeconfig_b64: ""
+kubeconfig_path: "/etc/rancher/k3s/k3s.yaml"
+
+kubectl_bin: "/usr/local/bin/kubectl"
+kubectl_bin_sha256: "ab60ca5f0fd60c1eb81b52909e67060e3ba0bd27e55a8ac147cbc2172ff14212"
+kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/amd64/kubectl"
+kubectl_release: "{{kubernetes_release}}"
+
+kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"
+kubernetes_release_version: "1.34"
+kubernetes_release_version_patch: "3"
+kubernetes_service_host: "127.0.0.1"
+kubernetes_service_port: 6443
 
 openstack_application_credential_id: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_ID') }}"
 openstack_application_credential_secret: "{{ lookup('env', 'OS_APPLICATION_CREDENTIAL_SECRET') }}"
@@ -54,71 +94,11 @@ openstack_username: "{{ lookup('env', 'OS_AUTH_USERNAME') }}"
 openstack_worker_flavor: "{{ openstack_bastion_flavor }}"
 openstack_worker_rootdisk_size: 32
 
-#
-# kubernetes components
-#
-
-k3s_apply_role: true
-k3s_bin: "/usr/local/bin/k3s"
-k3s_capi_release: "0.1.9"
-k3s_cloud_conf_b64: ""
-
-kind_bin: "/usr/local/bin/kind"
-kind_bin_sha256: "eb244cbafcc157dff60cf68693c14c9a75c4e6e6fedaf9cd71c58117cb93e3fa"
-kind_release: "0.31.0"
-
-kubeconfig_b64: ""
-kubeconfig_path: "/etc/rancher/k3s/k3s.yaml"
-
 oras_release: "1.3.0"
 
-kubernetes_release: "{{kubernetes_release_version}}.{{kubernetes_release_version_patch}}"
-kubernetes_release_version: "1.34"
-kubernetes_release_version_patch: "3"
-kubernetes_service_host: "127.0.0.1"
-kubernetes_service_port: 6443
+scripts_only: false
 
-csctl_bin: "/usr/local/bin/csctl"
-csctl_bin_sha256: "3f8344093e93c5c30a622bb81cb92bd31371882e91010d7b303914cceddbca51"
-csctl_bin_url: "https://github.com/SovereignCloudStack/csctl/releases/download/v{{csctl_release}}/csctl_{{csctl_release}}_linux_amd64.tar.gz"
-csctl_release: "0.0.5"
-
-clusterctl_bin: "/usr/local/bin/clusterctl"
-clusterctl_bin_sha256: "c9f05fb8a7839067bcfb2c897f4b7cab37b7c2780aef12669b5fd89a1dd6dffd"
-clusterctl_bin_url: "https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64"
-clusterctl_release: "1.12.2"
-
-helm_bin: "/usr/local/bin/helm"
-helm_bin_sha256: "8e7ae5cb890c56f53713bffec38e41cd8e7e4619ebe56f8b31cd383bfb3dbb83"
-helm_bin_url: "https://get.helm.sh/helm-v{{helm_release}}-linux-amd64.tar.gz"
-helm_release: "4.1.0"
-
-kubectl_bin: "/usr/local/bin/kubectl"
-kubectl_bin_sha256: "ab60ca5f0fd60c1eb81b52909e67060e3ba0bd27e55a8ac147cbc2172ff14212"
-kubectl_bin_url: "https://dl.k8s.io/release/v{{kubernetes_release}}/bin/linux/amd64/kubectl"
-kubectl_release: "{{kubernetes_release}}"
-
-#
-# cluster stack settings
-#
-
-cluster_api_contract: "v1beta1"
-cluster_api_contract_addons: "{{ cluster_api_contract }}"
-cluster_api_contract_clusterstack: "v1alpha1"
-cluster_api_contract_clusterstack_addons: "{{ cluster_api_contract_clusterstack }}"
-cluster_api_contract_clusterstack_csctl: "{{ cluster_api_contract_clusterstack }}"
-cluster_api_contract_clusterstack_infrastructure: "{{ cluster_api_contract_clusterstack }}"
-cluster_cidr_pods: "172.16.0.0/16"
-cluster_cidr_services: "10.96.0.0/12"
-cluster_cidr_managed_subnet: "10.96.0.0/24"
-cluster_class: "openstack-{{cluster_series}}-{{kubernetes_release_version}}-{{cluster_series_version}}"
-cluster_controlplane_replicas: 1
-cluster_external_network_id: "{{ openstack_external_network_id }}"
-cluster_name: "mycluster"
-cluster_namespace: "mynamespace"
-cluster_secret: "{{ openstack_secret_name }}"
-cluster_series: "scs2"
-cluster_series_channel: "stable"
-cluster_series_version: "v1"
-cluster_services_domain: "mydomain.local"
-cluster_workers_replicas: 0
+scs_cs_group: "{{ scs_cs_user }}"
+scs_cs_repo_cso: "oci://registry.scs.community/cluster-stacks/cso"
+scs_cs_user: "scs2"
+scs_cs_user_home: "/var/lib/{{ scs_cs_user }}"
