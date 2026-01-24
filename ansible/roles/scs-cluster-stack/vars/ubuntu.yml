@@ -6,3 +6,4 @@ scs_cs_dependencies:
   - jq
   - net-tools
   - python3-openstackclient
+  - uuid
