@@ -11,6 +11,7 @@ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stabl
 {% endif %}
 
 echo "$(cat kubectl.sha256) kubectl" | sha256sum --check
-
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 sudo rm -f kubectl*
+sudo mkdir -p /etc/bash_completion.d 2>/dev/null
+sudo kubectl completion bash >/etc/bash_completion.d/kubectl

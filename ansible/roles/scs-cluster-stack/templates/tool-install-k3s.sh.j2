@@ -3,3 +3,5 @@
 # {{ ansible_managed }}
 
 curl -sfL https://get.k3s.io | sh -
+sudo mkdir -p /etc/bash_completion.d 2>/dev/null
+sudo k3s completion bash >/etc/bash_completion.d/k3s
