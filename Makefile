@@ -59,6 +59,11 @@ setup-kind:
 scripts-only:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
 		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e scripts_only=true $(CURDIR)/ansible/playbook.yml
+
+ssh:
+	echo ssh $(shell (grep ssh_args $(CURDIR)/ansible/.ansible.cfg | cut -d'=' -f2-)) \
+	-l $(shell (awk '{print $3}' ansible/inventory_scaleup.ini | awk -F'=' '{print $2}')) \
+	$(shell (awk '{print $2}' ansible/inventory_scaleup.ini | awk -F'=' '{print $2}'))
 ######################################################################
 
 #
