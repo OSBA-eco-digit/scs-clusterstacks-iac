@@ -4,4 +4,5 @@ scs_cs_dependencies:
   - curl
   - golang
   - jq
+  - net-tools
   - python3-openstackclient
