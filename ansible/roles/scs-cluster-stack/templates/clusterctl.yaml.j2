@@ -8,6 +8,9 @@ CLUSTERCTL_DISABLE_VERSIONCHECK: "true"
 KUBECONFIG: "{{ kubeconfig_path }}"
 KUBERNETES_VERSION: "{{ kubernetes_release }}"
 
+cert-manager:
+  version: "v{{ certmanager_release }}"
+
 providers:
   - name: "cluster-api"
     url: "https://github.com/kubernetes-sigs/cluster-api/releases/v{{clusterctl_release}}/core-components.yaml"

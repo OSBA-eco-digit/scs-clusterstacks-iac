@@ -1,4 +1,6 @@
 ---
+certmanager_release: "1.19.2"
+
 cluster_api_contract: "v1beta1"
 cluster_api_contract_addons: "{{ cluster_api_contract }}"
 cluster_api_contract_clusterstack: "v1alpha1"
