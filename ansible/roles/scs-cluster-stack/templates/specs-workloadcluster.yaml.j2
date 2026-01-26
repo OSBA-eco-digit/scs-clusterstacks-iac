@@ -2,7 +2,7 @@
 apiVersion: v1
 data:
   cacert: {{ openstack_cloud_cacert_b64 }}
-  clouds.yaml: {{ openstack_cloud_yaml_64 }}
+  clouds.yaml: {{ openstack_cloud_yaml_b64 }}
 kind: Secret
 metadata:
   labels:
