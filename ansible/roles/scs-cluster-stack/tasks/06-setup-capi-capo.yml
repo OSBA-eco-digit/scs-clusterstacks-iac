@@ -26,6 +26,7 @@
     - CLUSTER_TOPOLOGY: true
     - EXP_CLUSTER_RESOURCE_SET: true
     - EXP_RUNTIME_SDK: true
+    - KUBECONFIG: "{{ kubeconfig_path }}"
   when: k3s_apply_role | bool
 
 - name: Initialize management cluster using 'kind'
