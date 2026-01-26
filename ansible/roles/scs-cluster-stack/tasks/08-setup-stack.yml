@@ -13,6 +13,13 @@
     dest: "{{scs_cs_user_home}}/specs-clusterstack.yaml"
     mode: 0440
 
+- name: Template "specs-workloadcluster.yaml"
+  become: true
+  template:
+    src: specs-workloadcluster.yaml.j2
+    dest: "{{scs_cs_user_home}}/specs-workloadcluster.yaml"
+    mode: 0440
+
 - name: Template "specs-workloadcluster-k3s.yaml"
   become: true
   template:
