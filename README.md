@@ -30,24 +30,24 @@ To setup a custom `clouds.yaml` that will be used by the Cluster Stack, a few va
 
 Those will be used while applying the Ansible Role. The variables are, in short, related to the setup of OpenStack's client credentials. Here is a list of them:
 
-  > OS_APPLICATION_CREDENTIAL_ID
-  > OS_APPLICATION_CREDENTIAL_SECRET
-  > OS_AUTH_TYPE
-  > OS_AUTH_URL
-  > OS_CLOUD
-  > OS_EXTERNAL_NETWORK_ID
-  > OS_IDENTITY_API_VERSION
-  > OS_INTERFACE
-  > OS_PROJECT_ID
-  > OS_PROJECT_NAME
-  > OS_REGION_NAME
-  > OS_SECRET
-  > OS_TENANT_ID
+  > OS_APPLICATION_CREDENTIAL_ID 
+  > OS_APPLICATION_CREDENTIAL_SECRET 
+  > OS_AUTH_TYPE 
+  > OS_AUTH_URL 
+  > OS_CLOUD 
+  > OS_EXTERNAL_NETWORK_ID 
+  > OS_IDENTITY_API_VERSION 
+  > OS_INTERFACE 
+  > OS_PROJECT_ID 
+  > OS_PROJECT_NAME 
+  > OS_REGION_NAME 
+  > OS_SECRET 
+  > OS_TENANT_ID 
 
 Be aware that 2 (two) of these variables have been renamed from their defaults so it's possible to have a mixed authentication type set on the environment, and on the remote server that will host the cluster.
 
-  > OS_AUTH_PASSWORD
-  > OS_AUTH_USERNAME
+  > OS_AUTH_PASSWORD 
+  > OS_AUTH_USERNAME 
 
 Should you be exclusively using the web interface, navigate to the `/identity/application_credentials/create/` route and generate the credentials from there.
 
