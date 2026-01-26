@@ -79,6 +79,7 @@ openstack_cloud_yaml_b64: "b3BlbnN0YWNrX2Nsb3VkX3lhbWxfYjY0"  # echo -n openstac
 openstack_clouds_yaml: "{{scs_cs_user_home}}/.config/openstack/clouds.yaml"
 openstack_controlplane_flavor: "{{ openstack_bastion_flavor }}"
 openstack_dns_servers: "9.9.9.9, 8.8.8.8, 1.1.1.1"
+openstack_domain_name: "{{lookup('env', 'OS_DOMAIN_NAME') }}"
 openstack_external_network_id: "{{ lookup('env', 'OS_EXTERNAL_NETWORK_ID') }}"
 openstack_failure_domain: "myfailuredomain.local"
 openstack_image_name: "Ubuntu 24.04"
