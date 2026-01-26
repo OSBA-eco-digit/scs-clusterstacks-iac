@@ -60,7 +60,8 @@
     dest: "{{scs_cs_user_home}}/{{s}}"
     mode: 0555
   loop:
-    - setup.sh
     - README.md
+    - setup.sh
+    - tool-install.sh
   loop_control:
     loop_var: s
