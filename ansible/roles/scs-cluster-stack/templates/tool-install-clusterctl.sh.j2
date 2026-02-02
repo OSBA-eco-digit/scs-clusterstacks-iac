@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# {{ansible_managed}}
+
+SHASUM="{{clusterctl_bin_sha256}}"
+
+curl -sLO https://github.com/kubernetes-sigs/cluster-api/releases/download/v{{clusterctl_release}}/clusterctl-linux-amd64
+echo "${SHASUM} clusterctl-linux-amd64" | sha256sum --check
+sudo install -o root -g root -m 0755 clusterctl-linux-amd64 /usr/local/bin/clusterctl
+sudo strip /usr/local/bin/clusterctl
+sudo rm -f clusterctl-linux-amd64
+sudo mkdir -p /etc/bash_completion.d 2>/dev/null
+sudo clusterctl completion bash >/etc/bash_completion.d/clusterctl

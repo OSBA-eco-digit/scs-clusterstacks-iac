@@ -1,0 +1,16 @@
+# {{ansible_managed}}
+---
+apiVersion: clusterstack.x-k8s.io/{{cs_api_contract_clusterstack}}
+kind: ClusterStack
+metadata:
+  name: "{{cs_cluster_name}}"
+  namespace: "{{cs_cluster_namespace}}"
+spec:
+  autoSubscribe: false
+  channel: "{{cs_series_channel}}"
+  kubernetesVersion: "{{kubernetes_release_major}}"
+  name: "{{cs_series}}"
+  noProvider: true
+  provider: openstack
+  versions:
+    - "{{cs_series_version}}"

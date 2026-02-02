@@ -1,0 +1,12 @@
+# {{ansible_managed}}
+---
+clouds:
+  {{os_cloud}}:
+    auth:
+      auth_url: "{{os_auth_url}}"
+      application_credential_id: "{{os_application_credential_id}}"
+      application_credential_secret: "{{os_application_credential_secret}}"
+    region_name: "{{os_region_name}}"
+    interface: "{{os_interface}}"
+    identity_api_version: "{{os_identity_api_version}}"
+    auth_type: "{{os_auth_type}}"

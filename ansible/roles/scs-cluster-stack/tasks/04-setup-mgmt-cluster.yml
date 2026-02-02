@@ -1,0 +1,104 @@
+---
+- name: Install 'k3s' as management cluster
+  block:
+
+    - name: Include tasks from 'k3s' role
+      include_role:
+        name: k3s
+      vars:
+        k3s_runtime_config:
+          bind-address: "0.0.0.0"
+        k3s_become: true
+        k3s_release_version: "{{k3s_release}}"
+        k3s_use_experimental: true
+        k3s_agent:
+          with-node-id: true
+          node-label:
+            - "cluster-api=true"
+            - "cluster-stack=true"
+            - "control-plane=true"
+            - "node-role.kubernetes.io/worker=worker"
+            - "worker=true"
+            - "worker=worker"
+            - "workload=true"
+
+    - name: Generate bash completions for "k3s"
+      become: true
+      command: "{{k3s_bin}} completion bash"
+      register: completions_k3s
+      args:
+        creates: "/etc/bash_completion.d/k3s"
+
+    - name: Copy completions for "k3s" to a file
+      become: true
+      copy:
+        content: "{{completions_k3s.stdout}}"
+        dest:  "/etc/bash_completion.d/k3s"
+      when: completions_k3s.changed
+
+    - name: Encode "{{kubeconfig_path}}" into base64
+      become: true
+      command: "base64 -w 0 {{kubeconfig_path}}"
+      register: stdout_base64_kubeconfig
+    
+    - name: Set fact from encoded "{{kubeconfig_path}}"
+      set_fact:
+        kubeconfig_b64: "{{stdout_base64_kubeconfig.stdout}}"
+
+  when: (cs_role_mgmt_cluster | lower == 'k3s')
+
+- name: Install 'kind' as management cluster
+  block:
+
+    - name: Check if "kind" exists
+      stat:
+        path: "{{kind_bin}}"
+      register: check_kind
+    
+    - name: Get "kind"
+      become: true
+      become_user: "{{cs_user_name}}"
+      command: "go install sigs.k8s.io/kind@v{{kind_release}}"
+      when: not check_kind.stat.exists
+      register: get_kind
+
+    - name: Move "kind" binary
+      become: true
+      copy:
+        remote_src: true
+        src: "{{cs_user_home}}/go/bin/kind"
+        dest: "{{kind_bin}}"
+        mode: 0555
+      when: (get_kind.changed) and (not check_kind.stat.exists)
+    
+    - name: Strip "kind"
+      become: true
+      command: "strip {{kind_bin}}"
+      when: get_kind.changed
+    
+    - name: Generate bash completions for "kind"
+      become: true
+      command: "{{kind_bin}} completion bash"
+      args:
+        creates: "/etc/bash_completion.d/kind"
+      when: get_kind.changed
+      register: completions_kind
+    
+    - name: Copy completions for "kind" to a file
+      become: true
+      copy:
+        content: "{{completions_kind.stdout}}"
+        dest:  "/etc/bash_completion.d/kind"
+      when: completions_kind.changed
+
+    - name: Check if 'kind-control-plane' is present
+      shell:
+        cmd: "ps ax | grep -c =kind-control-plane"
+      register: check_kind_control_plane
+
+    - name: Create management cluster with 'kind'
+      become: true
+      command: "{{kind_bin}} create cluster --image kindest/node:v{{kubernetes_release}}"
+      when: (check_kind_control_plane.stdout|int) < 3
+
+  when: (cs_role_mgmt_cluster | lower == 'kind')

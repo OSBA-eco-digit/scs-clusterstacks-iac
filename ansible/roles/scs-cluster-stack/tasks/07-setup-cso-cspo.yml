@@ -1,0 +1,19 @@
+---
+- name: Ensure we have the namespace available before generating secrets
+  become: true
+  command: "kubectl apply -f {{cs_user_home}}/specs-namespace.yaml"
+
+
+- name: Install cluster stack operator using 'k3s'
+  become: true
+  command: "helm upgrade --kubeconfig {{kubeconfig_path}} -i cso -n cso-system --create-namespace {{cs_repo_cso}}"
+  when: (cs_role_mgmt_cluster | lower == 'k3s')
+
+- name: Install cluster stack operator using 'kind'
+  become: true
+  command: "helm upgrade -i cso -n cso-system --create-namespace {{cs_repo_cso}}"
+  when: (cs_role_mgmt_cluster | lower == 'kind')
+
+- name: Request rollout status for cluster stack operator
+  become: true
+  command: "kubectl -n cso-system rollout status deployment"

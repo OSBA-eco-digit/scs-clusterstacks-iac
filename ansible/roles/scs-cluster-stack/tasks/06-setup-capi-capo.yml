@@ -1,0 +1,44 @@
+---
+- name: Install openstack resources controller (ORC)
+  become: true
+  command: "kubectl apply -f {{orc_yaml}}"
+
+- name: Define labels to the ORC CRD in order to successfully move objects
+  become: true
+  command: "kubectl label crd {{type}}.openstack.k-orc.cloud clusterctl.cluster.x-k8s.io/move=''"
+  loop:
+    - servers
+    - images
+  loop_control:
+    loop_var: type
+
+- name: Initialize workload cluster using 'k3s'
+  become: true
+  command: "clusterctl init -i openstack:v{{os_provider_release}} --kubeconfig {{kubeconfig_path}} --bootstrap k3s --control-plane k3s"
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
+    - KUBECONFIG: "{{kubeconfig_path}}"
+  when: (cs_role_mgmt_cluster | lower == 'k3s')
+
+- name: Initialize workload cluster using 'kind'
+  become: true
+  command: "clusterctl init -i openstack:v{{os_provider_release}}"
+  environment:
+    - CLUSTER_TOPOLOGY: true
+    - EXP_CLUSTER_RESOURCE_SET: true
+    - EXP_RUNTIME_SDK: true
+  when: (cs_role_mgmt_cluster | lower == 'kind')
+
+#
+# OPENSTACK_CLOUD="{{os_cloud}}" OPENSTACK_CLOUD_CACERT_B64="{{os_cloud_cacert_b64}}" OPENSTACK_CLOUD_YAML_B64="{{os_cloud_yaml_b64}}" OPENSTACK_CONTROL_PLANE_MACHINE_FLAVOR="{{os_control_plane_machine_flavor}}" OPENSTACK_DNS_NAMESERVERS="{{os_dns_nameservers}}" OPENSTACK_EXTERNAL_NETWORK_ID="{{os_external_network_id}}" OPENSTACK_FAILURE_DOMAIN="{{os_failure_domain}}" OPENSTACK_IMAGE_NAME="{{os_image_name}}" OPENSTACK_NODE_MACHINE_FLAVOR="{{os_node_machine_flavor}}" OPENSTACK_SSH_KEY_NAME="{{os_ssh_key_name}}" clusterctl generate cluster {{cs_cluster_name}} -n {{cs_cluster_namespace}} --kubeconfig {{kubeconfig_path}} --kubernetes-version {{kubernetes_release}}
+#
+
+- name: Request rollout status for CAPI
+  become: true
+  command: "kubectl -n capi-system rollout status deployment"
+
+- name: Request rollout status for CAPO
+  become: true
+  command: "kubectl -n capo-system rollout status deployment"

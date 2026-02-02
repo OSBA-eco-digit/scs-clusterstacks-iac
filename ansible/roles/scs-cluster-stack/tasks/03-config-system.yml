@@ -1,0 +1,59 @@
+---
+# https://kubernetes.io/docs/concepts/cluster-administration/swap-memory-management
+- name: Ensure sysctl "vm.swappiness" is set
+  become: true
+  sysctl:
+    name: "vm.swappiness"
+    value: "0"
+    sysctl_set: true
+    state: present
+    reload: true
+
+# https://github.com/SovereignCloudStack/scs-training-kaas-scripts/blob/main/01-kind-cluster.sh
+- name: Ensure sysctl "net.ipv4.tcp_mtu_probing" is set
+  become: true
+  sysctl:
+    name: "net.ipv4.tcp_mtu_probing"
+    value: "1"
+    sysctl_set: true
+    state: present
+    reload: true
+
+# https://github.com/geerlingguy/ansible-role-kubernetes/blob/master/tasks/sysctl-setup.yml
+- name: Ensure module "br_netfilter" is loaded
+  become: true
+  modprobe:
+    name: br_netfilter
+    state: present
+    persistent: present
+  when: not ansible_virtualization_type == "docker"
+
+# https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/#letting-iptables-see-bridged-traffic
+- name: Ensure iptables is allowed to see bridged traffic
+  become: true
+  sysctl:
+    name: "{{item}}"
+    value: '1'
+    state: present
+  loop:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-ip6tables
+  when: >
+    ( ansible_facts.distribution != 'Debian'
+      or ansible_facts.distribution_major_version | int < 10
+    ) and not ansible_virtualization_type == "docker"
+
+# https://cluster-api.sigs.k8s.io/user/troubleshooting.html?highlight=too%20many#cluster-api-with-docker----too-many-open-files
+- name: Ensure "fs.inotify.max_user_instances" sysctl is set
+  become: true
+  sysctl:
+    name: fs.inotify.max_user_instances
+    value: '8192'
+    state: present
+
+- name: Ensure "fs.inotify.max_user_watches" sysctl is set
+  become: true
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: '1048576'
+    state: present

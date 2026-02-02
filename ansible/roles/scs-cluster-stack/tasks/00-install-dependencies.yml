@@ -1,0 +1,59 @@
+---
+- name: Update apt cache
+  become: true
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install dependencies
+  become: true
+  apt:
+    name: "{{d}}"
+    state: present
+  loop: "{{cs_dependencies}}"
+  loop_control:
+    loop_var: d
+
+- name: Setup apt-key for Docker on oldstable
+  get_url:
+    keyserver: "{{docker_gpg_keyserver}}"
+    id: "{{docker_gpg_key}}"
+    state: present
+  when: "ansible_distribution_major_version|int < 11"
+
+- name: Setup apt-key for Docker
+  become: true
+  get_url:
+    url: "{{docker_apt_repo_key}}"
+    dest: "{{docker_apt_sign_key}}"
+  when: "ansible_distribution_major_version|int >= 11"
+
+- name: Configure apt repository for Docker
+  become: true
+  apt_repository:
+    repo: "deb [arch=amd64 signed-by={{docker_apt_sign_key}}] {{docker_apt_repo}} {{ansible_lsb.codename}} stable"
+    filename: "{{docker_apt_repo_filename}}"
+
+- name: Install Docker packages
+  become: true
+  apt:
+    name:
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-ce
+      - docker-ce-cli
+      - docker-compose-plugin
+    state: present
+
+- name: Ensure the MTU for the Docker daemon is set
+  become: true
+  template:
+    src: daemon.json.j2
+    dest: "/etc/docker/daemon.json"
+
+- name: Ensure Docker service is enabled and started
+  become: true
+  systemd_service:
+    name: docker
+    enabled: yes
+    state: started

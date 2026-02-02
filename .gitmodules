@@ -1,0 +1,5 @@
+[submodule "ansible/roles/k3s"]
+    branch = v3.6.2
+    path = ansible/roles/k3s
+    shallow = true
+    url = https://github.com/egypcio/ansible-role-k3s

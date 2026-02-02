@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# {{ansible_managed}}
+
+go install sigs.k8s.io/kind@v{{kind_release}}
+sudo mv $HOME/go/bin/kind /usr/local/bin/kind
+sudo strip /usr/local/bin/kind
+sudo mkdir -p /etc/bash_completion.d 2>/dev/null
+sudo kind completion bash >/etc/bash_completion.d/kind

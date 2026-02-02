@@ -1,0 +1,74 @@
+---
+- name: Ensure "{{cs_user_name}}" group is present
+  become: true
+  group:
+    name: "{{cs_user_group}}"
+    state: present
+
+- name: Ensure "{{cs_user_name}}" user is present
+  become: true
+  user:
+    home: "{{cs_user_home}}"
+    create_home: true
+    comment: "{{cs_user_name}}"
+    name: "{{cs_user_name}}"
+    shell: "/bin/false"
+    groups: "{{cs_user_name}}"
+    password: "{{lookup('community.general.random_string', base64=true) | password_hash}}"
+    password_lock: true
+    update_password: on_create
+    system: true
+    state: present
+  register: cs_user_name_created
+
+- name: Enforce permissions on "{{cs_user_home}}"
+  become: true
+  file:
+    dest: "{{cs_user_home}}"
+  when: cs_user_name_created.changed
+
+- name: Ensure ".config" directory exists for the "{{cs_user_name}}" user
+  become: true
+  file:
+    path: "{{cs_user_home}}/.config"
+    state: directory
+
+- name: Ensure ".config/cluster-api" directory exists for the "{{cs_user_name}}" user
+  become: true
+  file:
+    path: "{{cs_user_home}}/.config/cluster-api"
+    state: directory
+
+- name: Ensure ".config/openstack" directory exists for the "{{cs_user_name}}" user
+  become: true
+  file:
+    path: "{{cs_user_home}}/.config/openstack"
+    state: directory
+
+- name: Ensure ".config" directory exists for "root"
+  become: true
+  file:
+    path: "/root/.config"
+    state: directory
+
+- name: Create symbolic link to ".config/cluster-api"
+  become: true
+  file:
+    dest: "/root/.config/cluster-api"
+    src: "{{cs_user_home}}/.config/cluster-api"
+    state: link
+
+- name: Create symbolic link to ".config/openstack"
+  become: true
+  file:
+    dest: "/root/.config/openstack"
+    src: "{{cs_user_home}}/.config/openstack"
+    state: link
+
+- name: Ensure "{{cs_user_name}}" user is a member of the docker group
+  become: true
+  user:
+    name: "{{cs_user_name}}"
+    groups: docker
+    append: yes
+

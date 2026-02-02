@@ -1,0 +1,57 @@
+---
+- name: Create secret "{{os_cloud}}" on namespace "{{cs_cluster_namespace}}"
+  become: true
+  command: "kubectl create secret generic -n {{cs_cluster_namespace}} {{os_cloud}} --from-file=clouds.yaml={{os_clouds_yaml}} --dry-run=client -o yaml"
+  args:
+    chdir: "{{cs_user_home}}/.config/openstack"
+  register: secrets_os_cloud
+
+- name: Copy secret "{{os_cloud}}" on namespace "{{cs_cluster_namespace}}" to a file
+  become: true
+  copy:
+    content: "{{secrets_os_cloud.stdout}}"
+    dest:  "{{cs_user_home}}/.secret_os_cloud"
+
+- name: Apply secret "{{os_cloud}}" on namespace "{{cs_cluster_namespace}}"
+  become: true
+  command: "kubectl apply -f {{cs_user_home}}/.secret_os_cloud"
+
+- name: Create secret "clouds-yaml" on namespace "kube-system"
+  become: true
+  command: "kubectl create secret generic -n kube-system clouds-yaml --from-file=clouds.yaml={{os_clouds_yaml}} --dry-run=client -o yaml"
+  args:
+    chdir: "{{cs_user_home}}/.config/openstack"
+  register: secrets_kubesys_clouds_yaml
+
+- name: Copy secret "clouds-yaml" on namespace "kube-system" to a file
+  become: true
+  copy:
+    content: "{{secrets_kubesys_clouds_yaml.stdout}}"
+    dest:  "{{cs_user_home}}/.secret_kubesys_clouds_yaml"
+
+- name: Create secret "clouds-yaml"on namespace "{{cs_cluster_namespace}}"
+  become: true
+  command: "kubectl create secret generic -n {{cs_cluster_namespace}} clouds-yaml --from-file=clouds-yaml={{cs_user_home}}/.secret_kubesys_clouds_yaml --type=addons.cluster.x-k8s.io/resource-set --dry-run=client -o yaml"
+  register: secrets_clouds_yaml
+
+- name: Copy secret "clouds-yaml"on namespace "{{cs_cluster_namespace}}" to a file
+  become: true
+  copy:
+    content: "{{secrets_clouds_yaml.stdout}}"
+    dest:  "{{cs_user_home}}/.secret_clouds_yaml"
+
+- name: Apply secret "clouds-yaml"on namespace "{{cs_cluster_namespace}}"
+  become: true
+  command: "kubectl apply -f {{cs_user_home}}/.secret_clouds_yaml"
+
+- name: Apply "specs-clusterresourceset.yaml"
+  become: true
+  command: "kubectl apply -f {{cs_user_home}}/specs-clusterresourceset.yaml"
+
+- name: Apply "specs-clusterstack.yaml"
+  become: true
+  command: "kubectl apply -f {{cs_user_home}}/specs-clusterstack.yaml"
+
+- name: Apply "specs-workloadcluster.yaml"
+  become: true
+  command: "kubectl apply -f {{cs_user_home}}/specs-workloadcluster.yaml"

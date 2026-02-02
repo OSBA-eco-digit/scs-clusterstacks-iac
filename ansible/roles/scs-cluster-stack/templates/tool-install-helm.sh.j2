@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# {{ansible_managed}}
+
+BIN="/usr/local/bin/helm"
+TARBALL="helm-v{{helm_release}}-linux-amd64.tar.gz"
+
+curl -sLO "https://get.helm.sh/${TARBALL}"
+curl -sLO "https://get.helm.sh/${TARBALL}.sha256sum"
+echo $(cat ${TARBALL}.sha256sum) | sha256sum --check
+tar --strip 1 -xpf ${TARBALL} linux-amd64/helm
+mv helm ${BIN}
+strip ${BIN}
+rm -f ${TARBALL}*
+sudo -p /etc/bash_completion.d 2>/dev/null
+sudo helm completion bash >/etc/bash_completion.d/helm

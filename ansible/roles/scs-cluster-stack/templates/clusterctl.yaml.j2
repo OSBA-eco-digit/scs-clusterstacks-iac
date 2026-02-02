@@ -1,0 +1,29 @@
+# {{ansible_managed}}
+
+# https://cluster-api.sigs.k8s.io/clusterctl/configuration
+# https://cluster-api.sigs.k8s.io/tasks/experimental-features/experimental-features
+
+---
+CLUSTERCTL_DISABLE_VERSIONCHECK: "true"
+KUBERNETES_VERSION: "{{kubernetes_release}}"
+
+{% if "{{cs_role_mgmt_cluster | lower}}" == 'k3s' %}
+KUBECONFIG: "{{kubeconfig_path}}"
+{% endif %}
+
+cert-manager:
+  version: "v{{certmanager_release}}"
+
+providers:
+  - name: "cluster-api"
+    url: "https://github.com/kubernetes-sigs/cluster-api/releases/v{{clusterctl_release}}/core-components.yaml"
+    type: "CoreProvider"
+  - name: "k3s"
+    url: "https://github.com/k3s-io/cluster-api-k3s/releases/v{{k3s_capi_release}}/bootstrap-components.yaml"
+    type: "BootstrapProvider"
+  - name: "k3s"
+    url: "https://github.com/k3s-io/cluster-api-k3s/releases/v{{k3s_capi_release}}/control-plane-components.yaml"
+    type: "ControlPlaneProvider"
+  - name: "openstack"
+    url: "https://github.com/kubernetes-sigs/cluster-api-provider-openstack/releases/v{{os_provider_release}}/infrastructure-components.yaml"
+    type: "InfrastructureProvider"

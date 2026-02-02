@@ -1,0 +1,15 @@
+# {{ansible_managed}}
+---
+apiVersion: addons.cluster.x-k8s.io/{{cs_api_contract_addons}}
+kind: ClusterResourceSet
+metadata:
+  name: clouds-yaml
+  namespace: "{{cs_cluster_namespace}}"
+spec:
+  strategy: "Reconcile"
+  clusterSelector:
+    matchLabels:
+      managed-secret: clouds-yaml
+  resources:
+    - name: clouds-yaml
+      kind: Secret

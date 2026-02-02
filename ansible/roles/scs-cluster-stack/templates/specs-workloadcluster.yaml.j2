@@ -1,0 +1,38 @@
+# {{ansible_managed}}
+---
+apiVersion: cluster.x-k8s.io/{{cs_api_contract}}
+kind: Cluster
+metadata:
+  name: "{{cs_cluster_name}}"
+  namespace: "{{cs_cluster_namespace}}"
+  labels:
+    managed-secret: clouds-yaml
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - "{{cs_cidr_pods}}"
+    serviceDomain: "{{cs_services_domain}}"
+    services:
+      cidrBlocks:
+      - "{{cs_cidr_services}}"
+  topology:
+    variables:
+      - name: nodeCIDR
+        value: "10.9.8.0/24"
+      - name: apiServerLoadBalancer
+        value: none
+      - name: identityRef
+        value:
+          cloudName: "{{os_cloud}}"
+          name: "{{os_cloud}}"
+    class: "{{ cs_cluster_class | replace('.', '-') }}"
+    classNamespace: "{{cs_cluster_namespace}}"
+    controlPlane:
+      replicas: {{cs_control_plane_replicas}}
+    version: "{{kubernetes_release}}"
+    workers:
+      machineDeployments:
+        - class: default-worker
+          name: md-0
+          replicas: {{cs_workers_replicas}}

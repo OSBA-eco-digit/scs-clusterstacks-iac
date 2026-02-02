@@ -1,0 +1,157 @@
+---
+apiVersion: v1
+data:
+  cacert: {{os_cloud_cacert_b64}}
+  clouds.yaml: {{os_cloud_yaml_b64}}
+kind: Secret
+metadata:
+  labels:
+    clusterctl.cluster.x-k8s.io/move: "true"
+  name: {{cs_cluster_name}}-cloud-config
+  namespace: {{cs_cluster_namespace}}
+
+---
+apiVersion: bootstrap.cluster.x-k8s.io/{{cs_api_contract}}
+kind: KThreesConfigTemplate
+metadata:
+  name: {{cs_cluster_name}}-md-0
+  namespace: {{cs_cluster_namespace}}
+spec:
+  template:
+    spec:
+
+---
+apiVersion: cluster.x-k8s.io/{{cs_api_contract}}
+kind: Cluster
+metadata:
+  name: {{cs_cluster_name}}
+  namespace: {{cs_cluster_namespace}}
+spec:
+  topology:
+    version: "{{kubernetes_release}}"
+    class: "{{cs_cluster_class | replace(".", "-")}}"
+    classNamespace: {{cs_cluster_namespace}}
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - {{cs_cidr_pods}}
+    serviceDomain: cluster.local
+  controlPlaneRef:
+    apiVersion: controlplane.cluster.x-k8s.io/{{cs_api_contract}}
+    kind: KThreesControlPlane
+    name: {{cs_cluster_name}}-control-plane
+  infrastructureRef:
+    apiVersion: infrastructure.cluster.x-k8s.io/{{cs_api_contract}}
+    kind: OpenStackCluster
+    name: {{cs_cluster_name}}
+
+---
+apiVersion: cluster.x-k8s.io/{{cs_api_contract}}
+kind: MachineDeployment
+metadata:
+  name: {{cs_cluster_name}}-md-0
+  namespace: {{cs_cluster_namespace}}
+spec:
+  clusterName: {{cs_cluster_name}}
+  replicas: 0
+  selector:
+    matchLabels: null
+  template:
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/{{cs_api_contract}}
+          kind: KThreesConfigTemplate
+          name: {{cs_cluster_name}}-md-0
+      clusterName: {{cs_cluster_name}}
+      failureDomain: failuredomain.local
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/{{cs_api_contract}}
+        kind: OpenStackMachineTemplate
+        name: {{cs_cluster_name}}-md-0
+      version: {{kubernetes_release}}
+
+---
+apiVersion: controlplane.cluster.x-k8s.io/{{cs_api_contract}}
+kind: KThreesControlPlane
+metadata:
+  name: {{cs_cluster_name}}-control-plane
+  namespace: {{cs_cluster_namespace}}
+spec:
+  machineTemplate:
+    spec:
+      infrastructureRef:
+        apiGroup: infrastructure.cluster.x-k8s.io
+        kind: OpenStackMachineTemplate
+        name: {{cs_cluster_name}}-control-plane
+  replicas: 1
+  version: {{kubernetes_release}}
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/{{cs_api_contract}}
+kind: OpenStackCluster
+metadata:
+  name: {{cs_cluster_name}}
+  namespace: {{cs_cluster_namespace}}
+spec:
+  apiServerLoadBalancer:
+    enabled: true
+  externalNetwork:
+    id: {{os_external_network_id}}
+  identityRef:
+    cloudName: {{os_cloud}}
+    name: {{cs_cluster_name}}-cloud-config
+  managedSecurityGroups:
+    allNodesSecurityGroupRules:
+    - description: Created by cluster-api-provider-openstack - BGP (calico)
+      direction: ingress
+      etherType: IPv4
+      name: BGP (Calico)
+      portRangeMax: 179
+      portRangeMin: 179
+      protocol: tcp
+      remoteManagedGroups:
+      - controlplane
+      - worker
+    - description: Created by cluster-api-provider-openstack - IP-in-IP (calico)
+      direction: ingress
+      etherType: IPv4
+      name: IP-in-IP (calico)
+      protocol: "4"
+      remoteManagedGroups:
+      - controlplane
+      - worker
+  managedSubnets:
+  - cidr: {{cs_cidr_managed_subnets}}
+    dnsNameservers:
+    - 1.1.1.1
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/{{cs_api_contract}}
+kind: OpenStackMachineTemplate
+metadata:
+  name: {{cs_cluster_name}}-control-plane
+  namespace: {{cs_cluster_namespace}}
+spec:
+  template:
+    spec:
+      flavor: "{{os_control_plane_machine_flavor}}"
+      image:
+        filter:
+          name: "{{os_control_plane_machine_image}}"
+      sshKeyName: {{os_ssh_key_name}}
+
+---
+apiVersion: infrastructure.cluster.x-k8s.io/{{cs_api_contract}}
+kind: OpenStackMachineTemplate
+metadata:
+  name: {{cs_cluster_name}}-md-0
+  namespace: {{cs_cluster_namespace}}
+spec:
+  template:
+    spec:
+      flavor: "{{os_node_machine_flavor}}"
+      image:
+        filter:
+          name: "{{os_node_machine_image}}"
+      sshKeyName: {{os_ssh_key_name}}

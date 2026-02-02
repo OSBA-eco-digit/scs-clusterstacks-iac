@@ -1,0 +1,9 @@
+---
+cs_dependencies:
+  - bash-completion
+  - curl
+  - golang
+  - jq
+  - net-tools
+  - python3-openstackclient
+  - uuid

@@ -1,0 +1,88 @@
+---
+#
+# cloud.conf
+#
+
+- name: Template "cloud.conf"
+  become: true
+  template:
+    src: cloud.conf.j2
+    dest: "{{os_cloud_config_path}}"
+
+- name: Encode "cloud.conf" into base64
+  become: true
+  command: "base64 -w 0 {{os_cloud_config_path}}"
+  register: stdout_base64_cloud_config
+
+- name: Set fact from encoded "cloud.conf"
+  set_fact:
+    cloud_config_b64: "{{stdout_base64_cloud_config.stdout}}"
+
+#
+# clouds.yaml
+#
+
+- name: Template "clouds.yaml"
+  become: true
+  template:
+    src: clouds.yaml.j2
+    dest: "{{os_clouds_yaml}}"
+
+- name: Encode "clouds.yaml" into base64
+  become: true
+  command: "base64 -w 0 {{os_clouds_yaml}}"
+  register: stdout_base64_os_clouds_yaml
+
+- name: Set fact from encoded "clouds.yaml"
+  set_fact:
+    os_clouds_yaml_b64: "{{stdout_base64_os_clouds_yaml.stdout}}"
+
+#
+# clusterctl.yaml
+#
+
+- name: Template "clusterctl.yaml"
+  become: true
+  template:
+    src: clusterctl.yaml.j2
+    dest: "{{cs_user_home}}/.config/cluster-api/clusterctl.yaml"
+######################################################################
+
+#
+# IMAGES
+#
+
+- name: Template "image-openstack-scs2.yaml"
+  become: true
+  template:
+    src: image-openstack-scs2.yaml.j2
+    dest: "{{cs_user_home}}/image-openstack-scs2.yaml"
+######################################################################
+
+#
+# SPECIFICATIONS
+#
+
+- name: Template "specs-namespace.yaml"
+  become: true
+  template:
+    src: specs-namespace.yaml.j2
+    dest: "{{cs_user_home}}/specs-namespace.yaml"
+
+- name: Template "specs-clusterresourceset.yaml"
+  become: true
+  template:
+    src: specs-clusterresourceset.yaml.j2
+    dest: "{{cs_user_home}}/specs-clusterresourceset.yaml"
+
+- name: Template "specs-clusterstack.yaml"
+  become: true
+  template:
+    src: specs-clusterstack.yaml.j2
+    dest: "{{cs_user_home}}/specs-clusterstack.yaml"
+
+- name: Template "specs-workloadcluster.yaml"
+  become: true
+  template:
+    src: specs-workloadcluster.yaml.j2
+    dest: "{{cs_user_home}}/specs-workloadcluster.yaml"

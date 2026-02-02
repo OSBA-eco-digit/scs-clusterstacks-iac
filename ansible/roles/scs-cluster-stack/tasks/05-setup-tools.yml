@@ -1,0 +1,87 @@
+---
+- name: Check if "clusterctl" exists
+  stat:
+    path: "{{clusterctl_bin}}"
+  register: check_clusterctl
+
+- name: Get "clusterctl"
+  become: true
+  get_url:
+    checksum: "sha256:{{clusterctl_bin_sha256}}"
+    dest: "{{clusterctl_bin}}"
+    mode: 0555
+    url: "{{clusterctl_bin_url}}"
+  when: not check_clusterctl.stat.exists
+  register: get_clusterctl
+
+- name: Strip "clusterctl"
+  become: true
+  command: "strip {{clusterctl_bin}}"
+  when: get_clusterctl.changed
+
+- name: Generate bash completions for "clusterctl"
+  become: true
+  command: "{{clusterctl_bin}} completion bash"
+  register: completions_clusterctl
+  args:
+    creates: "/etc/bash_completion.d/clusterctl"
+
+- name: Copy completions for "clusterctl" to a file
+  become: true
+  copy:
+    content: "{{completions_clusterctl.stdout}}"
+    dest:  "/etc/bash_completion.d/clusterctl"
+  when: completions_clusterctl.changed
+
+- name: Get "helm"
+  become: true
+  unarchive:
+    dest: "/usr/local/bin/"
+    extra_opts: "--strip-components=1"
+    mode: 0555
+    remote_src: true
+    src: "{{helm_bin_url}}"
+    include:
+      - linux-amd64/helm
+  args:
+    creates: "{{helm_bin}}"
+  register: get_helm
+
+- name: Install 'kubectl' if we have 'kind' as management cluster
+  block:
+
+    - name: Check if "kubectl" exists
+      stat:
+        path: "{{kubectl_bin}}"
+      register: check_kubectl
+
+    - name: Get "kubectl"
+      become: true
+      get_url:
+        checksum: "sha256:{{kubectl_bin_sha256}}"
+        dest: "{{kubectl_bin}}"
+        mode: 0555
+        url: "{{kubectl_bin_url}}"
+      when: not check_kubectl.stat.exists
+      register: get_kubectl
+    
+    - name: Strip "kubectl"
+      become: true
+      command: "strip {{kubectl_bin}}"
+      when: get_kubectl.changed
+
+  when: (cs_role_mgmt_cluster | lower == 'kind')
+
+- name: Generate bash completions for "kubectl"
+  become: true
+  command: "{{kubectl_bin}} completion bash"
+  register: completions_kubectl
+  args:
+    creates: "/etc/bash_completion.d/kubectl"
+
+- name: Copy completions for "kubectl" to a file
+  become: true
+  copy:
+    content: "{{completions_kubectl.stdout}}"
+    dest:  "/etc/bash_completion.d/kubectl"
+  when: completions_kubectl.changed

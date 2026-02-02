@@ -1,0 +1,61 @@
+---
+- name: Include distribution-specific variables for Ubuntu
+  include_vars:
+    dir: vars
+    files_matching: "ubuntu*"
+    extensions: [ yml ]
+  when: ansible_distribution == 'Ubuntu'
+
+- name: Include "install" tasks
+  include_tasks: "{{t}}"
+  loop:
+    - 00-install-dependencies.yml
+    - 01-install-account.yml
+  loop_control:
+    loop_var: t
+
+- name: Include "config" tasks
+  include_tasks: "{{t}}"
+  loop:
+    - 02-config-templates.yml
+    - 03-config-system.yml
+  loop_control:
+    loop_var: t
+  when: cs_role_config_system | bool
+
+- name: Include "setup" tasks
+  include_tasks: "{{t}}"
+  loop:
+    - 04-setup-mgmt-cluster.yml
+    - 05-setup-tools.yml
+    - 06-setup-capi-capo.yml
+    - 07-setup-cso-cspo.yml
+    - 08-setup-cluster-stack.yml
+  loop_control:
+    loop_var: t
+  when: not cs_role_scripts_only | bool
+
+- name: Copy "tool-install" scripts
+  become: true
+  template:
+    src: "{{s}}.j2"
+    dest: "{{cs_user_home}}/{{s}}"
+  loop:
+    - tool-install-clusterctl.sh
+    - tool-install-helm.sh
+    - tool-install-k3s.sh
+    - tool-install-kind.sh
+    - tool-install-kubectl.sh
+  loop_control:
+    loop_var: s
+
+- name: Copy "cluster-stack" files
+  become: true
+  copy:
+    src: "files/{{s}}"
+    dest: "{{cs_user_home}}/{{s}}"
+  loop:
+    - setup.sh
+    - tool-install.sh
+  loop_control:
+    loop_var: s

@@ -1,0 +1,33 @@
+# {{ansible_managed}}
+---
+apiVersion: openstack.k-orc.cloud/v1alpha1
+kind: Image
+metadata:
+  name: ubuntu-capi-image-v{{kubernetes_release}}
+spec:
+  cloudCredentialsRef:
+    cloudName: {{os_cloud}}
+    secretName: {{os_cloud}}
+  managementPolicy: managed
+  resource:
+    visibility: private
+    properties:
+      hardware:
+        diskBus: scsi
+        scsiModel: virtio-scsi
+        vifModel: virtio
+        qemuGuestAgent: true
+        rngModel: virtio
+      architecture: x86_64
+      minDiskGB: 20
+      minMemoryMB: 2048
+      operatingSystem:
+        distro: ubuntu
+        version: '24.04'
+    content:
+      diskFormat: qcow2
+      download:
+        url: {{cs_image_url}}
+        hash:
+          algorithm: sha256
+          value: {{cs_image_sha256}}
