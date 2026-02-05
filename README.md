@@ -91,6 +91,12 @@ The variables will be read by Ansible and are, in short, related to the setup of
 
 ### **Deployment and Setup**
 
+Besides `make`, you would also need to have the following applications on your end:
+
+  - Ansible
+  - OpenStack Client
+  - OpenTofu
+
 * **Bootstrapping (Initializing OpenTofu Providers)**
 
 ```sh
