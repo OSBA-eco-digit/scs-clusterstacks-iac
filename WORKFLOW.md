@@ -2,12 +2,15 @@
 
 Key considerations:
 
-  - "Environment Variables"
   - Ansible
-  - Cluster Customizations
+  - Cluster Configuration
+  - Environment Variables
   - Management Cluster
   - OpenStack Client
-  - OpenTofu
+  - OpenTofu (Terraform)
+
+Related Configuration Files:
+
   - `clouds.yaml`
 
 ```mermaid
