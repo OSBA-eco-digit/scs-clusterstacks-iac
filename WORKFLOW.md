@@ -3,11 +3,11 @@
 Key considerations:
 
   - Ansible
-  - Cluster Configuration
   - Environment Variables
-  - Management Cluster
+  - Cluster Stack
   - OpenStack Client
   - OpenTofu (Terraform)
+  - Virtual Infrastructure
 
 Related Configuration Files:
 
@@ -15,5 +15,19 @@ Related Configuration Files:
 
 ```mermaid
 flowchart TD
-    A[aaa] --> B(bbb)
+A[Ansible]
+C[clouds.yaml]
+OSC[OpenStack Client]
+OT[OpenTofu/Terraform]
+E[Environment Variables]
+CS[Cluster Stack]
+VI[Virtual Infrastructure]
+
+C -- required by --> A
+C -- required by --> OSC
+OSC -- required by --> OT
+A -- configures --> CS
+E -- configures --> A
+OT -- deploys --> VI
+CS -- depends on --> VI
 ```
