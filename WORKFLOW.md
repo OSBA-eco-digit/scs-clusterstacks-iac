@@ -1,6 +1,6 @@
 # Workflow Diagram
 
-Key considerations:
+### Key Components
 
   - Ansible
   - Environment Variables
@@ -9,9 +9,11 @@ Key considerations:
   - OpenTofu (Terraform)
   - Virtual Infrastructure
 
-Related Configuration Files:
+### Configuration Files
 
   - `clouds.yaml`
+
+### Mermaid Diagram
 
 ```mermaid
 flowchart TD
