@@ -9,9 +9,12 @@ sequenceDiagram
     participant CS  as Cluster Stack
     participant VI  as Virtual Infrastructure
 
-    U --> Get Credentials for OpenStack Infrastructure
-    U --> Install Required Software
-    U --> Define Environment Variables
-    U --> Deploy the Virtual Infrastructure
-    U --> Apply the Ansible Role to the Server
+    U --> A: install
+    U --> OT: install
+    U --> OSC: install
+    U --> C: configure
+    U --> E: configure
+    OT --> VI: deploy
+    A --> VI: apply role
+    VI: --> CS: setup
 ```
