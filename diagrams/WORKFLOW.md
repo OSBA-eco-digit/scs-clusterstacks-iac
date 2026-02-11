@@ -4,6 +4,7 @@
 %% as: alias/label assignment
 
 sequenceDiagram
+    autonumber
     actor U as USER
     participant A   as Ansible
     participant C   as clouds.yaml
@@ -20,5 +21,5 @@ sequenceDiagram
     U ->> E: configure
     OT ->> VI: deploy
     A ->> VI: apply role
-    VI: ->> CS: setup
+    VI ->> CS: setup
 ```
