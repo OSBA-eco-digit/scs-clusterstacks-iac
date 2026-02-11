@@ -1,4 +1,8 @@
 ```mermaid
+%% participants: declare with participant or actor
+%% arrows: ->> = solid arrow, -->> = dashed arrow
+%% as: alias/label assignment
+
 sequenceDiagram
     actor U as USER
     participant A   as Ansible
@@ -9,12 +13,12 @@ sequenceDiagram
     participant CS  as Cluster Stack
     participant VI  as Virtual Infrastructure
 
-    U --> A: install
-    U --> OT: install
-    U --> OSC: install
-    U --> C: configure
-    U --> E: configure
-    OT --> VI: deploy
-    A --> VI: apply role
-    VI: --> CS: setup
+    U ->> A: install
+    U ->> OT: install
+    U ->> OSC: install
+    U ->> C: configure
+    U ->> E: configure
+    OT ->> VI: deploy
+    A ->> VI: apply role
+    VI: ->> CS: setup
 ```
