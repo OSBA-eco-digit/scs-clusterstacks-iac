@@ -3,3 +3,5 @@ Here you find diagrams related to the work and code on this repository. Below is
 ```mermaid
 info
 ```
+
+> https://github.com/mermaid-js/mermaid/blob/develop/docs/syntax/sequenceDiagram.md
