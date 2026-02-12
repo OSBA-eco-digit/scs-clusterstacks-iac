@@ -60,9 +60,19 @@ scripts-only:
 		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e cs_role_scripts_only=true $(CURDIR)/ansible/playbook.yml
 
 ssh:
-	echo ssh $(shell (grep ssh_args $(CURDIR)/ansible/.ansible.cfg | cut -d'=' -f2-)) \
-	-l $(shell (awk '{print $3}' ansible/inventory_$(OS_CLOUD).ini | awk -F'=' '{print $2}')) \
-	$(shell (awk '{print $2}' ansible/inventory_$(OS_CLOUD).ini | awk -F'=' '{print $2}'))
+	@if [ ! -f "ansible/inventory_$(OS_CLOUD).ini" ]; then \
+		echo "Error: Inventory file ansible/inventory_$(OS_CLOUD).ini not found"; \
+		exit 1; \
+	fi; \
+	SSH_ARGS=$$(grep ssh_args $(CURDIR)/ansible/.ansible.cfg | cut -d'=' -f2- | xargs); \
+	SSH_USER=$$(grep ansible_user= ansible/inventory_$(OS_CLOUD).ini | sed 's/.*ansible_user=\([^ ]*\).*/\1/'); \
+	SSH_HOST=$$(grep ansible_host= ansible/inventory_$(OS_CLOUD).ini | sed 's/.*ansible_host=\([^ ]*\).*/\1/'); \
+	if [ -z "$$SSH_USER" ] || [ -z "$$SSH_HOST" ]; then \
+		echo "Error: Could not extract ansible_user or ansible_host from inventory"; \
+		exit 1; \
+	fi; \
+	echo "Connecting to $$SSH_USER@$$SSH_HOST"; \
+	ssh $$SSH_ARGS -l $$SSH_USER $$SSH_HOST
 ######################################################################
 
 #
