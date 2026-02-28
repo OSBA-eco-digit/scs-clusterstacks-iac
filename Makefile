@@ -20,6 +20,7 @@ export OS_EXTERNAL_NETWORK_ID
 ######################################################################
 
 ANSIBLE_CONFIG := $(CURDIR)/ansible/.ansible.cfg
+ANSIBLE_INVENTORY := $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini
 ANSIBLE_ROLES_PATH := $(CURDIR)/ansible/roles
 TF_IN_AUTOMATION := yes
 TF_LOG := INFO
@@ -45,23 +46,23 @@ all check init validate:
 destroy:
 	$(TOFU_CMD) destroy $(TOFU_DEFAULT_ARGS) $(TOFU_DEFAULT_VARS) -var PUBLIC_NETWORK_ID=$(OS_EXTERNAL_NETWORK_ID)
 	find $(CURDIR)/opentofu -name "tofu-$(OS_CLOUD).tfstate" -delete
-	rm -f "$(CURDIR)/ansible/inventory_$(OS_CLOUD).ini" 2>/dev/null
+	rm -f "$(ANSIBLE_INVENTORY)" 2>/dev/null
 
 setup setup-kind:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
-		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e cs_role_mgmt_cluster=kind $(CURDIR)/ansible/playbook.yml
+		ansible-playbook -i $(ANSIBLE_INVENTORY) -e cs_role_mgmt_cluster=kind $(CURDIR)/ansible/playbook.yml
 
 setup-k3s:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
-		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e cs_role_mgmt_cluster=k3s $(CURDIR)/ansible/playbook.yml
+		ansible-playbook -i $(ANSIBLE_INVENTORY) -e cs_role_mgmt_cluster=k3s $(CURDIR)/ansible/playbook.yml
 
 scripts-only:
 	ANSIBLE_CONFIG=$(ANSIBLE_CONFIG) ANSIBLE_ROLES_PATH=$(ANSIBLE_ROLES_PATH) \
-		ansible-playbook -i $(CURDIR)/ansible/inventory_$(OS_CLOUD).ini -e cs_role_scripts_only=true $(CURDIR)/ansible/playbook.yml
+		ansible-playbook -i $(ANSIBLE_INVENTORY) -e cs_role_scripts_only=true $(CURDIR)/ansible/playbook.yml
 
 ssh:
-	@if [ ! -f "ansible/inventory_$(OS_CLOUD).ini" ]; then \
-		echo "Error: Inventory file ansible/inventory_$(OS_CLOUD).ini not found"; \
+	@if [ ! -f "$(ANSIBLE_INVENTORY)" ]; then \
+		echo "Error: Inventory file $(ANSIBLE_INVENTORY) not found."; \
 		exit 1; \
 	fi; \
 	SSH_ARGS=$$(grep ssh_args $(CURDIR)/ansible/.ansible.cfg | cut -d'=' -f2- | xargs); \
