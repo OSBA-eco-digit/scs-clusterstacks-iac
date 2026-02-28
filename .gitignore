@@ -1,4 +1,5 @@
 *.swp
+.env
 
 ansible/*.ini
 
