@@ -65,7 +65,7 @@ ssh:
 		echo "Error: Inventory file $(ANSIBLE_INVENTORY) not found."; \
 		exit 1; \
 	fi; \
-	SSH_ARGS=$$(grep ssh_args $(CURDIR)/ansible/.ansible.cfg | cut -d'=' -f2- | xargs); \
+	SSH_ARGS=$$(grep ssh_args $(ANSIBLE_CONFIG) | cut -d'=' -f2- | xargs); \
 	SSH_USER=$$(grep ansible_user= ansible/inventory_$(OS_CLOUD).ini | sed 's/.*ansible_user=\([^ ]*\).*/\1/'); \
 	SSH_HOST=$$(grep ansible_host= ansible/inventory_$(OS_CLOUD).ini | sed 's/.*ansible_host=\([^ ]*\).*/\1/'); \
 	if [ -z "$$SSH_USER" ] || [ -z "$$SSH_HOST" ]; then \
