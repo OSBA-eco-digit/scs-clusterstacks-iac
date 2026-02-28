@@ -4,6 +4,7 @@ apiVersion: openstack.k-orc.cloud/v1alpha1
 kind: Image
 metadata:
   name: ubuntu-capi-image-v{{kubernetes_release}}
+  namespace: {{cs_cluster_namespace}}
 spec:
   cloudCredentialsRef:
     cloudName: {{os_cloud}}
