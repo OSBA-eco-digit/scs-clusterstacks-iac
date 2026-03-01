@@ -35,7 +35,7 @@ cs_user_name: "scs2"
 cs_workers_replicas: 1
 
 cs_image_url: "https://nbg1.your-objectstorage.com/osism/openstack-k8s-capi-images/ubuntu-2404-kube-v1.34/ubuntu-2404-kube-v1.34.3.qcow2"
-cs_image_sha256: "887d2afe062f06bf9ed3ba8fead03c3a8de09302341772f8663abd483730a780"
+cs_image_sha256: "f3dda104391733ee50e97995be2a2dc1004a2ecb4abe250d11dbdd584af554fa"
 
 docker_apt_repo: "https://download.docker.com/linux/{{ansible_distribution|lower}}"
 docker_apt_repo_filename: "docker"
