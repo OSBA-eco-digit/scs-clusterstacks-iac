@@ -70,5 +70,4 @@
   user:
     name: "{{cs_user_name}}"
     groups: docker
-    append: yes
-
+    append: true
